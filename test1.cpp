@@ -78,6 +78,29 @@ public:
         current = 0;
         to_parse.str(log);
     }
+     // Copy constructor
+    Log(const Log& other) : current(other.current) {
+        to_parse.str(other.to_parse.str());
+        for (Event* e : other.parsed) {
+            parsed.push_back(new Event(*e)); // deep copy
+        }
+    }
+
+    Log& operator=(const Log& rhs) {
+        if (this != &rhs) { // not same object
+            to_parse.str(rhs.to_parse.str());
+            for (Event* e : parsed) {
+                delete e;
+            }
+            parsed.clear();
+            for (Event* e : rhs.parsed) {
+                parsed.push_back(new Event(*e)); // deep copy 
+            }
+            current = rhs.current;
+        }
+        return *this;
+    }
+
     ~Log(){
         for(int i=0; i<parsed.size(); i++){
             if(parsed[i] != nullptr){
@@ -143,11 +166,14 @@ public:
 
 
     
-std::pair<int, std::vector<Event>> logCompare(std::string failed_str, std::vector<std::string>& succeed_str){
-    Log failed(failed_str);
-    // std::unordered_map<int, Log> succeeds;
+std::pair<std::vector<Event>, std::vector<Event>> logCompare(std::string failed_str, std::vector<std::string>& succeed_str){
+    std::vector<Event> prefix; // longest common prefix
+    std::vector<Event> longest;
+    if(succeed_str.size()==0) {return std::make_pair(prefix, longest);}
     int max_length = 0; // longest prefix length
     int max_idx = -1;
+
+    Log failed(failed_str); 
     for(int i=0; i<succeed_str.size(); i++){
         Log succeed(succeed_str[i]);
         int idx = 0; int length = 0; 
@@ -166,18 +192,29 @@ std::pair<int, std::vector<Event>> logCompare(std::string failed_str, std::vecto
             idx++;
         }
     }
-    std::vector<Event> prefix; // longest common prefix
-    for (int i = 0; i < max_length; i++) {
+    std::cout << std::endl;
+    int i=0; Log lon(succeed_str[max_idx]);
+    for (; i < max_length; i++) {
         Event* ef = failed.getEvent(i);
         prefix.push_back(*ef); // reconstruct common prefix from failed
     }
-    return std::make_pair(max_idx, prefix);
+    i = 0;
+    while(i<lon.current || !lon.parsedAll()){
+        Event* es = lon.getEvent(i);
+        if(es == nullptr){
+            break;
+        }else{        
+            longest.push_back(*es);
+        }
+        i++;
+    }
+    return std::make_pair(prefix, longest);
 } 
 
 
 int main (){
     int init = 3;
-    std::vector<bool> cond = {false, true, true};
+    std::vector<bool> cond = {false, false, false};
     std::cout << std::boolalpha;
     std::string failed_str = chooseRandom(init, cond);
     std::cout << "Failed Run: " << std::endl << failed_str << std::endl;
@@ -195,12 +232,14 @@ int main (){
     }
 
     auto result = logCompare(failed_str, succeeds);
-    std::cout << "Max prefix run #: " << (result.first) << std::endl;
-    std::vector<Event> prefix = result.second;
-    for(int i=0; i<prefix.size(); i++){
-        std::cout << "L" << prefix[i].lineNum << " ";
+    std::cout << "Prefix: " << std::endl;
+    for(int i=0; i<result.first.size(); i++){
+        std::cout << "L" << result.first[i].lineNum << " ";
     } std::cout << std::endl;
-
+    std::cout << "Longest: " << std::endl;
+    for(int i=0; i<result.second.size(); i++){
+        std::cout << "L" << result.second[i].lineNum << " ";
+    } std::cout << std::endl;
     return 0;
 }
 
