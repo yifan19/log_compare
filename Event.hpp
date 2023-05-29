@@ -9,10 +9,11 @@
 #include <vector>
 #include <map>
 #include <unordered_map>
+#include "source.hpp"
 /**
  * is a line of code
  */
-class Event {
+class Event : public Node {
 public:
     enum class EventType { // type of event
         undefined = 0,
@@ -25,8 +26,8 @@ public:
     int lineNum; // line number
     EventType type;
     Event* context;   
-    std::string var; // variable (if Locational)
-    std::string value; // variable value (if Locational) or true / false (if conditional)
+    Variable* var; // variable (if Locational)
+    bool value; // true / false (if conditional)
 
     // Constructors
     Event(const int num);

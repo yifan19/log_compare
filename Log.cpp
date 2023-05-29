@@ -1,5 +1,6 @@
 #include "Event.hpp"
 #include "Log.hpp"
+#include "source.hpp"
 
 Log::Log(std::string log) {
     current = 0;
@@ -42,24 +43,28 @@ Event* Log::parseNextEvent() {
     std::string line; std::string info; 
     std::string::size_type temp;
     if(to_parse >> line >> info){
-        Event* e = new Event(std::stoi(line.substr(1))); // need to add error handling for this
+        int lineNum = std::stoi(line.substr(1));
+        Event* e = new Event(lineNum); // need to add error handling for this
         if(info.substr(info.size()-2) == "()"){ // Invocation
             e->type = Event::EventType::Invocation;
-            e->value = info.substr(0, info.size()-2);
+            e->var = new Variable(lineNum, info.substr(0, info.size()-2) );
         }
-        else if(info == "true" || info=="false"){ // condition
+        else if(info == "true"){ // condition
             e->type = Event::EventType::Condition;
-            e->value = info;
+            e->value = true;
+        }
+        else if(info=="false"){ // condition
+            e->type = Event::EventType::Condition;
+            e->value = false;
         }
         else{
             temp = info.find('='); // variable = value
             if(temp != std::string::npos){
                 e->type = Event::EventType::Location;
-                e->var = info.substr(0, temp);
-                e->value = info.substr(temp+1);
+                e->var = new Variable(lineNum, info.substr(0, temp) );
+                //e->vvar->alue = info.substr(temp+1);
             }else{ // others (persumably output or "fail")
                 e->type = Event::EventType::Output;
-                e->value = info;
             }
         }
         parsed.push_back(e);
@@ -89,5 +94,7 @@ Event* Log::getEvent(int idx){
     }
     return nullptr;
 }
+
+
 
 

@@ -9,6 +9,7 @@
 
 #include "Event.hpp"
 #include "Log.hpp"
+#include "source.hpp"
 
 std::string chooseRandom(int init, const std::vector<bool> &cond){ // L1
     std::stringstream log; log << std::boolalpha;
