@@ -33,7 +33,7 @@ public:
     Event(const int num, EventType t);
     
     bool operator== (const Event& rhs) const;
-    
+    bool operator!= (const Event& rhs) const;
 private:
 
 };

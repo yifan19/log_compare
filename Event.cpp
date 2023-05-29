@@ -28,3 +28,7 @@ bool Event::operator== (const Event& rhs) const{
     // should also compare context here
     return true;
 }
+
+bool Event::operator!= (const Event& rhs) const{
+    return !(this->operator==(rhs));
+}

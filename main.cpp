@@ -33,19 +33,19 @@ std::string chooseRandom(int init, const std::vector<bool> &cond){ // L1
 
 
     
-std::pair<std::vector<Event>, std::vector<Event>> logCompare(std::string failed_str, std::vector<std::string>& succeed_str){
+std::pair<int, std::vector<Event>> logCompare(std::string failed_str, std::vector<std::string>& succeed_str, Log*& failed){
     std::vector<Event> prefix; // longest common prefix
     std::vector<Event> longest;
-    if(succeed_str.size()==0) {return std::make_pair(prefix, longest);}
+    if(succeed_str.size()==0) {return std::make_pair(0, longest);}
     int max_length = 0; // longest prefix length
     int max_idx = -1;
 
-    Log failed(failed_str); 
+    failed = new Log(failed_str); 
     for(int i=0; i<succeed_str.size(); i++){
         Log succeed(succeed_str[i]);
         int idx = 0; int length = 0; 
-        while(failed.getEvent(idx)!=nullptr && succeed.getEvent(idx)!=nullptr){
-            Event* ef = failed.getEvent(idx); // parse as we proceed
+        while(failed->getEvent(idx)!=nullptr && succeed.getEvent(idx)!=nullptr){
+            Event* ef = failed->getEvent(idx); // parse as we proceed
             Event* es = succeed.getEvent(idx); // might be able to store this some where
             if(*es == *ef){ // compare lineNum
                 length++;
@@ -59,14 +59,15 @@ std::pair<std::vector<Event>, std::vector<Event>> logCompare(std::string failed_
             idx++;
         }
     }
+    /*
     std::cout << std::endl;
     int i=0; 
     for (; i < max_length; i++) {
         Event* ef = failed.getEvent(i);
         prefix.push_back(*ef); // reconstruct common prefix from failed
-    }
+    }*/
     // tried to reuse the part already parsed, but get a bug. will figure that out later
-    i = 0; Log lon(succeed_str[max_idx]); 
+    int i = 0; Log lon(succeed_str[max_idx]); 
     while(i<lon.current || !lon.parsedAll()){
         Event* es = lon.getEvent(i);
         if(es == nullptr){
@@ -76,8 +77,64 @@ std::pair<std::vector<Event>, std::vector<Event>> logCompare(std::string failed_
         }
         i++;
     }
-    return std::make_pair(prefix, longest);
+    return std::make_pair(max_length, longest);
 } 
+
+int compare_one_log(Log* failed, Log& succeed){
+    int idx = 0; int length = 0; 
+    while(failed->getEvent(idx)!=nullptr && succeed.getEvent(idx)!=nullptr){
+        Event* ef = failed->getEvent(idx); // parse as we proceed
+        Event* es = succeed.getEvent(idx); // might be able to store this some where
+        if(*es != *ef){ // compare lineNum
+            break; // diverge
+        }
+        idx++;
+    }
+    return idx; // length of common prefix
+}
+
+Event* DiffAnalysis(Event B, std::string failed_str, std::vector<std::string>& succeed_str){// , std::vector<Event> events){ 
+    // add instrumentation
+    // how to make sure the divergence point happens to be A?
+    // replace INPUTs to events anx source code
+    Log* failed = nullptr;
+    std::pair<int, std::vector<Event>> result = logCompare(failed_str, succeed_str, failed);
+    Event* temp_A = failed->getEvent(result.first-1); // the diverging point
+    if(temp_A==nullptr){
+        // something is wrong
+        return nullptr;
+    }
+    if(B.type == Event::EventType::Condition){
+        // B is CE, return LE
+        if(temp_A->type==Event::EventType::Location){
+            return temp_A;
+        }
+        else if(temp_A->type==Event::EventType::Condition){
+            // A is CE, get condition variables for A
+            // instrument A, and repeat DiffAnalysis
+
+        }else if(temp_A->type==Event::EventType::Invocation){
+            return temp_A;
+        }else{
+            // Output event, I can't think of any case this would be the divergence point.
+        }
+
+    }else if(B.type == Event::EventType::Location){
+        // B is CE, return LE
+        if(temp_A->type==Event::EventType::Condition){
+            return temp_A;
+        }
+        else if(temp_A->type==Event::EventType::Location){
+            // A is LE, get dominating consition for A
+            // instrument A, and repeat DiffAnalysis
+        }else if(temp_A->type==Event::EventType::Invocation){
+            return temp_A;
+        }else{
+           
+        }
+    }
+    return nullptr;
+}
 
 
 int main (){
@@ -98,11 +155,11 @@ int main (){
     for(int i=0; i<succeeds.size(); i++){
         std::cout << "Run " << i << ": " << succeeds[i] << std::endl;
     }
-
-    auto result = logCompare(failed_str, succeeds);
+    Log* l = nullptr;
+    auto result = logCompare(failed_str, succeeds, l);
     std::cout << "Prefix: " << std::endl;
-    for(int i=0; i<result.first.size(); i++){
-        std::cout << "L" << result.first[i].lineNum << " ";
+    for(int i=0; i<result.first; i++){
+        std::cout << "L" << l->getEvent(i)->lineNum << " ";
     } std::cout << std::endl;
     std::cout << "Longest: " << std::endl;
     for(int i=0; i<result.second.size(); i++){

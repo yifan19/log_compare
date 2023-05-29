@@ -76,6 +76,7 @@ bool Log::parsedAll() const{
 }
 
 Event* Log::getEvent(int idx){
+    if(idx < 0) {return nullptr;}
     if(idx < parsed.size()){ // which should equal current
         return parsed[idx];
     }
