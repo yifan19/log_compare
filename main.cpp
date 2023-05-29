@@ -32,7 +32,8 @@ std::string chooseRandom(int init, const std::vector<bool> &cond){ // L1
 }
 
 
-    
+int compare_one_log(Log* failed, Log& succeed);
+
 std::pair<int, std::vector<Event>> logCompare(std::string failed_str, std::vector<std::string>& succeed_str, Log*& failed){
     std::vector<Event> prefix; // longest common prefix
     std::vector<Event> longest;
@@ -43,20 +44,10 @@ std::pair<int, std::vector<Event>> logCompare(std::string failed_str, std::vecto
     failed = new Log(failed_str); 
     for(int i=0; i<succeed_str.size(); i++){
         Log succeed(succeed_str[i]);
-        int idx = 0; int length = 0; 
-        while(failed->getEvent(idx)!=nullptr && succeed.getEvent(idx)!=nullptr){
-            Event* ef = failed->getEvent(idx); // parse as we proceed
-            Event* es = succeed.getEvent(idx); // might be able to store this some where
-            if(*es == *ef){ // compare lineNum
-                length++;
-                if(length > max_length){
-                    max_length = length; // update max length
-                    max_idx = i; // the run index in vector woth longest common prefix
-                }
-            }else{
-                break; // diverge
-            }
-            idx++;
+        int length = compare_one_log(failed, succeed);
+        if(length > max_length){
+            max_length = length; // update max length
+            max_idx = i; // the run index in vector woth longest common prefix
         }
     }
     /*

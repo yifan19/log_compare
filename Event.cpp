@@ -22,7 +22,7 @@ bool Event::operator== (const Event& rhs) const{
     if(type == EventType::Condition){
         // if conditional, value should be same
         if(value != rhs.value){
-             // return false;
+            // return false;
         }
     }
     // should also compare context here
