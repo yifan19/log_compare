@@ -26,17 +26,45 @@ public:
     int lineNum; // line number
     EventType type;
     Event* context;   
-    Variable* var; // variable (if Locational)
-    bool value; // true / false (if conditional)
 
     // Constructors
+    Event();
     Event(const int num);
-    Event(const int num, EventType t);
+    // Event(const int num, EventType t);
     
     bool operator== (const Event& rhs) const;
     bool operator!= (const Event& rhs) const;
-private:
 
 };
 
+class CE : public Event {
+public:
+    Event* context;   
+    Expression* cond; // condition 
+    bool value; // true / false 
+
+    // Constructors
+    CE();
+    CE(const int num);
+    CE(const int num, bool value);
+    
+    bool operator== (const Event& rhs) const;
+    bool operator!= (const Event& rhs) const;
+
+    bool evaluate();
+
+};
+class LE : public Event {
+public:
+    Event* context;   
+    Variable* var; // condition 
+
+    // Constructors
+    LE();
+    LE(const int num);
+    
+    bool operator== (const Event& rhs) const;
+    bool operator!= (const Event& rhs) const;
+
+};
 #endif // EVENT_HPP

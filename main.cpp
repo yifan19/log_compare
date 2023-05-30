@@ -33,6 +33,10 @@ std::string chooseRandom(int init, const std::vector<bool> &cond){ // L1
 }
 
 
+bool instrument(Event* e){
+    // instrument
+}
+
 int compare_one_log(Log* failed, Log& succeed);
 
 std::pair<int, std::vector<Event>> logCompare(std::string failed_str, std::vector<std::string>& succeed_str, Log*& failed){
@@ -85,6 +89,9 @@ int compare_one_log(Log* failed, Log& succeed){
     return idx; // length of common prefix
 }
 
+Event* findAssociatedCE(Event* e);
+std::vector<Event*> findAssociatedLEs(Event* CE);
+
 Event* DiffAnalysis(Event B, std::string failed_str, std::vector<std::string>& succeed_str){// , std::vector<Event> events){ 
     // add instrumentation
     // how to make sure the divergence point happens to be A?
@@ -104,11 +111,15 @@ Event* DiffAnalysis(Event B, std::string failed_str, std::vector<std::string>& s
         else if(temp_A->type==Event::EventType::Condition){
             // A is CE, get condition variables for A
             // instrument A, and repeat DiffAnalysis
-
+            std::vector<Event*> LEs = findAssociatedLEs(temp_A);
+            for(Event* LE : LEs){
+                instrument(LE);
+            }
+            // DiffAnalysis() with new input
         }else if(temp_A->type==Event::EventType::Invocation){
             return temp_A;
         }else{
-            // Output event, I can't think of any case this would be the divergence point.
+            // Output event, I can't think of any case this would be the divergence point?
         }
 
     }else if(B.type == Event::EventType::Location){
@@ -119,16 +130,28 @@ Event* DiffAnalysis(Event B, std::string failed_str, std::vector<std::string>& s
         else if(temp_A->type==Event::EventType::Location){
             // A is LE, get dominating consition for A
             // instrument A, and repeat DiffAnalysis
+            Event* CE = findAssociatedCE(temp_A);
+            instrument(CE);
+            // DiffAnalysis()
         }else if(temp_A->type==Event::EventType::Invocation){
             return temp_A;
         }else{
            
         }
     }
+    // case of concurrency
+    // what to return?
+    std::cout << "Concurrency suspected" << std::endl;
     return nullptr;
 }
 
+Event* findAssociatedCE(Event* e){
+    // this should be preloaded when parsing
 
+}
+std::vector<Event*> findAssociatedLEs(Event* CE){
+    
+}
 int main (){
     int init = 3;
     std::vector<bool> cond = {false, false, false};

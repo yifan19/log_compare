@@ -13,9 +13,11 @@
 
 class Node {
 public:
-    Node() {}
+    Node() {
+        parent = nullptr;
+    }
     ~Node() {}
-    std::vector<Node*> children;
+    Node* parent;
 };
 class Variable{
 public:
@@ -31,12 +33,14 @@ public:
 };
 
 class Expression : public Node {
+public:
     int lineNum;
     std::vector<Variable*> variables;
     Expression(int line);
 };
 
 class IfBlock : public Node {
+public:
     std::unique_ptr<Expression> condition;
     std::unique_ptr<Node> ifBranch;
     std::unique_ptr<Node> elseBranch;
@@ -44,6 +48,7 @@ class IfBlock : public Node {
     
 };
 class LoopBlock : public Node {
+public:
     std::unique_ptr<Expression> condition;
     std::unique_ptr<Node> body;
     LoopBlock() {}
