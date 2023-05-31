@@ -5,11 +5,13 @@
 #include <iostream>
 #include <sstream> 
 #include <string> 
+#include <fstream> 
 #include <cstdio>
 
 #include <vector>
 #include <map>
 #include <unordered_map>
+#include "globals.hpp"
 
 class Node {
 public:
@@ -32,16 +34,9 @@ public:
     Invocation(std::string n);
 };
 
-class Expression : public Node {
-public:
-    int lineNum;
-    std::vector<Variable*> variables;
-    Expression(int line);
-};
-
 class IfBlock : public Node {
 public:
-    std::unique_ptr<Expression> condition;
+    CE* condition;
     std::unique_ptr<Node> ifBranch;
     std::unique_ptr<Node> elseBranch;
     IfBlock() {}
@@ -49,7 +44,7 @@ public:
 };
 class LoopBlock : public Node {
 public:
-    std::unique_ptr<Expression> condition;
+    CE* condition;
     std::unique_ptr<Node> body;
     LoopBlock() {}
 };

@@ -29,28 +29,18 @@ bool Event::operator!= (const Event& rhs) const{
     return !(this->operator==(rhs));
 }
 
-Event* createLE(const int num, std::string variable){
-    Event* LE = new Event(num, Event::EventType::Condition);
-    LE->var = new Variable(num, variable);
-    return LE;
-}
 
-
-
-    // Constructors
+// Constructors
 CE::CE(){
     type = Event::EventType::Condition;
-    cond = nullptr;
 }
 CE::CE(const int num){
     type = Event::EventType::Condition;
     value = false;
-    cond = new Expression(num);
 }
 CE::CE(const int num, bool val){
     type = Event::EventType::Condition;
     value = val;
-    cond = new Expression(num);
 }
 bool CE::operator== (const Event& rhs) const{
     if(lineNum != rhs.lineNum){
@@ -74,18 +64,14 @@ LE::LE(const int num){
     type = Event::EventType::Location;
     var = nullptr;
 }
-CE::CE(const int num, bool val){
-    type = Event::EventType::Condition;
-    value = val;
-    cond = new Expression(num);
-}
-bool CE::operator== (const Event& rhs) const{
+
+bool LE::operator== (const Event& rhs) const{
     if(lineNum != rhs.lineNum){
         return false;
     }
     return true;
 }
-bool CE::operator!= (const Event& rhs) const{
+bool LE::operator!= (const Event& rhs) const{
     return !(this->operator==(rhs));
 }
 

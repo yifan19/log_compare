@@ -40,7 +40,7 @@ public:
 class CE : public Event {
 public:
     Event* context;   
-    Expression* cond; // condition 
+    std::vector<Variable*> variables; // condition 
     bool value; // true / false 
 
     // Constructors
