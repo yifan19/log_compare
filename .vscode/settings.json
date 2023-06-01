@@ -63,6 +63,12 @@
         "vector": "cpp",
         "__bits": "cpp",
         "__tree": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "deque": "cpp",
+        "fstream": "cpp",
+        "iomanip": "cpp",
+        "regex": "cpp",
+        "stack": "cpp",
+        "unordered_set": "cpp"
     }
 }

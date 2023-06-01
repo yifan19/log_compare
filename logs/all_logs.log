@@ -1,0 +1,216 @@
+[BM][IPC Server handler 3 on 35253][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 3 on 35253]ID=0,1
+[BM][IPC Server handler 3 on 35253]ID=1,false
+[BM][IPC Server handler 3 on 35253]ID=6,true
+[BM][IPC Server handler 3 on 35253][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 3 on 35253]ID=0,1
+[BM][IPC Server handler 3 on 35253]ID=1,true
+[BM][IPC Server handler 3 on 35253]ID=2,false
+[BM][IPC Server handler 3 on 35253]ID=1,true
+[BM][IPC Server handler 3 on 35253]ID=2,true
+[BM][IPC Server handler 3 on 35253]ID=3,true
+[BM][IPC Server handler 3 on 35253]ID=4,true
+[BM][IPC Server handler 3 on 35253]ID=5,0
+[BM][IPC Server handler 3 on 35253]ID=3,true
+[BM][IPC Server handler 3 on 35253]ID=1,false
+[BM][IPC Server handler 3 on 35253]ID=6,false
+[BM][IPC Server handler 3 on 35253][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 3 on 35253]ID=0,1
+[BM][IPC Server handler 3 on 35253]ID=1,false
+[BM][IPC Server handler 3 on 35253]ID=6,true
+[BM][IPC Server handler 3 on 35253][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 3 on 35253]ID=0,1
+[BM][IPC Server handler 3 on 35253]ID=1,true
+[BM][IPC Server handler 3 on 35253]ID=2,true
+[BM][IPC Server handler 3 on 35253]ID=3,true
+[BM][IPC Server handler 3 on 35253]ID=4,true
+[BM][IPC Server handler 3 on 35253]ID=5,0
+[BM][IPC Server handler 3 on 35253]ID=3,true
+[BM][IPC Server handler 3 on 35253]ID=1,false
+[BM][IPC Server handler 3 on 35253]ID=6,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=0,2
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=1,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=2,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=3,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=4,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=3,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=4,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=3,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=1,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=2,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=1,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=2,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=1,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=2,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=3,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=4,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=3,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=4,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=3,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=1,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=6,true
+[BM][main][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][main]ID=0,1
+[BM][main]ID=1,false
+[BM][main]ID=6,true
+[BM][main][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][main]ID=0,1
+[BM][main]ID=1,true
+[BM][main]ID=2,false
+[BM][main]ID=1,true
+[BM][main]ID=2,false
+[BM][main]ID=1,true
+[BM][main]ID=2,true
+[BM][main]ID=3,true
+[BM][main]ID=4,true
+[BM][main]ID=5,0
+[BM][main]ID=3,true
+[BM][main]ID=1,false
+[BM][main]ID=6,false
+[BM][main][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][main]ID=0,1
+[BM][main]ID=1,false
+[BM][main]ID=6,true
+[BM][main][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][main]ID=0,1
+[BM][main]ID=1,true
+[BM][main]ID=2,true
+[BM][main]ID=3,true
+[BM][main]ID=4,true
+[BM][main]ID=5,0
+[BM][main]ID=3,true
+[BM][main]ID=1,false
+[BM][main]ID=6,false
+[BM][main][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][main]ID=0,2
+[BM][main]ID=1,true
+[BM][main]ID=2,true
+[BM][main]ID=3,true
+[BM][main]ID=4,true
+[BM][main]ID=5,1
+[BM][main]ID=3,true
+[BM][main]ID=1,true
+[BM][main]ID=2,false
+[BM][main]ID=1,true
+[BM][main]ID=2,true
+[BM][main]ID=3,true
+[BM][main]ID=4,true
+[BM][main]ID=5,0
+[BM][main]ID=3,true
+[BM][main]ID=1,false
+[BM][main]ID=6,false
+[BM][IPC Server handler 5 on 35507][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 5 on 35507]ID=0,1
+[BM][IPC Server handler 5 on 35507]ID=1,false
+[BM][IPC Server handler 5 on 35507]ID=6,true
+[BM][IPC Server handler 5 on 35507][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 5 on 35507]ID=0,1
+[BM][IPC Server handler 5 on 35507]ID=1,true
+[BM][IPC Server handler 5 on 35507]ID=2,true
+[BM][IPC Server handler 5 on 35507]ID=3,true
+[BM][IPC Server handler 5 on 35507]ID=4,true
+[BM][IPC Server handler 5 on 35507]ID=5,0
+[BM][IPC Server handler 5 on 35507]ID=3,true
+[BM][IPC Server handler 5 on 35507]ID=1,false
+[BM][IPC Server handler 5 on 35507]ID=6,false
+[BM][IPC Server handler 5 on 35507][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 5 on 35507]ID=0,1
+[BM][IPC Server handler 5 on 35507]ID=1,false
+[BM][IPC Server handler 5 on 35507]ID=6,true
+[BM][IPC Server handler 5 on 35507][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 5 on 35507]ID=0,1
+[BM][IPC Server handler 5 on 35507]ID=1,true
+[BM][IPC Server handler 5 on 35507]ID=2,true
+[BM][IPC Server handler 5 on 35507]ID=3,true
+[BM][IPC Server handler 5 on 35507]ID=4,true
+[BM][IPC Server handler 5 on 35507]ID=5,0
+[BM][IPC Server handler 5 on 35507]ID=3,true
+[BM][IPC Server handler 5 on 35507]ID=1,false
+[BM][IPC Server handler 5 on 35507]ID=6,false
+[BM][main][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][main]ID=0,1
+[BM][main]ID=1,false
+[BM][main]ID=6,true
+[BM][main][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][main]ID=0,1
+[BM][main]ID=1,true
+[BM][main]ID=2,false
+[BM][main]ID=1,true
+[BM][main]ID=2,false
+[BM][main]ID=1,true
+[BM][main]ID=2,true
+[BM][main]ID=3,true
+[BM][main]ID=4,true
+[BM][main]ID=5,0
+[BM][main]ID=3,true
+[BM][main]ID=1,false
+[BM][main]ID=6,false
+[BM][main][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][main]ID=0,1
+[BM][main]ID=1,false
+[BM][main]ID=6,true
+[BM][main][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][main]ID=0,1
+[BM][main]ID=1,true
+[BM][main]ID=2,false
+[BM][main]ID=1,true
+[BM][main]ID=2,true
+[BM][main]ID=3,true
+[BM][main]ID=4,true
+[BM][main]ID=5,0
+[BM][main]ID=3,true
+[BM][main]ID=1,false
+[BM][main]ID=6,false
+[BM][IPC Server handler 6 on 45965][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 6 on 45965]ID=0,1
+[BM][IPC Server handler 6 on 45965]ID=1,false
+[BM][IPC Server handler 6 on 45965]ID=6,true
+[BM][IPC Server handler 6 on 45965][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 6 on 45965]ID=0,1
+[BM][IPC Server handler 6 on 45965]ID=1,true
+[BM][IPC Server handler 6 on 45965]ID=2,true
+[BM][IPC Server handler 6 on 45965]ID=3,true
+[BM][IPC Server handler 6 on 45965]ID=4,true
+[BM][IPC Server handler 6 on 45965]ID=5,0
+[BM][IPC Server handler 6 on 45965]ID=3,true
+[BM][IPC Server handler 6 on 45965]ID=1,false
+[BM][IPC Server handler 6 on 45965]ID=6,false
+[BM][IPC Server handler 6 on 45965][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 6 on 45965]ID=0,1
+[BM][IPC Server handler 6 on 45965]ID=1,false
+[BM][IPC Server handler 6 on 45965]ID=6,true
+[BM][IPC Server handler 6 on 45965][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 6 on 45965]ID=0,1
+[BM][IPC Server handler 6 on 45965]ID=1,true
+[BM][IPC Server handler 6 on 45965]ID=2,true
+[BM][IPC Server handler 6 on 45965]ID=3,true
+[BM][IPC Server handler 6 on 45965]ID=4,true
+[BM][IPC Server handler 6 on 45965]ID=5,0
+[BM][IPC Server handler 6 on 45965]ID=3,true
+[BM][IPC Server handler 6 on 45965]ID=1,false
+[BM][IPC Server handler 6 on 45965]ID=6,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=0,2
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=1,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=2,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=3,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=4,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=5,1
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=3,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=1,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=2,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=1,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=2,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=1,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=2,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=1,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=2,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=1,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=2,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=3,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=4,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=5,0
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=3,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=1,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=6,false

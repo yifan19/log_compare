@@ -9,11 +9,11 @@
 #include <vector>
 #include <map>
 #include <unordered_map>
-#include "source.hpp"
+
 /**
  * is a line of code
  */
-class Event : public Node {
+class Event{
 public:
     enum class EventType { // type of event
         undefined = 0,
@@ -26,45 +26,17 @@ public:
     int lineNum; // line number
     EventType type;
     Event* context;   
+    std::string value;
 
     // Constructors
     Event();
     Event(const int num);
+    Event(const int num, const Event::EventType t);
     // Event(const int num, EventType t);
     
     bool operator== (const Event& rhs) const;
     bool operator!= (const Event& rhs) const;
-
+    void print();
 };
 
-class CE : public Event {
-public:
-    Event* context;   
-    std::vector<Variable*> variables; // condition 
-    bool value; // true / false 
-
-    // Constructors
-    CE();
-    CE(const int num);
-    CE(const int num, bool value);
-    
-    bool operator== (const Event& rhs) const;
-    bool operator!= (const Event& rhs) const;
-
-    bool evaluate();
-
-};
-class LE : public Event {
-public:
-    Event* context;   
-    Variable* var; // condition 
-
-    // Constructors
-    LE();
-    LE(const int num);
-    
-    bool operator== (const Event& rhs) const;
-    bool operator!= (const Event& rhs) const;
-
-};
-#endif // EVENT_HPP
+#endif

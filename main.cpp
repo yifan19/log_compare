@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sstream> 
+#include <fstream>
 #include <string> 
 #include <cstdio>
 
@@ -9,7 +10,6 @@
 
 #include "Event.hpp"
 #include "Log.hpp"
-#include "source.hpp"
 
 std::string chooseRandom(int init, const std::vector<bool> &cond){ // L1
     std::stringstream log; log << std::boolalpha;
@@ -33,153 +33,105 @@ std::string chooseRandom(int init, const std::vector<bool> &cond){ // L1
 }
 
 
-bool instrument(Event* e){
-    // instrument
-}
+        // Event* DiffAnalysis(Event B, std::string failed_str, std::vector<std::string>& succeed_str){// , std::vector<Event> events){ 
+        //     // add instrumentation
+        //     // how to make sure the divergence point happens to be A?
+        //     // replace INPUTs to events anx source code
+        //     Log* failed = nullptr;
+        //     std::pair<int, std::vector<Event>> result = logCompare(failed_str, succeed_str, failed);
+        //     Event* temp_A = failed->getEvent(result.first-1); // the diverging point
+        //     if(temp_A==nullptr){
+        //         // something is wrong
+        //         return nullptr;
+        //     }
+        //     if(B.type == Event::EventType::Condition){
+        //         // B is CE, return LE
+        //         if(temp_A->type==Event::EventType::Location){
+        //             return temp_A;
+        //         }
+        //         else if(temp_A->type==Event::EventType::Condition){
+        //             // A is CE, get condition variables for A
+        //             // instrument A, and repeat DiffAnalysis
+        //             std::vector<Event*> LEs = findAssociatedLEs(temp_A);
+        //             for(Event* LE : LEs){
+        //                 instrument(LE);
+        //             }
+        //             // DiffAnalysis() with new input
+        //         }else if(temp_A->type==Event::EventType::Invocation){
+        //             return temp_A;
+        //         }else{
+        //             // Output event, I can't think of any case this would be the divergence point?
+        //         }
 
-int compare_one_log(Log* failed, Log& succeed);
+        //     }else if(B.type == Event::EventType::Location){
+        //         // B is CE, return LE
+        //         if(temp_A->type==Event::EventType::Condition){
+        //             return temp_A;
+        //         }
+        //         else if(temp_A->type==Event::EventType::Location){
+        //             // A is LE, get dominating consition for A
+        //             // instrument A, and repeat DiffAnalysis
+        //             Event* CE = findAssociatedCE(temp_A);
+        //             instrument(CE);
+        //             // DiffAnalysis()
+        //         }else if(temp_A->type==Event::EventType::Invocation){
+        //             return temp_A;
+        //         }else{
+                
+        //         }
+        //     }
+        //     // case of concurrency
+        //     // what to return?
+        //     std::cout << "Concurrency suspected" << std::endl;
+        //     return nullptr;
+        // }
 
-std::pair<int, std::vector<Event>> logCompare(std::string failed_str, std::vector<std::string>& succeed_str, Log*& failed){
-    std::vector<Event> prefix; // longest common prefix
-    std::vector<Event> longest;
-    if(succeed_str.size()==0) {return std::make_pair(0, longest);}
-    int max_length = 0; // longest prefix length
-    int max_idx = -1;
 
-    failed = new Log(failed_str); 
-    for(int i=0; i<succeed_str.size(); i++){
-        Log succeed(succeed_str[i]);
-        int length = compare_one_log(failed, succeed);
-        if(length > max_length){
-            max_length = length; // update max length
-            max_idx = i; // the run index in vector woth longest common prefix
-        }
-    }
-    /*
-    std::cout << std::endl;
-    int i=0; 
-    for (; i < max_length; i++) {
-        Event* ef = failed.getEvent(i);
-        prefix.push_back(*ef); // reconstruct common prefix from failed
-    }*/
-    // tried to reuse the part already parsed, but get a bug. will figure that out later
-    int i = 0; Log lon(succeed_str[max_idx]); 
-    while(i<lon.current || !lon.parsedAll()){
-        Event* es = lon.getEvent(i);
-        if(es == nullptr){
-            break;
-        }else{        
-            longest.push_back(*es);
-        }
-        i++;
-    }
-    return std::make_pair(max_length, longest);
-} 
-
-int compare_one_log(Log* failed, Log& succeed){
-    int idx = 0; int length = 0; 
-    while(failed->getEvent(idx)!=nullptr && succeed.getEvent(idx)!=nullptr){
-        Event* ef = failed->getEvent(idx); // parse as we proceed
-        Event* es = succeed.getEvent(idx); // might be able to store this some where
-        if(*es != *ef){ // compare lineNum
-            break; // diverge
-        }
-        idx++;
-    }
-    return idx; // length of common prefix
-}
-
-Event* findAssociatedCE(Event* e);
-std::vector<Event*> findAssociatedLEs(Event* CE);
-
-Event* DiffAnalysis(Event B, std::string failed_str, std::vector<std::string>& succeed_str){// , std::vector<Event> events){ 
-    // add instrumentation
-    // how to make sure the divergence point happens to be A?
-    // replace INPUTs to events anx source code
-    Log* failed = nullptr;
-    std::pair<int, std::vector<Event>> result = logCompare(failed_str, succeed_str, failed);
-    Event* temp_A = failed->getEvent(result.first-1); // the diverging point
-    if(temp_A==nullptr){
-        // something is wrong
-        return nullptr;
-    }
-    if(B.type == Event::EventType::Condition){
-        // B is CE, return LE
-        if(temp_A->type==Event::EventType::Location){
-            return temp_A;
-        }
-        else if(temp_A->type==Event::EventType::Condition){
-            // A is CE, get condition variables for A
-            // instrument A, and repeat DiffAnalysis
-            std::vector<Event*> LEs = findAssociatedLEs(temp_A);
-            for(Event* LE : LEs){
-                instrument(LE);
-            }
-            // DiffAnalysis() with new input
-        }else if(temp_A->type==Event::EventType::Invocation){
-            return temp_A;
-        }else{
-            // Output event, I can't think of any case this would be the divergence point?
-        }
-
-    }else if(B.type == Event::EventType::Location){
-        // B is CE, return LE
-        if(temp_A->type==Event::EventType::Condition){
-            return temp_A;
-        }
-        else if(temp_A->type==Event::EventType::Location){
-            // A is LE, get dominating consition for A
-            // instrument A, and repeat DiffAnalysis
-            Event* CE = findAssociatedCE(temp_A);
-            instrument(CE);
-            // DiffAnalysis()
-        }else if(temp_A->type==Event::EventType::Invocation){
-            return temp_A;
-        }else{
-           
-        }
-    }
-    // case of concurrency
-    // what to return?
-    std::cout << "Concurrency suspected" << std::endl;
-    return nullptr;
-}
-
-Event* findAssociatedCE(Event* e){
-    // this should be preloaded when parsing
-
-}
-std::vector<Event*> findAssociatedLEs(Event* CE){
-    
-}
 int main (){
-    int init = 3;
-    std::vector<bool> cond = {false, false, false};
-    std::cout << std::boolalpha;
-    std::string failed_str = chooseRandom(init, cond);
-    std::cout << "Failed Run: " << std::endl << failed_str << std::endl;
-
-    std::cout << "Successful Runs: " << std::endl;
-    std::vector<std::string> succeeds;
-    init = 3; cond = {true, true, true};
-    succeeds.push_back(chooseRandom(init, cond));
-    init = 3; cond = {true, false, false, true, true};
-    succeeds.push_back(chooseRandom(init, cond));
-    init = 4; cond = {false, true, true, true, true};
-    succeeds.push_back(chooseRandom(init, cond));
-    for(int i=0; i<succeeds.size(); i++){
-        std::cout << "Run " << i << ": " << succeeds[i] << std::endl;
+    std::ifstream file1("logs/all_logs.log");
+    if (!file1.is_open()) {
+        std::cout << "Failed to open logs." << std::endl;
     }
-    Log* l = nullptr;
-    auto result = logCompare(failed_str, succeeds, l);
-    std::cout << "Prefix: " << std::endl;
-    for(int i=0; i<result.first; i++){
-        std::cout << "L" << l->getEvent(i)->lineNum << " ";
-    } std::cout << std::endl;
-    std::cout << "Longest: " << std::endl;
-    for(int i=0; i<result.second.size(); i++){
-        std::cout << "L" << result.second[i].lineNum << " ";
-    } std::cout << std::endl;
+
+    std::string line; Log* log = nullptr; 
+    std::vector<Log*> logs;
+    while(std::getline(file1, line)){
+        if(line.find("Method Entry")!=std::string::npos){
+            log = new Log();
+            logs.push_back(log);
+        }
+        log->to_parse.push_back(line);
+        log->parseNextLine();
+    }
+    std::cout << "///////////" << std::endl;
+    std::vector<Log*> fails;  std::vector<Log*> succeeds; 
+    for(int i=0; i<logs.size(); i++){
+        logs[i]->parseAll();
+        if(logs[i]->fail){fails.push_back(logs[i]);}
+        else{succeeds.push_back(logs[i]);}
+    }
+    for(int i=0; i<fails.size(); i++){
+         fails[i]->printAll();
+        std::cout << "fail = " << fails[i]->fail << std::endl;
+    }
+    for(int i=0; i<succeeds.size(); i++){
+        // succeeds[i]->printAll();
+        std::cout << "fail = " << succeeds[i]->fail << std::endl;
+    }
+    std::cout << std::endl;
+    fails[2]->printAll();
+    int max_idx = 0; int max_i = 0;
+    for(int i=0; i<succeeds.size(); i++){
+        int idx = compare_one_log(fails[2], succeeds[i]);
+        if(idx > max_idx) {
+            max_idx = idx;
+            max_i = i;
+            std::cout << max_i << "! " << max_idx << " ";
+        }
+    }
+    std::cout << std::endl;
+    std::cout << max_idx ; // << " L" << fails[2]->getEvent(max_idx)->lineNum << std::endl;
+    succeeds[max_i]->printAll();
     return 0;
 }
 

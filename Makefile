@@ -3,7 +3,7 @@ CXXFLAGS = -std=c++11 # -Wall
 
 TARGET = compare
 
-SOURCES = main.cpp Event.cpp Log.cpp source.cpp
+SOURCES = main.cpp Event.cpp Log.cpp 
 
 OBJECTS = $(SOURCES:.cpp=.o)
 

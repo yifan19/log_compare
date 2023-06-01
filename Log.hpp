@@ -9,17 +9,19 @@
 #include <vector>
 #include <map>
 #include <unordered_map>
+#include <deque>
+#include <regex>
 
 #include "Event.hpp"
-#include "source.hpp"
 
 class Log {
 public:
-    std::stringstream to_parse;
+    std::deque<std::string> to_parse;
     std::vector<Event*> parsed;
-    int current; // current number of parsed events. current-1 is last index
+    std::string entry; // Method entry
+    bool fail;
     // Initialize log with a string stream
-    Log(std::string log);
+    Log() {}
      // Copy constructor
     Log(const Log& other);
 
@@ -28,13 +30,13 @@ public:
     ~Log();
 
     // Parse the next event from the log
-    Event* parseNextEvent();
-
-    // Check if there are more events in the log
-    bool parsedAll() const;
+    Event* parseNextLine();
 
     Event* getEvent(int idx);
-
+    bool parseAll();
+    void printParsed();
+    void printAll();
 };
+int compare_one_log(Log* A, Log* B);
 
 #endif // LOG_HPP
