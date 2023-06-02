@@ -31,6 +31,9 @@ bool is_number(std::string str){
     return std::regex_match(str, numRegex);
 }
 Event* Log::parseNextLine() {
+    if(to_parse.empty()){
+        return nullptr;
+    }
     Event* e = nullptr;
 
     std::string::size_type temp_id;
@@ -116,20 +119,23 @@ void Log::printAll(){
 int compare_one_log(Log* A, Log* B){
     int idx = 0; int nA = A->parsed.size() + A->to_parse.size();
     int nB = B->parsed.size() + B->to_parse.size();
-    std::cout << "nA " << nA << " nB" << nB << std::endl;
+    //std::cout << "nA " << nA << " nB" << nB << std::endl;
     while((idx < nA-1) && (idx < nB-1)){
-        std::cout << "idx=" << idx << " " ;
+        // std::cout << "idx=" << idx << " " ;
         Event* ef = A->getEvent(idx); 
         Event* es = B->getEvent(idx); 
-        ef->print(); std::cout << " "; es->print(); std::cout << std::endl;
+        // ef->print(); std::cout << " "; es->print(); std::cout << std::endl;
         if(*es != *ef){ // compare lineNum
             break; // diverge
         }
         idx++;
     }
-    std::cout << "return " << idx << std::endl;
+    //std::cout << "return " << idx << std::endl;
     return idx; // length of common prefix
 }
 
-
+bool Log::failed(){
+    parseAll();
+    return fail;
+}
 

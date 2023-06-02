@@ -85,7 +85,32 @@ std::string chooseRandom(int init, const std::vector<bool> &cond){ // L1
         //     std::cout << "Concurrency suspected" << std::endl;
         //     return nullptr;
         // }
+std::pair<int, Log*> logCompare(Log* failed, std::vector<Log*> succeeds){
+    std::vector<Event> prefix; // longest common prefix
+    if(succeeds.size()==0) {return std::make_pair(0, nullptr);}
+    int max_length = 0; // longest prefix length
+    int max_idx = 0;
 
+    for(int i=0; i<succeeds.size(); i++){
+        int length = compare_one_log(failed, succeeds[i]);
+        if(length > max_length){
+            max_length = length; // update max length
+            max_idx = i; // the run index in vector woth longest common prefix
+        }
+    }
+    
+    // int i = 0; Log lon(succeed_str[max_idx]); 
+    // while(i<lon.current || !lon.parsedAll()){
+    //     Event* es = lon.getEvent(i);
+    //     if(es == nullptr){
+    //         break;
+    //     }else{        
+    //         longest.push_back(*es);
+    //     }
+    //     i++;
+    // }
+    return std::make_pair(max_length, succeeds[max_idx]);
+} 
 
 int main (){
     std::ifstream file1("logs/all_logs.log");
@@ -101,37 +126,42 @@ int main (){
             logs.push_back(log);
         }
         log->to_parse.push_back(line);
-        log->parseNextLine();
     }
-    std::cout << "///////////" << std::endl;
     std::vector<Log*> fails;  std::vector<Log*> succeeds; 
     for(int i=0; i<logs.size(); i++){
         logs[i]->parseAll();
-        if(logs[i]->fail){fails.push_back(logs[i]);}
+        if(logs[i]->failed()){fails.push_back(logs[i]);}
         else{succeeds.push_back(logs[i]);}
     }
     for(int i=0; i<fails.size(); i++){
-         fails[i]->printAll();
-        std::cout << "fail = " << fails[i]->fail << std::endl;
+        // fails[i]->printAll(); std::cout << "fail = " << fails[i]->fail << std::endl;
     }
-    for(int i=0; i<succeeds.size(); i++){
-        // succeeds[i]->printAll();
-        std::cout << "fail = " << succeeds[i]->fail << std::endl;
-    }
+    int k = 2;
     std::cout << std::endl;
-    fails[2]->printAll();
-    int max_idx = 0; int max_i = 0;
+    fails[k]->printAll();
+    std::cout << "///////////" << std::endl;
+
+    // int max_idx = 0; int max_i = 0;
+    // for(int i=0; i<succeeds.size(); i++){
+    //     int idx = compare_one_log(fails[2], succeeds[i]);
+    //     if(idx > max_idx) {
+    //         max_idx = idx;
+    //         max_i = i;
+    //         std::cout << max_i << "! " << max_idx << " ";
+    //     }
+    // }
     for(int i=0; i<succeeds.size(); i++){
-        int idx = compare_one_log(fails[2], succeeds[i]);
-        if(idx > max_idx) {
-            max_idx = idx;
-            max_i = i;
-            std::cout << max_i << "! " << max_idx << " ";
-        }
+         succeeds[i]->printAll(); 
+         std::cout << "fail = " << succeeds[i]->fail << ", ";
+         int idx = compare_one_log(fails[k], succeeds[i]);
+         std::cout << "length = " << idx << std::endl;
     }
-    std::cout << std::endl;
-    std::cout << max_idx ; // << " L" << fails[2]->getEvent(max_idx)->lineNum << std::endl;
-    succeeds[max_i]->printAll();
+
+    std::cout << "//// "; fails[k]->printAll();
+    auto result = logCompare(fails[k], succeeds);
+     //std::cout << max_idx ; // << " L" << fails[2]->getEvent(max_idx)->lineNum << std::endl;
+     std::cout << "langth: " << result.first << ". ";
+     result.second->printAll();
     return 0;
 }
 

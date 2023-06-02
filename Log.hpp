@@ -36,6 +36,7 @@ public:
     bool parseAll();
     void printParsed();
     void printAll();
+    bool failed();
 };
 int compare_one_log(Log* A, Log* B);
 
