@@ -4,10 +4,12 @@ CXXFLAGS = -std=c++11 # -Wall
 TARGET = compare
 
 SOURCES = main.cpp Event.cpp Log.cpp 
+OBJDIR = build
 
 OBJECTS = $(SOURCES:.cpp=.o)
+OBJECTS := $(addprefix $(OBJDIR)/,$(OBJECTS))
 
-%.o: %.cpp
+$(OBJDIR)/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(TARGET): $(OBJECTS)
@@ -15,4 +17,4 @@ $(TARGET): $(OBJECTS)
 
 # Clean rule
 clean:
-	rm -f $(OBJECTS) $(TARGET)
+	rm -f $(OBJDIR)/*.o $(TARGET)
