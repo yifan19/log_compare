@@ -139,7 +139,7 @@ int main (){
     int k = 2;
     std::cout << std::endl;
     fails[k]->printAll();
-    std::cout << "///////////" << std::endl;
+    std::cout << "/////////// " << std::endl;
 
     // int max_idx = 0; int max_i = 0;
     // for(int i=0; i<succeeds.size(); i++){
@@ -154,7 +154,9 @@ int main (){
          succeeds[i]->printAll(); 
          std::cout << "fail = " << succeeds[i]->fail << ", ";
          int idx = compare_one_log(fails[k], succeeds[i]);
-         std::cout << "length = " << idx << std::endl;
+         std::cout << "length = " << idx << ".   ";
+         std::cout << "div at: " ; fails[k]->getEvent(idx-1)->print();
+         std::cout << std::endl;
     }
 
     std::cout << "//// "; fails[k]->printAll();
@@ -162,6 +164,8 @@ int main (){
      //std::cout << max_idx ; // << " L" << fails[2]->getEvent(max_idx)->lineNum << std::endl;
      std::cout << "langth: " << result.first << ". ";
      result.second->printAll();
+     std::cout << "div at: " ; fails[k]->getEvent(result.first-1)->print();
+     std::cout << std::endl;
     return 0;
 }
 

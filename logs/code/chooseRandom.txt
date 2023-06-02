@@ -1,0 +1,67 @@
+/**
+   * Randomly choose <i>numOfReplicas</i> targets from the given <i>scope</i>.
+   * @return the first chosen node, if there is any.
+   */
+  protected DatanodeStorageInfo chooseRandom(int numOfReplicas, /* ID = 0 */ /////////00000000000000////////////////////////////
+                            String scope,
+                            Set<Node> excludedNodes,
+                            long blocksize,
+                            int maxNodesPerRack,
+                            List<DatanodeStorageInfo> results,
+                            boolean avoidStaleNodes,
+                            StorageType storageType)
+                                throws NotEnoughReplicasException {
+      
+    int numOfAvailableNodes = clusterMap.countNumOfAvailableNodes(
+        scope, excludedNodes);
+    StringBuilder builder = null;
+    if (LOG.isDebugEnabled()) {
+      builder = debugLoggingBuilder.get();
+      builder.setLength(0);
+      builder.append("[");
+    }
+    boolean badTarget = false;
+    DatanodeStorageInfo firstChosen = null;
+    while(numOfReplicas > 0 && numOfAvailableNodes > 0) { /* ID = 1 */ //////////111111111111111111111111111////////////////
+      DatanodeDescriptor chosenNode = 
+          (DatanodeDescriptor)clusterMap.chooseRandom(scope);
+      if (excludedNodes.add(chosenNode)) { //was not in the excluded list /* ID = 2 */ //////////22222222222222222222//////////////////
+        numOfAvailableNodes--;
+
+        final DatanodeStorageInfo[] storages = DFSUtil.shuffle(
+            chosenNode.getStorageInfos());
+        int i;
+        for(i = 0; i < storages.length; i++) {  /* ID = 3 */ ///////////////333333333333333333333333333////////////////
+          final int newExcludedNodes = addIfIsGoodTarget(storages[i],
+              excludedNodes, blocksize, maxNodesPerRack, considerLoad, results,
+              avoidStaleNodes, storageType);
+          if (newExcludedNodes >= 0) {  /* ID = 4 */ //////////////4444444444444444444444/////////////////
+            numOfReplicas--;  /* ID = 5 */ /////////////////////////////////555555555555555555555////////////////////////////////////
+            if (firstChosen == null) {
+              firstChosen = storages[i];
+            }
+            numOfAvailableNodes -= newExcludedNodes;
+            break;
+          }
+        }
+
+        // If no candidate storage was found on this DN then set badTarget.
+        badTarget = (i == storages.length);
+      }
+    }
+      
+    if (numOfReplicas>0) /* ID = 6 */ { //////////////////66666666666666//////////66666666666666666666666////////////////////////////////////////////
+      String detail = enableDebugLogging;
+      if (LOG.isDebugEnabled()) {
+        if (badTarget && builder != null) {
+          detail = builder.append("]").toString();
+          builder.setLength(0);
+        } else detail = "";
+      }
+      throw new NotEnoughReplicasException(detail);
+    }
+    
+    return firstChosen;
+  }
+
+  
