@@ -11,7 +11,7 @@ protected DatanodeStorageInfo chooseRandom(numOfReplicas...) /* ID = 0 */ //////
             int i;
             for(i = 0; i < storages.length; i++) {  /* ID = 3 */ ///////////////333333333333333333333333333////////////////
 
-                final int newExcludedNodes = addIfIsGoodTarget();
+                final int newExcludedNodes = addIfIsGoodTarget(blkSize);
                 if (newExcludedNodes >= 0) {  /* ID = 4 */ //////////////4444444444444444444444/////////////////
 
                     numOfReplicas--;  /* ID = 5 */ /////////////////////////////////555555555555555555555////////////////////////////////////

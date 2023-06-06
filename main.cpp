@@ -10,7 +10,7 @@
 
 #include "Event.hpp"
 #include "Log.hpp"
-
+#include "globals.hpp"
 std::string chooseRandom(int init, const std::vector<bool> &cond){ // L1
     std::stringstream log; log << std::boolalpha;
     int val = init; // L2
@@ -92,7 +92,9 @@ std::pair<int, Log*> logCompare(Log* failed, std::vector<Log*> succeeds){
     int max_idx = 0;
 
     for(int i=0; i<succeeds.size(); i++){
-        int length = compare_one_log(failed, succeeds[i]);
+        // int length = compare_one_log(failed, succeeds[i]);
+       // std::cout << "comapring " << i << std::endl;
+         int length = compare_log_context(failed, succeeds[i]);
         if(length > max_length){
             max_length = length; // update max length
             max_idx = i; // the run index in vector woth longest common prefix
@@ -141,8 +143,11 @@ int main (){
     int k = 2;
     std::cout << std::endl;
     fails[k]->printContexts();
+    std::cout << "//**// " << std::endl;
+    succeeds[3]->printContexts();
     std::cout << "/////////// " << std::endl;
 
+    
     // for(int i=0; i<succeeds.size(); i++){
     //     // int idx = compare_one_log(fails[2], succeeds[i]);
     //     std::cout << "i=" << i << ", ";
@@ -160,14 +165,15 @@ int main (){
     //      std::cout << "div at: " ; fails[k]->getEvent(idx-1)->print();
     //      std::cout << std::endl;
     // }
-
-    std::cout << "//// "; fails[k]->printAll();
-    auto result = logCompare(fails[k], succeeds);
-     //std::cout << max_idx ; // << " L" << fails[2]->getEvent(max_idx)->lineNum << std::endl;
-     std::cout << "length: " << result.first << ". ";
-     result.second->printAll();
-     std::cout << "div at: " ; fails[k]->getEvent(result.first-1)->print();
-     std::cout << std::endl;
+    int length = compare_log_contexts(fails[k], succeeds[3]);
+    std::cout << "len " << length << std::endl;
+     std::cout << "//// "; fails[k]->printAll();
+     auto result = logCompare(fails[k], succeeds);
+      //std::cout << max_idx ; // << " L" << fails[2]->getEvent(max_idx)->lineNum << std::endl;
+      std::cout << "length: " << result.first << ". ";
+      result.second->printAll();
+      std::cout << "div at: " ; fails[k]->getEvent(result.first-1)->print();
+      std::cout << std::endl;
     return 0;
 }
 

@@ -161,26 +161,79 @@ int compare_one_log(Log* A, Log* B){
     //std::cout << "return " << idx << std::endl;
     return idx; // length of common prefix
 }
-int compare_log_contexts(Log* A, Log* B){
-    // int match_length = 0; int max_length = 0;
-    A->parseAll(); B->parseAll();
-    int nA = A->parsed.size(); int nB = B->parsed.size();
-    std::vector<std::vector<int>> DP(nA+1, std::vector<int>(nB+1, 0)); 
+// int compare_log_contexts(Log* A, Log* B){
+//     // int match_length = 0; int max_length = 0;
+//     A->parseAll(); B->parseAll();
+//     std::cout << "HERE" << std::endl;
+//     int nA = A->parsed.size(); int nB = B->parsed.size();
+//     std::vector<std::vector<int>> DP(nA, std::vector<int>(nB, 0)); 
+//     Event* eA = nullptr; Event* eB = nullptr;
+//     for(int idxA = 1; idxA < nA; idxA++){
+//         for(int idxB = 1; idxB < nB; idxB++){
+//             eA = A->parsed[idxA-1]; eB = B->parsed[idxB-1];
+//             if(eA==nullptr || eB==nullptr){
+//                 std::cout << "Null event detected at A[" << idxA-1 << "] or B[" << idxB-1 << "].\n";
+//                 continue;
+//             }
+//             if(eA->lineNum == eB->lineNum){
+//                 if(eA->context==nullptr && eB->context==nullptr){
+//                     DP[idxA][idxB] = DP[idxA-1][idxB-1] + 1;
+//                 }else if(eA->context!=nullptr && eB->context!=nullptr 
+//                     && eA->context->lineNum == eB->context->lineNum){
+//                     DP[idxA][idxB] = DP[idxA-1][idxB-1] + 1;
+//                 }
+//             }else if(DP[idxA-1][idxB] < DP[idxA][idxB-1]){
+//                 DP[idxA][idxB] = DP[idxA][idxB-1];
+//             } else {
+//                 DP[idxA][idxB] = DP[idxA-1][idxB];
+//             }
+//         }
+//     }
+//     // std::cout << ":: " << DP[nA-1][nB-1] << std::endl;
+//     int max = 0;
+//     for(int i=0; i<nA; i++){
+//         for(int j=0; j<nB; j++){
+//             //std::cout << DP[i][j] << " ";
+//             if(DP[i][j] > max){
+//                 max = DP[i][j];
+//             }
+//         }
+//         // std::cout << std::endl;
+//     }
+//     return max;
+// }
 
-    for(int idxA = 1; idxA <= nA; idxA++){
-        for(int idxB = 1; idxB <= nB; idxB++){
-            if(A->parsed[idxA-1]->lineNum == B->parsed[idxB-1]->lineNum
-                && A->parsed[idxA-1]->context->lineNum == B->parsed[idxB-1]->context->lineNum){
-                    DP[idxA][idxB] = DP[idxA-1][idxB-1] + 1;
-            } else if(DP[idxA-1][idxB] < DP[idxA][idxB-1]){
-                DP[idxA][idxB] = DP[idxA][idxB-1];
-            } else {
-                DP[idxA][idxB] = DP[idxA-1][idxB];
-            }
-        }
-    }
-    return DP[nA][nB];
-}
+// int compare_log_contexts(Log* A, Log* B){
+//     A->parseAll(); B->parseAll();
+//     int nA = A->parsed.size(); int nB = B->parsed.size();
+//     std::vector<std::vector<int>> DP(nA, std::vector<int>(nB, 0)); 
+
+//     for(int idxA = 0; idxA < nA; idxA++){
+//         for(int idxB = 0; idxB < nB; idxB++){
+//             Event* eA = A->parsed[idxA]; 
+//             Event* eB = B->parsed[idxB]; 
+//             if(eA->lineNum == eB->lineNum){
+//                 if((eA->context == nullptr && eB->context == nullptr)
+//                     || (eA->context != nullptr && eB->context != nullptr && eA->context->lineNum == eB->context->lineNum)){
+//                     DP[idxA][idxB] = (idxA > 0 && idxB > 0 ? DP[idxA-1][idxB-1] : 0) + 1;
+//                 } else if (idxA > 0 && idxB > 0){
+//                     DP[idxA][idxB] = std::max(DP[idxA-1][idxB], DP[idxA][idxB-1]);
+//                 }
+//             } else {
+//                 if(idxA > 0) DP[idxA][idxB] = DP[idxA-1][idxB];
+//                 if(idxB > 0 && DP[idxA][idxB] < DP[idxA][idxB-1]) DP[idxA][idxB] = DP[idxA][idxB-1];
+//             }
+//         }
+//     }
+//     std::cout << ":: " << DP[nA-1][nB-1] << std::endl;
+//     for(int i=0; i<nA; i++){
+//         for(int j=0; j<nB; j++){
+//             std::cout << DP[i][j] << " ";
+//         }
+//         std::cout << std::endl;
+//     }
+//     return nA > 0 && nB > 0 ? DP[nA-1][nB-1] : 0; 
+// }
 
 bool Log::failed(){
     parseAll();
@@ -191,7 +244,8 @@ bool Log::init_contexts(std::unordered_map<int, int>& start){
     for(auto i : loopStartLines){
         loopEndLines.insert({i.second, i.first});
     }
-    contextStack.push(nullptr);
+    Event* root = new Event(0); 
+    contextStack.push(root);
     return (loopStartLines.size() == loopEndLines.size());
 }
 bool Log::init_contexts(std::unordered_map<int, int>& start, std::unordered_multimap<int, int> end){
@@ -199,4 +253,168 @@ bool Log::init_contexts(std::unordered_map<int, int>& start, std::unordered_mult
     contextStack.push(nullptr);
     return (loopStartLines.size() == loopEndLines.size());
 }
+void dfs(Log* A, Log* B, int idxA, int idxB, int commonLength, int &maxCommonLength, std::unordered_map<Event*, 
+std::vector<Event*>> &contextMap, std::vector<std::vector<bool>> &visited);
+
+// int compare_log_contexts(Log* A, Log* B){
+//     A->parseAll(); B->parseAll();
+//     if(A->parsed.size()==0 || B->parsed.size()==0 || A->parsed[0] != B->parsed[0]){
+//         return 0;
+//     }
+    
+//     int max_length = 0;
+//     std::queue<Event*> q; std::unordered_map<Event*, bool> visited; 
+//     q.push(A->parsed[0]);
+//     visited[A->parsed[0]] = true;
+//     max_length = 1;
+
+//     while(!q.empty()){
+//         Event* e = q.front();
+//         q.pop();
+//         if(e==nullptr){
+//             std::cout << "null "; 
+//         }else{
+//             std::cout << e->lineNum << " "; 
+//         }
+//         for(Event* eA: A->contextMap[e]){
+//             if(eA!=nullptr && !visited[eA]){
+//                 // search for same lineNum in B?
+//                 q.push(eA);
+//                 visited[eA] = true;
+//             }
+//         }
+//     }
+// }
+int dfs(Event* rootA, Event* rootB, std::unordered_map<Event*, std::vector<Event*>>& mapA, std::unordered_map<Event*, std::vector<Event*>>& mapB){
+    std::vector<Event*> childrenA = mapA[rootA];
+    std::vector<Event*> childrenB = mapB[rootB];
+    for(auto i : childrenA){
+        std::cout << "ii " << i << std::endl;
+    }
+    int max_length = 0;
+    rootA->print(); std::cout << "!" << std::endl;
+    for(Event* eA : childrenA){
+        for(Event*eB : childrenB){
+            eA->print(); std::cout << "-" << std::endl;
+            eB->print(); std::cout << "-" << std::endl;
+            if(eA!=nullptr && eB!=nullptr && eA->lineNum==eB->lineNum){
+                if((eA->context==nullptr && eB->context==nullptr) ||
+                    (eA->context!=nullptr && eB->context!=nullptr && eA->context->lineNum==eB->context->lineNum)){
+                    int curr_length = 1 + dfs(eA, eB, mapA, mapB);
+                    std::cout << "curr " << curr_length << std::endl;
+                    max_length = std::max(max_length, curr_length);
+                }
+            }
+        }
+    }
+    std::cout << "max " << max_length << " ";
+    return max_length; 
+}
+int compare_log_contexts(Log* A, Log* B){
+    A->parseAll(); B->parseAll();
+    
+    if(A->parsed.size()<2 || B->parsed.size()<2 || A->parsed[1]==nullptr ||  B->parsed[1]==nullptr ||
+         A->parsed[0]->lineNum != B->parsed[0]->lineNum){
+        return 0;
+    }
+    std::cout << "dfs" << std::endl;
+    // int max_length = 0;
+    for(auto it : A->contextMap){
+        std::cout << "e " << it.first->lineNum << ": ";
+        for(auto j : it.second){
+            std::cout << "c " << j->lineNum << " ";
+        }
+        std::cout << std::endl;
+    }
+    int max_length = dfs(A->parsed[1], B->parsed[1], A->contextMap, B->contextMap) + 1;  // +1 to include root node in length
+    std::cout << std::endl << "final " << max_length << std::endl;
+    return max_length;
+}
+
+// int compare_log_contexts(Log* A, Log* B){
+//     // int match_length = 0; int max_length = 0;
+//     A->parseAll(); B->parseAll();
+//     //std::cout << "HERE" << std::endl;
+//     int maxCommonLength = 0;
+//      std::unordered_map<Event*, std::vector<Event*>> contextMap = A->contextMap;// this should be the same
+//      // contextMap.insert(B->contextMap.begin(), B->contextMap.end());
+//      std::cout << "HERE" << std::endl;
+//      for(auto it : contextMap){
+//         std::cout << it.first->lineNum << ": ";
+//         for(auto i : it.second){
+//             if(i==nullptr){std::cout << "null ";}
+//             else{std::cout << i->lineNum << " ";}
+//         }
+//         std::cout << std::endl;
+//      }
+     
+//      // dfs(A, B, 0, 0, 0, maxCommonLength, contextMap, visited);
+//      std::vector<std::vector<bool>> visited(A->parsed.size(), std::vector<bool>(B->parsed.size(), false));
+//     dfs(A, B, 0, 0, 0, maxCommonLength, contextMap, visited);
+
+//     std::cout << "max length " << maxCommonLength << std::endl;
+//     return maxCommonLength;
+// }
+
+// void dfs(Log* A, Log* B, int idxA, int idxB, int commonLength, int &maxCommonLength, std::unordered_map<Event*, 
+//     std::vector<Event*>> &contextMap, std::unordered_set<Event*> &visited) {
+//     // Base case: if either index is out of bounds, compare commonLength with maxCommonLength and update if necessary
+//     if (idxA<0 || idxB <0 || idxA >= A->parsed.size() || idxB >= B->parsed.size()) {
+//         maxCommonLength = std::max(commonLength, maxCommonLength);
+//         return;
+//     }
+
+
+//     Event* eA = A->parsed[idxA];
+//     Event* eB = B->parsed[idxB];
+    
+//     if (eA!=nullptr && eB !=nullptr && eA->lineNum == eB->lineNum) {
+//         std::vector<Event*> nextEventsA = contextMap[eA];
+//         std::vector<Event*> nextEventsB = contextMap[eB];
+//         std::cout << "11" << std::endl;
+//         for (Event* nextA : nextEventsA) {
+//             for (Event* nextB : nextEventsB) {
+//                 if (nextA!=nullptr && nextB!=nullptr && nextA->lineNum == nextB->lineNum)
+                    
+//                     dfs(A, B, nextA->lineNum, nextB->lineNum, commonLength + 1, maxCommonLength, contextMap);
+//             }
+//         }
+//         std::cout << "22" << std::endl;
+//     }
+
+//     dfs(A, B, idxA + 1, idxB, commonLength, maxCommonLength, contextMap);
+//     dfs(A, B, idxA, idxB + 1, commonLength, maxCommonLength, contextMap);
+// }
+
+void dfs(Log* A, Log* B, int idxA, int idxB, int commonLength, int &maxCommonLength, std::unordered_map<Event*, std::vector<Event*>> &contextMap, std::vector<std::vector<bool>> &visited) {
+    if (idxA<0 || idxB <0 || idxA >= A->parsed.size() || idxB >= B->parsed.size()) {
+        maxCommonLength = std::max(commonLength, maxCommonLength);
+        return;
+    }
+
+    if (visited[idxA][idxB]) return;
+
+    visited[idxA][idxB] = true;
+
+    Event* eA = A->parsed[idxA];
+    Event* eB = B->parsed[idxB];
+    
+    if (eA!=nullptr && eB !=nullptr && eA->lineNum == eB->lineNum) {
+        std::vector<Event*> nextEventsA = contextMap[eA];
+        std::vector<Event*> nextEventsB = contextMap[eB];
+
+        for (Event* nextA : nextEventsA) {
+            for (Event* nextB : nextEventsB) {
+                if (nextA!=nullptr && nextB!=nullptr && nextA->lineNum == nextB->lineNum)
+                    dfs(A, B, nextA->lineNum, nextB->lineNum, commonLength + 1, maxCommonLength, contextMap, visited);
+            }
+        }
+    }
+
+    dfs(A, B, idxA + 1, idxB, commonLength, maxCommonLength, contextMap, visited);
+    dfs(A, B, idxA, idxB + 1, commonLength, maxCommonLength, contextMap, visited);
+
+    visited[idxA][idxB] = false;  // backtracking step
+}
+
 
