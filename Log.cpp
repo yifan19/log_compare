@@ -91,6 +91,9 @@ Event* Log::parseNextLine() {
         for(auto it = range.first; it!=range.second; it++){
             contextStack.pop();
         }
+        if(e->context != nullptr){
+            contextMap[e->context].push_back(e);
+        }
     }
     return e;
 }
@@ -159,22 +162,24 @@ int compare_one_log(Log* A, Log* B){
     return idx; // length of common prefix
 }
 int compare_log_contexts(Log* A, Log* B){
-    int idx = 0; 
+    // int match_length = 0; int max_length = 0;
     A->parseAll(); B->parseAll();
-    int nA = A->parsed.size() + A->to_parse.size();
-    int nB = B->parsed.size() + B->to_parse.size();
-    while((idx < nA-1) && (idx < nB-1)){
-        // std::cout << "idx=" << idx << " " ;
-        Event* ef = A->getEvent(idx); 
-        Event* es = B->getEvent(idx); 
-        // ef->print(); std::cout << " "; es->print(); std::cout << std::endl;
-        if(*es != *ef){ // compare lineNum
-            break; // diverge
+    int nA = A->parsed.size(); int nB = B->parsed.size();
+    std::vector<std::vector<int>> DP(nA+1, std::vector<int>(nB+1, 0)); 
+
+    for(int idxA = 1; idxA <= nA; idxA++){
+        for(int idxB = 1; idxB <= nB; idxB++){
+            if(A->parsed[idxA-1]->lineNum == B->parsed[idxB-1]->lineNum
+                && A->parsed[idxA-1]->context->lineNum == B->parsed[idxB-1]->context->lineNum){
+                    DP[idxA][idxB] = DP[idxA-1][idxB-1] + 1;
+            } else if(DP[idxA-1][idxB] < DP[idxA][idxB-1]){
+                DP[idxA][idxB] = DP[idxA][idxB-1];
+            } else {
+                DP[idxA][idxB] = DP[idxA-1][idxB];
+            }
         }
-        idx++;
     }
-    //std::cout << "return " << idx << std::endl;
-    return idx; // length of common prefix
+    return DP[nA][nB];
 }
 
 bool Log::failed(){
