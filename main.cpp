@@ -164,7 +164,7 @@ int main (){
     std::cout << "//// "; fails[k]->printAll();
     auto result = logCompare(fails[k], succeeds);
      //std::cout << max_idx ; // << " L" << fails[2]->getEvent(max_idx)->lineNum << std::endl;
-     std::cout << "langth: " << result.first << ". ";
+     std::cout << "length: " << result.first << ". ";
      result.second->printAll();
      std::cout << "div at: " ; fails[k]->getEvent(result.first-1)->print();
      std::cout << std::endl;
