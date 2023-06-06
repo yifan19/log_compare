@@ -120,9 +120,11 @@ int main (){
 
     std::string line; Log* log = nullptr; 
     std::vector<Log*> logs;
+    std::unordered_map<int, int> loopStarts = {{1, 5}, {3, 5}};
     while(std::getline(file1, line)){
         if(line.find("Method Entry")!=std::string::npos){
             log = new Log();
+            log->init_contexts(loopStarts);
             logs.push_back(log);
         }
         log->to_parse.push_back(line);
@@ -138,26 +140,26 @@ int main (){
     }
     int k = 2;
     std::cout << std::endl;
-    fails[k]->printAll();
+    fails[k]->printContexts();
     std::cout << "/////////// " << std::endl;
 
-    // int max_idx = 0; int max_i = 0;
     // for(int i=0; i<succeeds.size(); i++){
-    //     int idx = compare_one_log(fails[2], succeeds[i]);
-    //     if(idx > max_idx) {
-    //         max_idx = idx;
-    //         max_i = i;
-    //         std::cout << max_i << "! " << max_idx << " ";
+    //     // int idx = compare_one_log(fails[2], succeeds[i]);
+    //     std::cout << "i=" << i << ", ";
+    //     for(auto iter : succeeds[i]->loopEndLines){
+    //         std::cout << iter.first << ", " << iter.second << " ";
     //     }
+    //     std::cout << std::endl;
     // }
-    for(int i=0; i<succeeds.size(); i++){
-         succeeds[i]->printAll(); 
-         std::cout << "fail = " << succeeds[i]->fail << ", ";
-         int idx = compare_one_log(fails[k], succeeds[i]);
-         std::cout << "length = " << idx << ".   ";
-         std::cout << "div at: " ; fails[k]->getEvent(idx-1)->print();
-         std::cout << std::endl;
-    }
+
+    // for(int i=0; i<succeeds.size(); i++){
+    //      succeeds[i]->printAll(); 
+    //      std::cout << "fail = " << succeeds[i]->fail << ", ";
+    //      int idx = compare_one_log(fails[k], succeeds[i]);
+    //      std::cout << "length = " << idx << ".   ";
+    //      std::cout << "div at: " ; fails[k]->getEvent(idx-1)->print();
+    //      std::cout << std::endl;
+    // }
 
     std::cout << "//// "; fails[k]->printAll();
     auto result = logCompare(fails[k], succeeds);

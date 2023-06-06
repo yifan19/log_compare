@@ -82,6 +82,16 @@ Event* Log::parseNextLine() {
     if(e!=nullptr && e->lineNum==6 && e->value=="true"){
         fail = true;
     }
+    if(e!=nullptr){
+        e->context = contextStack.top();
+        if(loopStartLines.find(e->lineNum) != loopStartLines.end()){
+            contextStack.push(e);
+        }
+        auto range = loopEndLines.equal_range(e->lineNum);
+        for(auto it = range.first; it!=range.second; it++){
+            contextStack.pop();
+        }
+    }
     return e;
 }
 
@@ -107,19 +117,52 @@ bool Log::parseAll(){
 
 void Log::printParsed(){
     for(int i=1; i<parsed.size(); i++){
-       parsed[i]->print(); std::cout << ", " ;
+       parsed[i]->print(); 
+       std::cout << ", " ;
     }
     std::cout << std::endl;
 }
+
 void Log::printAll(){
     parseAll();
     printParsed();
 }
+void Log::printContexts(){
+    for(int i=1; i<parsed.size(); i++){
+       parsed[i]->print(); 
+       if(parsed[i]->context == nullptr){
+            std::cout << " ctx: -1";
+        }else{
+            std::cout << " ctx: " << parsed[i]->context->lineNum;
+        }
+       std::cout << ", " ;
+    }
+    std::cout << std::endl;
+}
 
 int compare_one_log(Log* A, Log* B){
-    int idx = 0; int nA = A->parsed.size() + A->to_parse.size();
+    int idx = 0; 
+    int nA = A->parsed.size() + A->to_parse.size();
     int nB = B->parsed.size() + B->to_parse.size();
     //std::cout << "nA " << nA << " nB" << nB << std::endl;
+    while((idx < nA-1) && (idx < nB-1)){
+        // std::cout << "idx=" << idx << " " ;
+        Event* ef = A->getEvent(idx); 
+        Event* es = B->getEvent(idx); 
+        // ef->print(); std::cout << " "; es->print(); std::cout << std::endl;
+        if(*es != *ef){ // compare lineNum
+            break; // diverge
+        }
+        idx++;
+    }
+    //std::cout << "return " << idx << std::endl;
+    return idx; // length of common prefix
+}
+int compare_log_contexts(Log* A, Log* B){
+    int idx = 0; 
+    A->parseAll(); B->parseAll();
+    int nA = A->parsed.size() + A->to_parse.size();
+    int nB = B->parsed.size() + B->to_parse.size();
     while((idx < nA-1) && (idx < nB-1)){
         // std::cout << "idx=" << idx << " " ;
         Event* ef = A->getEvent(idx); 
@@ -137,5 +180,18 @@ int compare_one_log(Log* A, Log* B){
 bool Log::failed(){
     parseAll();
     return fail;
+}
+bool Log::init_contexts(std::unordered_map<int, int>& start){
+    loopStartLines = start; // loopEndLines = end;
+    for(auto i : loopStartLines){
+        loopEndLines.insert({i.second, i.first});
+    }
+    contextStack.push(nullptr);
+    return (loopStartLines.size() == loopEndLines.size());
+}
+bool Log::init_contexts(std::unordered_map<int, int>& start, std::unordered_multimap<int, int> end){
+    loopStartLines = start; loopEndLines = end;
+    contextStack.push(nullptr);
+    return (loopStartLines.size() == loopEndLines.size());
 }
 
