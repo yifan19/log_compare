@@ -1,16 +1,16 @@
 #include "Event.hpp"
 
 Event::Event() {
-    lineNum = -1;
+    lineNum = -1; idx = -1;
     type = EventType::undefined; 
     context = nullptr; 
 }
 Event::Event(const int num) : lineNum(num) {
-    type = EventType::undefined; 
+    type = EventType::undefined; idx = -1;
     context = nullptr; 
 }
 Event::Event(const int num, const Event::EventType t) : lineNum(num), type(t) {
-    context = nullptr; 
+    context = nullptr; idx = -1;
 }
 bool Event::operator== (const Event& rhs) const{
     if(lineNum != rhs.lineNum || type != rhs.type ){ // not same line number

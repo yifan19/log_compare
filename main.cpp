@@ -41,7 +41,7 @@ std::pair<int, Log*> logCompare(Log* failed, std::vector<Log*> succeeds){
 
     for(int i=0; i<succeeds.size(); i++){
         // int length = compare_one_log(failed, succeeds[i]);
-       // std::cout << "comapring " << i << std::endl;
+        // std::cout << "comapring " << i << std::endl;
         auto result = compare_log_contexts(failed, succeeds[i]);
         int length = result.first;
         if(length > max_length){

@@ -53,7 +53,6 @@ Event* Log::parseNextLine() {
         std::stringstream ss(line.substr(temp_id+1));
         int id=-1; ss >> id;
         e->lineNum = id; 
-        parsed.push_back(e);
     }else{ // is ID=
         temp_id = line.find("ID=");
         if(temp_id != std::string::npos){
@@ -72,7 +71,6 @@ Event* Log::parseNextLine() {
                 }
             }
             e->lineNum = id; 
-            parsed.push_back(e);
         }else{
             //something is wrong
             std::cout << "ID not found" << std::endl;
@@ -83,6 +81,7 @@ Event* Log::parseNextLine() {
         fail = true;
     }
     if(e!=nullptr){
+        e->idx = parsed.size();
         e->context = contextStack.top();
         if(loopStartLines.find(e->lineNum) != loopStartLines.end()){
             contextStack.push(e);
@@ -92,13 +91,14 @@ Event* Log::parseNextLine() {
             contextStack.pop();
         }
         if(e->context != nullptr){
-            contextMap[e->context->lineNum].push_back(e);
-            int idx = parsed.size()-2;
+            contextMap[e->context->idx].push_back(e);
+            int idx = parsed.size()-1;
             if(idx >= 0){
-                contextMap[parsed[]]
+                contextMap[idx].push_back(e);
             }
         }
     }
+    parsed.push_back(e);
     return e;
 }
 
