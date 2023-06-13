@@ -25,7 +25,7 @@ public:
     std::stack<Event*> contextStack;
     std::unordered_map<int, int> loopStartLines;
     std::unordered_multimap<int, int> loopEndLines;
-    std::unordered_map<int, std::vector<Event*>> contextMap; // idx in the Log, not lineNum
+    std::unordered_map<int, std::unordered_set<Event*>> contextMap; // idx in the Log, not lineNum
     bool fail;
     // Initialize log with a string stream
     Log() {}

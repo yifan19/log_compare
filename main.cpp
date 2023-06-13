@@ -122,6 +122,18 @@ int main (){
       result.second->printAll();
       std::cout << "div at: " ; fails[k]->getEvent(result.first-1)->print();
       std::cout << std::endl;
+
+      for(int i=0; i<fails[k]->parsed.size(); i++){
+          std::cout << fails[k]->getEvent(i)->idx << ": " << fails[k]->getEvent(i)->lineNum << " ";
+      } std::cout << std::endl;
+      for(Event* c : fails[k]->parsed){
+          std::cout << c->idx << ": L" << c->lineNum ;
+          if(c->context != nullptr){std::cout << ": " << c->context->idx << ":L" << c->context->lineNum;}
+          std::cout << std::endl;
+          for(Event* e : fails[k]->contextMap[c->idx]){
+              std::cout << e->idx<< " ";
+          }std::cout << std::endl;
+      } std::cout << std::endl;
     return 0;
 }
 

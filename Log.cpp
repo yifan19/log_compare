@@ -82,19 +82,25 @@ Event* Log::parseNextLine() {
     }
     if(e!=nullptr){
         e->idx = parsed.size();
-        e->context = contextStack.top();
-        if(loopStartLines.find(e->lineNum) != loopStartLines.end()){
-            contextStack.push(e);
-        }
+
         auto range = loopEndLines.equal_range(e->lineNum);
         for(auto it = range.first; it!=range.second; it++){
             contextStack.pop();
+            if(contextStack.top() != nullptr && e->lineNum > contextStack.top()->lineNum){
+                std::cout << "pop " << e->lineNum << " " << contextStack.top()->lineNum << std::endl;
+                contextStack.pop();
+            }
+        }
+        e->context = contextStack.top();
+        if(loopStartLines.find(e->lineNum) != loopStartLines.end()){
+            
+                contextStack.push(e);
         }
         if(e->context != nullptr){
-            contextMap[e->context->idx].push_back(e);
+            contextMap[e->context->idx].insert(e);
             int idx = parsed.size()-1;
             if(idx >= 0){
-                contextMap[idx].push_back(e);
+               contextMap[idx].insert(e);
             }
         }
     }
