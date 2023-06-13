@@ -33,6 +33,58 @@ std::string chooseRandom(int init, const std::vector<bool> &cond){ // L1
 }
 
 
+        // Event* DiffAnalysis(Event B, std::string failed_str, std::vector<std::string>& succeed_str){// , std::vector<Event> events){ 
+        //     // add instrumentation
+        //     // how to make sure the divergence point happens to be A?
+        //     // replace INPUTs to events anx source code
+        //     Log* failed = nullptr;
+        //     std::pair<int, std::vector<Event>> result = logCompare(failed_str, succeed_str, failed);
+        //     Event* temp_A = failed->getEvent(result.first-1); // the diverging point
+        //     if(temp_A==nullptr){
+        //         // something is wrong
+        //         return nullptr;
+        //     }
+        //     if(B.type == Event::EventType::Condition){
+        //         // B is CE, return LE
+        //         if(temp_A->type==Event::EventType::Location){
+        //             return temp_A;
+        //         }
+        //         else if(temp_A->type==Event::EventType::Condition){
+        //             // A is CE, get condition variables for A
+        //             // instrument A, and repeat DiffAnalysis
+        //             std::vector<Event*> LEs = findAssociatedLEs(temp_A);
+        //             for(Event* LE : LEs){
+        //                 instrument(LE);
+        //             }
+        //             // DiffAnalysis() with new input
+        //         }else if(temp_A->type==Event::EventType::Invocation){
+        //             return temp_A;
+        //         }else{
+        //             // Output event, I can't think of any case this would be the divergence point?
+        //         }
+
+        //     }else if(B.type == Event::EventType::Location){
+        //         // B is CE, return LE
+        //         if(temp_A->type==Event::EventType::Condition){
+        //             return temp_A;
+        //         }
+        //         else if(temp_A->type==Event::EventType::Location){
+        //             // A is LE, get dominating consition for A
+        //             // instrument A, and repeat DiffAnalysis
+        //             Event* CE = findAssociatedCE(temp_A);
+        //             instrument(CE);
+        //             // DiffAnalysis()
+        //         }else if(temp_A->type==Event::EventType::Invocation){
+        //             return temp_A;
+        //         }else{
+                
+        //         }
+        //     }
+        //     // case of concurrency
+        //     // what to return?
+        //     std::cout << "Concurrency suspected" << std::endl;
+        //     return nullptr;
+        // }
 std::pair<int, Log*> logCompare(Log* failed, std::vector<Log*> succeeds){
     std::vector<Event> prefix; // longest common prefix
     if(succeeds.size()==0) {return std::make_pair(0, nullptr);}
@@ -42,8 +94,7 @@ std::pair<int, Log*> logCompare(Log* failed, std::vector<Log*> succeeds){
     for(int i=0; i<succeeds.size(); i++){
         // int length = compare_one_log(failed, succeeds[i]);
        // std::cout << "comapring " << i << std::endl;
-        auto result = compare_log_contexts(failed, succeeds[i]);
-        int length = result.first;
+         int length = compare_log_context(failed, succeeds[i]);
         if(length > max_length){
             max_length = length; // update max length
             max_idx = i; // the run index in vector woth longest common prefix

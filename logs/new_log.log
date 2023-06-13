@@ -1,0 +1,23 @@
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=0,2
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=1,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=2,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=3,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=4,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=3,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=4,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=3,false[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=1,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=2,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=3,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=4,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=3,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=4,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=3,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=1,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=2,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=3,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=4,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=5,0
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=3,true
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=1,false
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4fbe37eb]ID=6,false

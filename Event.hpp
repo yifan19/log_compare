@@ -24,6 +24,7 @@ public:
     };
 
     int lineNum; // line number
+    int idx; // idx in log
     EventType type;
     Event* context;   
     std::string value;

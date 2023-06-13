@@ -25,7 +25,7 @@ public:
     std::stack<Event*> contextStack;
     std::unordered_map<int, int> loopStartLines;
     std::unordered_multimap<int, int> loopEndLines;
-    std::unordered_map<Event*, std::vector<Event*>> contextMap;
+    std::unordered_map<int, std::vector<Event*>> contextMap; // idx in the Log, not lineNum
     bool fail;
     // Initialize log with a string stream
     Log() {}
@@ -49,6 +49,6 @@ public:
     bool init_contexts(std::unordered_map<int, int>& start, std::unordered_multimap<int, int> end);
 };
 int compare_one_log(Log* A, Log* B);
-int compare_log_contexts(Log* A, Log* B);
+std::pair<int, std::vector<Event>> compare_log_contexts(Log* A, Log* B);
 
 #endif // LOG_HPP
