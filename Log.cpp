@@ -292,22 +292,67 @@ int dfs(Event* rootA, Event* rootB, std::unordered_map<int, std::vector<Event*>>
     std::cout << "max " << max_length << " ";
     return max_length; 
 }
-std::pair<int, std::vector<Event>> bfs(Log* A, Log* B){
-    std::vector<Event> prefix;
-    return std::make_pair(0, prefix);
+
+std::pair<int, std::vector<Event*>> bfs_start(Log* A, Log* B){
+    // std::vector<Event> prefix;
+    A->parseAll(); B->parseAll();
+    int sizeA = A->parsed.size(); int sizeB = B->parsed.size();
+    std::vector<Event*> current;
+    if(sizeA==0 || sizeB==0) {return std::make_pair(0, current);}
+
+    std::queue<Node> q;
+    q.push({A->getEvent(0), B->getEvent(0), 1});
+    
+    int length = 0;
+
+    while (!q.empty()) {
+        Node node = q.front(); 
+        q.pop();
+        if(node.eventA==nullptr || node.eventB==nullptr){
+            continue;
+        }
+        if (*(node.eventA) == *(node.eventB)) {
+            if (node.depth > length) {
+                length = node.depth;
+                current.push_back(node.eventA);
+            }
+                // Enqueue children
+            auto childrenA = A->contextMap[node.eventA->idx];
+            auto childrenB = B->contextMap[node.eventB->idx];
+            
+            for (auto& childA : childrenA) {
+                // For each child in A, if it also exists in B, enqueue them
+                for (auto& childB : childrenB) {
+                    if (*childA == *childB) {
+                        q.push({childA, childB, node.depth+1});
+                    }
+                }
+            }
+        }
+    }
+    return std::make_pair(length, current);
 }
 std::pair<int, std::vector<Event>> compare_log_contexts(Log* A, Log* B){
-    A->parseAll(); B->parseAll();
     int length = compare_one_log(A, B);
-    auto result = bfs(A, B);
+    std::vector<Event> prefix;
+
+    auto result = bfs_start(A, B);
+    // std::cout << "bfs " << result.first << std::endl;
+    // for(Event* e : result.second){
+    //     std::cout << e->idx << ":L" << e->lineNum << " ";
+    // }std::cout << std::endl;
+
     if(result.first > length){
-        return result;
+        for(Event* e : result.second){
+            prefix.push_back(*e);
+        }
+        return std::make_pair(length, prefix);
     }
-    else{
-        std::vector<Event> prefix;
+        
         for(int i=0; i<length; i++){
             prefix.push_back(*A->getEvent(i));
         }
         return std::make_pair(length, prefix);
-    }
+
 }
+

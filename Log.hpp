@@ -13,7 +13,7 @@
 #include <deque>
 #include <regex>
 #include <stack>
-#include<queue>
+#include <queue>
 
 #include "Event.hpp"
 
@@ -49,6 +49,11 @@ public:
     bool init_contexts(std::unordered_map<int, int>& start, std::unordered_multimap<int, int> end);
 };
 int compare_one_log(Log* A, Log* B);
+std::pair<int, std::vector<Event*>> bfs_start(Log* A, Log* B);
 std::pair<int, std::vector<Event>> compare_log_contexts(Log* A, Log* B);
-
+typedef struct node {
+    Event* eventA;
+    Event* eventB;
+    int depth;
+} Node;
 #endif // LOG_HPP
