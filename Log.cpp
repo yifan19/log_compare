@@ -77,9 +77,9 @@ Event* Log::parseNextLine() {
         }
     }
     to_parse.pop_front();
-    if(e!=nullptr && e->lineNum==6 && e->value=="true"){
-        fail = true;
-    }
+    // if(e!=nullptr && e->lineNum==6 && e->value=="true"){
+    //     fail = true;
+    // }
     if(e!=nullptr){
         e->idx = parsed.size();
 
@@ -158,12 +158,14 @@ int compare_one_log(Log* A, Log* B){
     int nA = A->parsed.size() + A->to_parse.size();
     int nB = B->parsed.size() + B->to_parse.size();
     //std::cout << "nA " << nA << " nB" << nB << std::endl;
-    while((idx < nA-1) && (idx < nB-1)){
+    while((idx < nA) && (idx < nB)){
         // std::cout << "idx=" << idx << " " ;
         Event* ef = A->getEvent(idx); 
         Event* es = B->getEvent(idx); 
         // ef->print(); std::cout << " "; es->print(); std::cout << std::endl;
+        // std::cout << "es " << es->lineNum << " ef " << ef->lineNum << " idx " << idx << std::endl ;
         if(*es != *ef){ // compare lineNum
+            
             break; // diverge
         }
         idx++;

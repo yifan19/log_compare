@@ -64,14 +64,14 @@ std::pair<int, Log*> logCompare(Log* failed, std::vector<Log*> succeeds){
 } 
 
 int main (){
-    std::ifstream file1("logs/all_logs.log");
+    std::ifstream file1("logs/goodtarget_more.log");
     if (!file1.is_open()) {
         std::cout << "Failed to open logs." << std::endl;
     }
 
     std::string line; Log* log = nullptr; 
     std::vector<Log*> logs;
-    std::unordered_map<int, int> loopStarts = {{1, 5}, {3, 5}};
+    std::unordered_map<int, int> loopStarts; // = {{1, 5}, {3, 5}};
     while(std::getline(file1, line)){
         if(line.find("Method Entry")!=std::string::npos){
             log = new Log();
@@ -83,17 +83,28 @@ int main (){
     std::vector<Log*> fails;  std::vector<Log*> succeeds; 
     for(int i=0; i<logs.size(); i++){
         logs[i]->parseAll();
-        if(logs[i]->failed()){fails.push_back(logs[i]);}
-        else{succeeds.push_back(logs[i]);}
+        if(logs[i]->parsed.size()<8){
+            fails.push_back(logs[i]);
+            std::cout << "fail: ";
+            
+        }
+        else{
+            succeeds.push_back(logs[i]);
+            std::cout << "succeed: ";
+        }
+        
+        for(Event* e : logs[i]->parsed){
+            std::cout << e->lineNum << " ";
+        }std::cout << std::endl;
     }
     for(int i=0; i<fails.size(); i++){
         // fails[i]->printAll(); std::cout << "fail = " << fails[i]->fail << std::endl;
     }
     int k = 2;
-    std::cout <<"failed contexts: " << std::endl;
+    std::cout << "failed contexts: " << std::endl;
     fails[k]->printContexts();
     std::cout << "succeeds[3] contexts: " << std::endl;
-    succeeds[3]->printContexts();
+    succeeds[2]->printContexts();
     std::cout << "/////////// " << std::endl;
 
     
@@ -123,17 +134,17 @@ int main (){
       std::cout << "div at: " ; fails[k]->getEvent(result.first-1)->print();
       std::cout << std::endl;
 
-      for(int i=0; i<fails[k]->parsed.size(); i++){
-          std::cout << fails[k]->getEvent(i)->idx << ": " << fails[k]->getEvent(i)->lineNum << " ";
-      } std::cout << std::endl;
-      for(Event* c : fails[k]->parsed){
-          std::cout << c->idx << ": L" << c->lineNum ;
-          if(c->context != nullptr){std::cout << ": " << c->context->idx << ":L" << c->context->lineNum;}
-          std::cout << std::endl;
-          for(Event* e : fails[k]->contextMap[c->idx]){
-              std::cout << e->idx<< " ";
-          }std::cout << std::endl;
-      } std::cout << std::endl;
+    //   for(int i=0; i<fails[k]->parsed.size(); i++){
+    //       std::cout << fails[k]->getEvent(i)->idx << ": " << fails[k]->getEvent(i)->lineNum << " ";
+    //   } std::cout << std::endl;
+    //   for(Event* c : fails[k]->parsed){
+    //       std::cout << c->idx << ": L" << c->lineNum ;
+    //       if(c->context != nullptr){std::cout << ": " << c->context->idx << ":L" << c->context->lineNum;}
+    //       std::cout << std::endl;
+    //       for(Event* e : fails[k]->contextMap[c->idx]){
+    //           std::cout << e->idx<< " ";
+    //       }std::cout << std::endl;
+    //   } std::cout << std::endl;
     return 0;
 }
 
