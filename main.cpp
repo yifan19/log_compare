@@ -64,7 +64,7 @@ std::pair<int, Log*> logCompare(Log* failed, std::vector<Log*> succeeds){
 } 
 
 int main (){
-    std::ifstream file1("logs/goodtarget_more.log");
+    std::ifstream file1("logs/step1.log");
     if (!file1.is_open()) {
         std::cout << "Failed to open logs." << std::endl;
     }
@@ -83,7 +83,7 @@ int main (){
     std::vector<Log*> fails;  std::vector<Log*> succeeds; 
     for(int i=0; i<logs.size(); i++){
         logs[i]->parseAll();
-        if(logs[i]->parsed.size()<8){
+        if(i==4){
             fails.push_back(logs[i]);
             std::cout << "fail: ";
             
@@ -100,11 +100,11 @@ int main (){
     for(int i=0; i<fails.size(); i++){
         // fails[i]->printAll(); std::cout << "fail = " << fails[i]->fail << std::endl;
     }
-    int k = 2;
+    int k = 0;
     std::cout << "failed contexts: " << std::endl;
-    fails[k]->printContexts();
-    std::cout << "succeeds[3] contexts: " << std::endl;
-    succeeds[2]->printContexts();
+    // fails[k]->printContexts();
+    std::cout << "succeeds[0] contexts: " << std::endl;
+    // succeeds[2]->printContexts();
     std::cout << "/////////// " << std::endl;
 
     
@@ -126,13 +126,26 @@ int main (){
     //      std::cout << std::endl;
     // }
 
-     std::cout << "//// "; fails[k]->printAll();
+     std::cout << "//// "; 
+     std::cout << "failed: " << std::endl;
+     for(Log* f : fails){
+         f->printAll();
+     }
+     std::cout << "succeed: " << std::endl;
+     for(Log* s : succeeds){
+         s->printAll();
+     }
      auto result = logCompare(fails[k], succeeds);
       //std::cout << max_idx ; // << " L" << fails[2]->getEvent(max_idx)->lineNum << std::endl;
       std::cout << "length: " << result.first << ". ";
       result.second->printAll();
-      std::cout << "div at: " ; fails[k]->getEvent(result.first-1)->print();
-      std::cout << std::endl;
+      if((result.first)==fails[k]->parsed.size()){
+          std::cout << "no divergence" << std::endl;
+      }else{
+          std::cout << "div at: " ; fails[k]->getEvent(result.first-1)->print();
+          std::cout << std::endl;
+      }
+      
 
     //   for(int i=0; i<fails[k]->parsed.size(); i++){
     //       std::cout << fails[k]->getEvent(i)->idx << ": " << fails[k]->getEvent(i)->lineNum << " ";

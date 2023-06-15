@@ -1,0 +1,4 @@
+g++ -std=c++11  -c main.cpp -o build/main.o
+g++ -std=c++11  -c Event.cpp -o build/Event.o
+g++ -std=c++11  -c Log.cpp -o build/Log.o
+g++ -std=c++11  build/main.o build/Event.o build/Log.o -o compare
