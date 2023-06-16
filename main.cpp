@@ -37,16 +37,18 @@ std::pair<int, Log*> logCompare(Log* failed, std::vector<Log*> succeeds){
     std::vector<Event> prefix; // longest common prefix
     if(succeeds.size()==0) {return std::make_pair(0, nullptr);}
     int max_length = 0; // longest prefix length
+    int max_total = 0;
     int max_idx = 0;
 
     for(int i=0; i<succeeds.size(); i++){
         // int length = compare_one_log(failed, succeeds[i]);
         // std::cout << "comapring " << i << std::endl;
-        auto result = compare_log_contexts(failed, succeeds[i]);
-        int length = result.first;
-        if(length > max_length){
+        auto result = compare_one_log(failed, succeeds[i]);
+        int length = result; //.first;
+        if(length > max_length || (length == max_length && succeeds[i]->parsed.size() > max_total) ){
             max_length = length; // update max length
             max_idx = i; // the run index in vector woth longest common prefix
+            max_total = succeeds[i]->parsed.size();
         }
     }
     
@@ -117,7 +119,7 @@ int main (){
     //     std::cout << std::endl;
     // }
 
-    // for(int i=0; i<succeeds.size(); i++){
+    // for(int i=0; i<succeeds.size(); i++){succeeds[
     //      succeeds[i]->printAll(); 
     //      std::cout << "fail = " << succeeds[i]->fail << ", ";
     //      int idx = compare_one_log(fails[k], succeeds[i]);
@@ -137,12 +139,13 @@ int main (){
      }
      auto result = logCompare(fails[k], succeeds);
       //std::cout << max_idx ; // << " L" << fails[2]->getEvent(max_idx)->lineNum << std::endl;
-      std::cout << "length: " << result.first << ". ";
-      result.second->printAll();
-      if((result.first)==fails[k]->parsed.size()){
+     int length = result.first;
+      std::cout << "length: " << (length-1) << ". ";
+      // result.second->printAll();
+      if( (length)==fails[k]->parsed.size() && length==(result.second->parsed.size()) ){
           std::cout << "no divergence" << std::endl;
       }else{
-          std::cout << "div at: " ; fails[k]->getEvent(result.first-1)->print();
+          std::cout << "div at: " ; fails[k]->getEvent(length-1)->print();
           std::cout << std::endl;
       }
       
@@ -183,3 +186,4 @@ Longest:
 L2 L3 L4 L3 L4 L5 L3 L4 L5 L3 L4 L5 L3 L4 L5 L6 
 // diverge at L4
 */
+
