@@ -1,0 +1,18 @@
+RULE entering method chooseRandom
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT ENTRY
+IF true
+DO traceStack("[BM][" + Thread.currentThread().getName() + "][Method Entry]");
+   traceln("[BM][" + Thread.currentThread().getName() + "]ID=1," + $numOfReplicas)
+ENDRULE
+
+RULE  fnumOfReplicas index is 3
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT LINE 533
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=0," + ($numOfAvailableNodes))
+ENDRULE

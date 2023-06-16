@@ -86,16 +86,26 @@ Event* Log::parseNextLine() {
         auto range = loopEndLines.equal_range(e->lineNum);
         for(auto it = range.first; it!=range.second; it++){
             contextStack.pop();
-            if(contextStack.top() != nullptr && e->lineNum > contextStack.top()->lineNum){
-                std::cout << "pop " << e->lineNum << " " << contextStack.top()->lineNum << std::endl;
-                contextStack.pop();
-            }
+//            if(contextStack.top() != nullptr && e->lineNum > contextStack.top()->lineNum){
+//                std::cout << "pop " << e->lineNum << " " << contextStack.top()->lineNum << std::endl;
+//                contextStack.pop();
+//            }
+
+            std::cout << "pop " <<std::endl;
         }
-        e->context = contextStack.top();
+        e->context = contextStack.top(); 
+        
         if(loopStartLines.find(e->lineNum) != loopStartLines.end()){
             
                 contextStack.push(e);
+                std::cout << "push " << e->idx << ":L" << e->lineNum << std::endl;
+                
+                std::cout << "size: " << firstLoop.size() << std::endl;
+
         }
+        std::cout << e->idx << ":L" << e->lineNum << " top: ";
+        if(e->context!=nullptr){std::cout << e->context->idx << ":L" << e->context->lineNum;} else{std::cout << "null" ;} std::cout << std::endl;
+        
         if(e->context != nullptr){
             contextMap[e->context->idx].insert(e);
             int idx = parsed.size()-1;
@@ -106,6 +116,29 @@ Event* Log::parseNextLine() {
     }
     parsed.push_back(e);
     return e;
+}
+bool Log::init_contexts(std::unordered_map<int, int>& start){
+    loopStartLines = start; // loopEndLines = end;
+    for(auto i : loopStartLines){
+        loopEndLines.insert({i.second, i.first});
+    }
+    Event* root = new Event(0); 
+    contextStack.push(root);
+    // std::unordered_map<int, Event*> firstLoop;
+    
+//    firstLoop.insert({-1, 0});
+//    firstLoop.find(-1);
+//    std::cout << "find -1" << std::endl;
+    
+    return (loopStartLines.size() == loopEndLines.size());
+}
+bool Log::init_contexts(std::unordered_map<int, int>& start, std::unordered_multimap<int, int> end){
+    loopStartLines = start; loopEndLines = end;
+    contextStack.push(nullptr);
+//    firstLoop.insert({-1, 0});
+//    firstLoop.find(-1);
+//    std::cout << "find -1" << std::endl;
+    return (loopStartLines.size() == loopEndLines.size());
 }
 
 Event* Log::getEvent(int idx){
@@ -251,20 +284,7 @@ bool Log::failed(){
     parseAll();
     return fail;
 }
-bool Log::init_contexts(std::unordered_map<int, int>& start){
-    loopStartLines = start; // loopEndLines = end;
-    for(auto i : loopStartLines){
-        loopEndLines.insert({i.second, i.first});
-    }
-    Event* root = new Event(0); 
-    contextStack.push(root);
-    return (loopStartLines.size() == loopEndLines.size());
-}
-bool Log::init_contexts(std::unordered_map<int, int>& start, std::unordered_multimap<int, int> end){
-    loopStartLines = start; loopEndLines = end;
-    contextStack.push(nullptr);
-    return (loopStartLines.size() == loopEndLines.size());
-}
+
 void dfs(Log* A, Log* B, int idxA, int idxB, int commonLength, int &maxCommonLength, std::unordered_map<int, 
 std::vector<Event*>> &contextMap, std::vector<std::vector<bool>> &visited);
 

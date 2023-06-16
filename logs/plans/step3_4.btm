@@ -1,0 +1,26 @@
+RULE entering method addIfIsGoodTarget
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD addIfIsGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,java.util.Set,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT ENTRY
+IF true
+DO traceStack("[BM][" + Thread.currentThread().getName() + "][Method Entry]");
+ENDRULE
+
+RULE addIfIsGoodTarget return good
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD addIfIsGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,java.util.Set,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 577
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=0," )
+ENDRULE
+
+RULE addIfIsGoodTarget return -1
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD addIfIsGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,java.util.Set,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 575
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=1," )
+ENDRULE

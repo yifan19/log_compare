@@ -1,12 +1,12 @@
-[BM][IPC Server handler 1 on 41367][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
-[BM][IPC Server handler 1 on 41367]ID=1,1
-[BM][IPC Server handler 1 on 41367][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
-[BM][IPC Server handler 1 on 41367]ID=1,1
-[BM][IPC Server handler 1 on 41367]ID=0,3
-[BM][IPC Server handler 1 on 41367][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
-[BM][IPC Server handler 1 on 41367]ID=1,1
-[BM][IPC Server handler 1 on 41367][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
-[BM][IPC Server handler 1 on 41367]ID=1,1
-[BM][IPC Server handler 1 on 41367]ID=0,2
+[BM][IPC Server handler 3 on 44085][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 3 on 44085]ID=1,1
+[BM][IPC Server handler 3 on 44085][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 3 on 44085]ID=1,1
+[BM][IPC Server handler 3 on 44085]ID=0,3
+[BM][IPC Server handler 3 on 44085][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 3 on 44085]ID=1,1
+[BM][IPC Server handler 3 on 44085][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 3 on 44085]ID=1,1
+[BM][IPC Server handler 3 on 44085]ID=0,2
 [BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@5677323c][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
 [BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@5677323c]ID=1,2

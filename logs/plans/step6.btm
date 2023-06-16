@@ -1,0 +1,35 @@
+RULE entering method chooseLocalStorage
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseLocalStorage(org.apache.hadoop.net.Node,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType,boolean)
+COMPILE
+AT ENTRY
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=0," + $blocksize)
+ENDRULE
+
+RULE entering method chooseRandom
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT ENTRY
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=1," + $blocksize)
+ENDRULE
+
+RULE entering method DatanodeInfo
+CLASS org.apache.hadoop.hdfs.protocol.DatanodeInfo
+METHOD <init>(java.lang.String,java.lang.String,java.lang.String,int,int,int,int,long,long,long,long,long,long,long,int,java.lang.String,org.apache.hadoop.hdfs.protocol.DatanodeInfo$AdminStates)
+COMPILE
+AT ENTRY
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=2," + $remaining)
+ENDRULE
+
+RULE entering method setRemaining
+CLASS org.apache.hadoop.hdfs.protocol.DatanodeInfo
+METHOD setRemaining(long)
+COMPILE
+AT ENTRY
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=3," + $remaining)
+ENDRULE

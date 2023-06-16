@@ -1,0 +1,15 @@
+[BM][IPC Server handler 2 on 34363]ID=5,134217728
+[BM][IPC Server handler 2 on 34363]ID=1,134217728
+[BM][IPC Server handler 2 on 34363]ID=2,134217728
+[BM][IPC Server handler 2 on 34363]ID=3,134217728
+[BM][IPC Server handler 2 on 34363]ID=4,134217728
+[BM][IPC Server handler 2 on 34363]ID=0,134217728
+[BM][IPC Server handler 2 on 34363]ID=0,134217728
+[BM][IPC Server handler 2 on 34363]ID=1,134217728
+[BM][IPC Server handler 2 on 34363]ID=2,134217728
+[BM][IPC Server handler 2 on 34363]ID=3,134217728
+[BM][IPC Server handler 2 on 34363]ID=4,134217728
+[BM][IPC Server handler 2 on 34363]ID=0,134217728
+[BM][IPC Server handler 2 on 34363]ID=0,134217728
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4d1c005e]ID=5,9223372036854775807
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4d1c005e]ID=0,9223372036854775807
