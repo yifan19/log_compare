@@ -67,7 +67,7 @@ std::pair<int, Log*> logCompare(Log* failed, std::vector<Log*> succeeds){
 } 
 
 int main (){
-    std::ifstream file1("logs/step7.log");
+    std::ifstream file1("logs/step3.log");
     if (!file1.is_open()) {
         std::cout << "Failed to open logs." << std::endl;
     }
@@ -76,7 +76,7 @@ int main (){
     std::vector<Log*> logs;
     std::unordered_map<int, int> loopStarts; //= {{4, 0}, {1, 0}};
     while(std::getline(file1, line)){
-         if(line.find("ID=5")!=std::string::npos){
+        if(line.find("Method Entry")!=std::string::npos){
             log = new Log();
             log->init_contexts(loopStarts);
             logs.push_back(log);
@@ -87,7 +87,7 @@ int main (){
     std::vector<Log*> fails;  std::vector<Log*> succeeds; 
     for(int i=0; i<logs.size(); i++){
         logs[i]->parseAll();
-        if(i>=1){
+        if(i>=3){
             fails.push_back(logs[i]);
             std::cout << "fail: ";
             
