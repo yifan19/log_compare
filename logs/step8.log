@@ -1,0 +1,7 @@
+[BM][IPC Server handler 1 on 45195]ID=3,134217728
+[BM][IPC Server handler 1 on 45195]ID=2,134217728
+[BM][IPC Server handler 1 on 45195]ID=1,134217728
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@1033576a]ID=0,
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@1033576a]ID=3,9223372036854775807
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@1033576a]ID=2,9223372036854775807
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@1033576a]ID=1,9223372036854775807

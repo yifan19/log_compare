@@ -9,6 +9,8 @@
       <df name="logs">
         <df name="code">
         </df>
+        <df name="plans">
+        </df>
       </df>
       <df name="test">
       </df>

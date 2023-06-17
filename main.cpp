@@ -146,7 +146,12 @@ int main (){
       if( (length)==fails[k]->parsed.size() && length==(result.second->parsed.size()) ){
           std::cout << "no divergence" << std::endl;
       }else{
-          std::cout << "div at: " ; fails[k]->getEvent(length-1)->print();
+          std::cout << "div at: " ; 
+          if(length>=1) {
+              fails[k]->getEvent(length-1)->print();
+          }else{
+              fails[k]->getEvent(0)->print();
+          }
           std::cout << std::endl;
       }
       

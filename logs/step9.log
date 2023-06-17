@@ -1,0 +1,113 @@
+[BM][IPC Server handler 2 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 2 on 46721]ID=0,0
+[BM][IPC Server handler 3 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 3 on 46721]ID=0,0
+[BM][IPC Server handler 2 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 2 on 46721]ID=0,0
+[BM][IPC Server handler 4 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 4 on 46721]ID=0,0
+[BM][IPC Server handler 4 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 4 on 46721]ID=0,0
+[BM][IPC Server handler 3 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 3 on 46721]ID=0,0
+[BM][IPC Server handler 9 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 9 on 46721]ID=0,0
+[BM][IPC Server handler 9 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 9 on 46721]ID=0,0
+[BM][IPC Server handler 3 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 3 on 46721]ID=0,0
+[BM][IPC Server handler 3 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 3 on 46721]ID=0,0
+[BM][IPC Server handler 5 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 5 on 46721]ID=0,0
+[BM][IPC Server handler 5 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 5 on 46721]ID=0,0
+[BM][IPC Server handler 5 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 5 on 46721]ID=0,0
+[BM][IPC Server handler 5 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 5 on 46721]ID=0,0
+[BM][IPC Server handler 5 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 5 on 46721]ID=0,0
+[BM][IPC Server handler 5 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 5 on 46721]ID=0,0
+[BM][Thread-209][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][Thread-209]ID=0,0
+[BM][Thread-209]ID=1,0
+[BM][DataXceiver for client /127.0.0.1:53042 [Waiting for operation #1]][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][DataXceiver for client /127.0.0.1:53042 [Waiting for operation #1]]ID=0,0
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_1664703550_1 at /127.0.0.1:53042 [Receiving block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_1664703550_1 at /127.0.0.1:53042 [Receiving block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]]ID=0,0
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_1664703550_1 at /127.0.0.1:53042 [Receiving block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]]ID=1,134217728
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_1664703550_1 at /127.0.0.1:53042 [Receiving block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_1664703550_1 at /127.0.0.1:53042 [Receiving block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]]ID=0,0
+[BM][IPC Server handler 9 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 9 on 46721]ID=0,134217728
+[BM][DataXceiver for client /127.0.0.1:38420 [Waiting for operation #1]][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][DataXceiver for client /127.0.0.1:38420 [Waiting for operation #1]]ID=0,0
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_1664703550_1 at /127.0.0.1:38420 [Receiving block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_1664703550_1 at /127.0.0.1:38420 [Receiving block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]]ID=0,0
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_1664703550_1 at /127.0.0.1:38420 [Receiving block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]]ID=1,134217728
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_1664703550_1 at /127.0.0.1:38420 [Receiving block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_1664703550_1 at /127.0.0.1:38420 [Receiving block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]]ID=0,0
+[BM][IPC Server handler 9 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 9 on 46721]ID=0,134217728
+[BM][IPC Server handler 1 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 1 on 46721]ID=0,134217728
+[BM][IPC Server handler 1 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 1 on 46721]ID=0,134217728
+[BM][DataXceiver for client /127.0.0.1:37428 [Waiting for operation #1]][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][DataXceiver for client /127.0.0.1:37428 [Waiting for operation #1]]ID=0,0
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_1664703550_1 at /127.0.0.1:37428 [Receiving block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_1664703550_1 at /127.0.0.1:37428 [Receiving block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]]ID=0,0
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_1664703550_1 at /127.0.0.1:37428 [Receiving block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]]ID=1,134217728
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_1664703550_1 at /127.0.0.1:37428 [Receiving block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_1664703550_1 at /127.0.0.1:37428 [Receiving block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]]ID=0,0
+[BM][IPC Server handler 0 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 0 on 46721]ID=0,134217728
+[BM][IPC Server handler 0 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 0 on 46721]ID=0,134217728
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_1664703550_1 at /127.0.0.1:53042 [Receiving block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]]ID=1,1024
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_1664703550_1 at /127.0.0.1:38420 [Receiving block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]]ID=1,1024
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_1664703550_1 at /127.0.0.1:37428 [Receiving block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]]ID=1,1024
+[BM][ResponseProcessor for block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]ID=1,1024
+[BM][PacketResponder: BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001, type=LAST_IN_PIPELINE, downstreams=0:[]]ID=1,1024
+[BM][PacketResponder: BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001, type=LAST_IN_PIPELINE, downstreams=0:[]][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][PacketResponder: BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001, type=LAST_IN_PIPELINE, downstreams=0:[]]ID=0,1024
+[BM][PacketResponder: BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001, type=LAST_IN_PIPELINE, downstreams=0:[]][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][PacketResponder: BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001, type=LAST_IN_PIPELINE, downstreams=0:[]]ID=0,1024
+[BM][IPC Server handler 3 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 3 on 46721]ID=0,1024
+[BM][IPC Server handler 3 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 3 on 46721]ID=0,1024
+[BM][PacketResponder: BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001, type=HAS_DOWNSTREAM_IN_PIPELINE]ID=1,1024
+[BM][PacketResponder: BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001, type=HAS_DOWNSTREAM_IN_PIPELINE][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][PacketResponder: BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001, type=HAS_DOWNSTREAM_IN_PIPELINE]ID=0,1024
+[BM][PacketResponder: BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001, type=HAS_DOWNSTREAM_IN_PIPELINE][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][PacketResponder: BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001, type=HAS_DOWNSTREAM_IN_PIPELINE]ID=0,1024
+[BM][IPC Server handler 7 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 7 on 46721]ID=0,1024
+[BM][IPC Server handler 7 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 7 on 46721]ID=0,1024
+[BM][PacketResponder: BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001, type=HAS_DOWNSTREAM_IN_PIPELINE]ID=1,1024
+[BM][PacketResponder: BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001, type=HAS_DOWNSTREAM_IN_PIPELINE][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][PacketResponder: BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001, type=HAS_DOWNSTREAM_IN_PIPELINE]ID=0,1024
+[BM][PacketResponder: BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001, type=HAS_DOWNSTREAM_IN_PIPELINE][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][PacketResponder: BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001, type=HAS_DOWNSTREAM_IN_PIPELINE]ID=0,1024
+[BM][IPC Server handler 4 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 4 on 46721]ID=0,1024
+[BM][IPC Server handler 4 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 4 on 46721]ID=0,1024
+[BM][ResponseProcessor for block BP-2047241475-172.31.40.143-1686959036536:blk_1073741825_1001]ID=1,1024
+[BM][IPC Server handler 2 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 2 on 46721]ID=0,1024
+[BM][IPC Server handler 2 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 2 on 46721]ID=0,1024
+[BM][IPC Server handler 2 on 46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][IPC Server handler 2 on 46721]ID=0,1024
+[BM][IPC Server handler 8 on 46721]ID=1,9223372036854775807
+[BM][DataNode: [[[DISK]file:/home/ubuntu/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/test/data/dfs/data/data5/, [DISK]file:/home/ubuntu/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/test/data/dfs/data/data6/]]  heartbeating to localhost/127.0.0.1:46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][DataNode: [[[DISK]file:/home/ubuntu/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/test/data/dfs/data/data5/, [DISK]file:/home/ubuntu/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/test/data/dfs/data/data6/]]  heartbeating to localhost/127.0.0.1:46721]ID=0,9223372036854775807
+[BM][DataNode: [[[DISK]file:/home/ubuntu/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/test/data/dfs/data/data7/, [DISK]file:/home/ubuntu/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/test/data/dfs/data/data8/]]  heartbeating to localhost/127.0.0.1:46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][DataNode: [[[DISK]file:/home/ubuntu/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/test/data/dfs/data/data7/, [DISK]file:/home/ubuntu/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/test/data/dfs/data/data8/]]  heartbeating to localhost/127.0.0.1:46721]ID=0,9223372036854775807
+[BM][DataNode: [[[DISK]file:/home/ubuntu/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/test/data/dfs/data/data1/, [DISK]file:/home/ubuntu/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/test/data/dfs/data/data2/]]  heartbeating to localhost/127.0.0.1:46721][Method Entry]org.apache.hadoop.hdfs.protocol.Block.set(Block.java:-1)
+[BM][DataNode: [[[DISK]file:/home/ubuntu/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/test/data/dfs/data/data1/, [DISK]file:/home/ubuntu/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/test/data/dfs/data/data2/]]  heartbeating to localhost/127.0.0.1:46721]ID=0,9223372036854775807
