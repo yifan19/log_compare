@@ -67,7 +67,7 @@ std::pair<int, Log*> logCompare(Log* failed, std::vector<Log*> succeeds){
 } 
 
 int main (){
-    std::ifstream file1("logs/step7.log");
+    std::ifstream file1("logs/step6.log");
     if (!file1.is_open()) {
         std::cout << "Failed to open logs." << std::endl;
     }
@@ -75,35 +75,44 @@ int main (){
     std::string line; Log* log = nullptr; 
     std::vector<Log*> logs;
     std::unordered_map<int, int> loopStarts; //= {{4, 0}, {1, 0}};
+    std::unordered_map<int, int> threads;
+    int num_threads = 0; int num_fails = 0;
+    std::vector<Log*> fails;  std::vector<Log*> succeeds; 
+    
+    log = new Log();
+    log->init_contexts(loopStarts);
+    fails.push_back(log);            
     while(std::getline(file1, line)){
-         if(line.find("ID=5")!=std::string::npos){
-            log = new Log();
-            log->init_contexts(loopStarts);
-            logs.push_back(log);
+        std::string::size_type temp_id = line.find("IPC Server handler ");
+        if(temp_id != std::string::npos){
+            std::stringstream ss (line.substr(temp_id+19));
+            int thread = -1; ss >> thread;
+            std::cout << line.substr(temp_id+19) << " thread # " << thread << std::endl;
+            if(threads.find(thread) != threads.end()){
+                int idx = threads.find(thread)->second;
+                succeeds[idx]->to_parse.push_back(line);
+            }else{
+                log = new Log();
+                log->init_contexts(loopStarts);
+                log->to_parse.push_back(line);
+                succeeds.push_back(log);
+                threads[thread] = num_threads;
+                num_threads++;
+            }
         }
-        log->to_parse.push_back(line);
+        else if(line.find("BlockManager$ReplicationMonitor") != std::string::npos){
+            fails[0]->to_parse.push_back(line);
+        }
         std::cout << "new log: " << line << std::endl;
     }
-    std::vector<Log*> fails;  std::vector<Log*> succeeds; 
-    for(int i=0; i<logs.size(); i++){
-        logs[i]->parseAll();
-        if(i>=1){
-            fails.push_back(logs[i]);
-            std::cout << "fail: ";
-            
-        }
-        else{
-            succeeds.push_back(logs[i]);
-            std::cout << "succeed: ";
-        }
-        std::cout << "id0: " << logs[i]->getEvent(0)->lineNum << std::endl;
-        
-        for(Event* e : logs[i]->parsed){
-            std::cout << e->lineNum << " ";
-        }// std::cout << std::endl;
+
+    for(int i=0; i<succeeds.size(); i++){
+        std::cout << "succeed " << i << std::endl;
+        succeeds[i]->printAll();
     }
     for(int i=0; i<fails.size(); i++){
-        // fails[i]->printAll(); std::cout << "fail = " << fails[i]->fail << std::endl;
+        std::cout << "fail " << std::endl;
+        fails[i]->printAll(); // std::cout << "fail = " << fails[i]->fail << std::endl;
     }
     int k = 0;
 

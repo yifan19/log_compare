@@ -98,13 +98,13 @@ Event* Log::parseNextLine() {
         if(loopStartLines.find(e->lineNum) != loopStartLines.end()){
             
                 contextStack.push(e);
-                std::cout << "push " << e->idx << ":L" << e->lineNum << std::endl;
-                
-                std::cout << "size: " << firstLoop.size() << std::endl;
+//                std::cout << "push " << e->idx << ":L" << e->lineNum << std::endl;
+//                
+//                std::cout << "size: " << firstLoop.size() << std::endl;
 
         }
-        std::cout << e->idx << ":L" << e->lineNum << " top: ";
-        if(e->context!=nullptr){std::cout << e->context->idx << ":L" << e->context->lineNum;} else{std::cout << "null" ;} std::cout << std::endl;
+//        std::cout << e->idx << ":L" << e->lineNum << " top: ";
+//        if(e->context!=nullptr){std::cout << e->context->idx << ":L" << e->context->lineNum;} else{std::cout << "null" ;} std::cout << std::endl;
         
         if(e->context != nullptr){
             contextMap[e->context->idx].insert(e);
