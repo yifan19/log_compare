@@ -54,7 +54,7 @@ Event* Log::parseNextLine() {
         int id=-1; ss >> id;
         e->lineNum = id; 
     }else{ // is ID=
-        temp_id = line.find("ID=");
+        temp_id = line.find("ID="); // std::cout << "ID! " << std::endl;
         if(temp_id != std::string::npos){
             line = line.substr(temp_id+3);
             temp_id = line.find(",");
@@ -114,7 +114,7 @@ Event* Log::parseNextLine() {
             }
         }
     }
-    parsed.push_back(e);
+    parsed.push_back(e); // std::cout << "parsed " << e->lineNum << std::endl;
     return e;
 }
 bool Log::init_contexts(std::unordered_map<int, int>& start){
@@ -162,7 +162,7 @@ bool Log::parseAll(){
 }
 
 void Log::printParsed(){
-    for(int i=1; i<parsed.size(); i++){
+    for(int i=0; i<parsed.size(); i++){
        parsed[i]->print(); 
        std::cout << ", " ;
     }

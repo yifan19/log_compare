@@ -67,7 +67,7 @@ std::pair<int, Log*> logCompare(Log* failed, std::vector<Log*> succeeds){
 } 
 
 int main (){
-    std::ifstream file1("logs/step3.log");
+    std::ifstream file1("logs/step4.log");
     if (!file1.is_open()) {
         std::cout << "Failed to open logs." << std::endl;
     }
@@ -76,12 +76,13 @@ int main (){
     std::vector<Log*> logs;
     std::unordered_map<int, int> loopStarts; //= {{4, 0}, {1, 0}};
     while(std::getline(file1, line)){
-        if(line.find("Method Entry")!=std::string::npos){
+        // if(line.find("Method Entry")!=std::string::npos){
             log = new Log();
             log->init_contexts(loopStarts);
             logs.push_back(log);
-        }
+        //}
         log->to_parse.push_back(line);
+        std::cout << "new log: " << line << std::endl;
     }
     std::vector<Log*> fails;  std::vector<Log*> succeeds; 
     for(int i=0; i<logs.size(); i++){
@@ -95,10 +96,11 @@ int main (){
             succeeds.push_back(logs[i]);
             std::cout << "succeed: ";
         }
+        std::cout << "id0: " << logs[i]->getEvent(0)->lineNum << std::endl;
         
         for(Event* e : logs[i]->parsed){
             std::cout << e->lineNum << " ";
-        }std::cout << std::endl;
+        }// std::cout << std::endl;
     }
     for(int i=0; i<fails.size(); i++){
         // fails[i]->printAll(); std::cout << "fail = " << fails[i]->fail << std::endl;
@@ -137,7 +139,7 @@ int main (){
      auto result = logCompare(fails[k], succeeds);
       //std::cout << max_idx ; // << " L" << fails[2]->getEvent(max_idx)->lineNum << std::endl;
      int length = result.first;
-      std::cout << "length: " << (length-1) << ". ";
+      std::cout << "length: " << (length) << ". ";
       // result.second->printAll();
       if( (length)==fails[k]->parsed.size() && length==(result.second->parsed.size()) ){
           std::cout << "no divergence" << std::endl;
