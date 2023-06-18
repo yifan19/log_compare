@@ -54,7 +54,7 @@ Event* Log::parseNextLine() {
         std::stringstream ss(line.substr(temp_id+1));
         int id=-1; ss >> id;
         e->lineNum = id; 
-        std::cout << "HERE " << e->lineNum << std::endl;
+        // std::cout << "HERE " << e->lineNum << std::endl;
     }
     // is ID=
     temp_id = line.find("ID="); // std::cout << "ID! " << std::endl;
@@ -91,6 +91,10 @@ Event* Log::parseNextLine() {
     // }
     
     e->idx = parsed.size();
+    auto it = loopIds.find(e->lineNum);
+    if(it!=loopIds.end()){
+        e->loopId = it->second;
+    }
 
     parsed.push_back(e); // std::cout << "parsed " << e->lineNum << std::endl;
     return e;
@@ -167,6 +171,14 @@ void Log::printContexts(){
         }else{
             std::cout << " ctx: " << parsed[i]->context->lineNum;
         }
+       std::cout << ", " ;
+    }
+    std::cout << std::endl;
+}
+void Log::printLoops(){
+    for(int i=0; i<parsed.size(); i++){
+       parsed[i]->print(); 
+       std::cout << " loop id: " << parsed[i]->loopId;
        std::cout << ", " ;
     }
     std::cout << std::endl;

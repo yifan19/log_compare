@@ -48,6 +48,7 @@ public:
     void printParsed();
     void printAll();
     void printContexts();
+    void printLoops();
     bool failed();
     bool init_contexts(std::unordered_map<int, int>& start);
     bool init_contexts(std::unordered_map<int, int>& start, std::unordered_multimap<int, int> end);

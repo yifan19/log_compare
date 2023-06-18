@@ -78,7 +78,7 @@ int main (){
     
     std::string line; 
     // std::unordered_map<int, int> loopStarts; //= {{4, 0}, {1, 0}};
-    std::unordered_map <int, int> loopIds;
+    std::unordered_map <int, int> loopIds = {{4, 1},{3, 1},{2, 1},{1, 2}, {0, 2}};
     
     std::vector<Log*> logs; // 
     
@@ -144,7 +144,8 @@ int main (){
     for(auto s : fails[k]->to_parse){
         std::cout << s << std::endl;
     }
-    fails[k]->parseNextLine();
+    fails[k]->parseAll(); 
+    fails[k]->printLoops();
     
 //     std::cout << "//// "; 
 //     std::cout << "failed: " << std::endl;
