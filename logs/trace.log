@@ -1,0 +1,26 @@
+[BM][Thread-209][Method Entry]org.apache.hadoop.hdfs.protocol.Block.setNumBytes(Block.java:-1)
+[BM][Thread-209]ID=1,0
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_-220732985_1 at /127.0.0.1:37344 [Receiving block BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001]][Method Entry]org.apache.hadoop.hdfs.protocol.Block.setNumBytes(Block.java:-1)
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_-220732985_1 at /127.0.0.1:37344 [Receiving block BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001]]ID=1,134217728
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_-220732985_1 at /127.0.0.1:49528 [Receiving block BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001]][Method Entry]org.apache.hadoop.hdfs.protocol.Block.setNumBytes(Block.java:-1)
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_-220732985_1 at /127.0.0.1:49528 [Receiving block BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001]]ID=1,134217728
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_-220732985_1 at /127.0.0.1:33940 [Receiving block BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001]][Method Entry]org.apache.hadoop.hdfs.protocol.Block.setNumBytes(Block.java:-1)
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_-220732985_1 at /127.0.0.1:33940 [Receiving block BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001]]ID=1,134217728
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_-220732985_1 at /127.0.0.1:37344 [Receiving block BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001]][Method Entry]org.apache.hadoop.hdfs.protocol.Block.setNumBytes(Block.java:-1)
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_-220732985_1 at /127.0.0.1:37344 [Receiving block BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001]]ID=1,1024
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_-220732985_1 at /127.0.0.1:49528 [Receiving block BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001]][Method Entry]org.apache.hadoop.hdfs.protocol.Block.setNumBytes(Block.java:-1)
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_-220732985_1 at /127.0.0.1:49528 [Receiving block BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001]]ID=1,1024
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_-220732985_1 at /127.0.0.1:33940 [Receiving block BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001]][Method Entry]org.apache.hadoop.hdfs.protocol.Block.setNumBytes(Block.java:-1)
+[BM][DataXceiver for client DFSClient_NONMAPREDUCE_-220732985_1 at /127.0.0.1:33940 [Receiving block BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001]]ID=1,1024
+[BM][ResponseProcessor for block BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001][Method Entry]org.apache.hadoop.hdfs.protocol.Block.setNumBytes(Block.java:-1)
+[BM][ResponseProcessor for block BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001]ID=1,1024
+[BM][PacketResponder: BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001, type=LAST_IN_PIPELINE, downstreams=0:[]][Method Entry]org.apache.hadoop.hdfs.protocol.Block.setNumBytes(Block.java:-1)
+[BM][PacketResponder: BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001, type=LAST_IN_PIPELINE, downstreams=0:[]]ID=1,1024
+[BM][PacketResponder: BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001, type=HAS_DOWNSTREAM_IN_PIPELINE][Method Entry]org.apache.hadoop.hdfs.protocol.Block.setNumBytes(Block.java:-1)
+[BM][PacketResponder: BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001, type=HAS_DOWNSTREAM_IN_PIPELINE]ID=1,1024
+[BM][PacketResponder: BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001, type=HAS_DOWNSTREAM_IN_PIPELINE][Method Entry]org.apache.hadoop.hdfs.protocol.Block.setNumBytes(Block.java:-1)
+[BM][PacketResponder: BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001, type=HAS_DOWNSTREAM_IN_PIPELINE]ID=1,1024
+[BM][ResponseProcessor for block BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001][Method Entry]org.apache.hadoop.hdfs.protocol.Block.setNumBytes(Block.java:-1)
+[BM][ResponseProcessor for block BP-1364252688-172.31.40.143-1687056030561:blk_1073741825_1001]ID=1,1024
+[BM][IPC Server handler 0 on 36041][Method Entry]org.apache.hadoop.hdfs.protocol.Block.setNumBytes(Block.java:-1)
+[BM][IPC Server handler 0 on 36041]ID=1,9223372036854775807

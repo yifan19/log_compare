@@ -67,7 +67,7 @@ std::pair<int, Log*> logCompare(Log* failed, std::vector<Log*> succeeds){
 } 
 
 int main (){
-    std::ifstream file1("logs/step6.log");
+    std::ifstream file1("logs/step9.log");
     if (!file1.is_open()) {
         std::cout << "Failed to open logs." << std::endl;
     }
@@ -77,7 +77,7 @@ int main (){
     std::unordered_map<int, int> loopStarts; //= {{4, 0}, {1, 0}};
     std::unordered_map<int, int> threads;
     int num_threads = 0; int num_fails = 0;
-    std::vector<Log*> fails;  std::vector<Log*> succeeds; 
+    std::vector<Log*> logs; // std::vector<Log*> succeeds; 
     
     log = new Log();
     log->init_contexts(loopStarts);

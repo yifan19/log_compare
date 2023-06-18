@@ -1,0 +1,40 @@
+step1:
+ID = 0
+yes
+
+step2
+ID = 0
+
+step3
+ID = 0
+yes
+
+step4
+ID = 1
+yes
+
+step5
+ID = 0
+no div
+
+step6
+ID = 1
+yes
+
+step7
+ID = 3              ID = 0
+yes
+
+step8               
+ID = 0
+yes
+
+step9               setNumBytes
+ID = 1
+
+step10
+ID = 3
+
+step11
+0, yes, 0, yes: abort
+1, yes, weird lines
