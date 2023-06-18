@@ -22,6 +22,8 @@ public:
     std::deque<std::string> to_parse;
     std::vector<Event*> parsed;
     std::string entry; // Method entry
+    std::unordered_map<int, int> loopIds;
+    
     std::stack<Event*> contextStack;
     std::unordered_map<int, int> loopStartLines;
     std::unordered_map<int, Event*> firstLoop;

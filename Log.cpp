@@ -35,12 +35,13 @@ Event* Log::parseNextLine() {
         return nullptr;
     }
     Event* e = nullptr;
-
+    
     std::string::size_type temp_id;
     std::string line = to_parse.front();
-    temp_id = line.find("[Method Entry]");
-     
+    
+    temp_id = line.find("Method Entry");
     if(temp_id != std::string::npos){ // is Method Entry
+        // std::cout << "HERE" << std::endl;
         line = line.substr(temp_id+14);
         entry = line;
         temp_id = line.find("(");
@@ -53,67 +54,44 @@ Event* Log::parseNextLine() {
         std::stringstream ss(line.substr(temp_id+1));
         int id=-1; ss >> id;
         e->lineNum = id; 
-    }else{ // is ID=
-        temp_id = line.find("ID="); // std::cout << "ID! " << std::endl;
-        if(temp_id != std::string::npos){
-            line = line.substr(temp_id+3);
-            temp_id = line.find(",");
-            int id = std::stoi(line.substr(0, temp_id));
-            e = new Event(id);
-            if(temp_id != std::string::npos){
-                e->value = line.substr(temp_id+1);
-                if(e->value=="true" || e->value=="false"){
-                    e->type = Event::EventType::Condition;
-                }else if(is_number(e->value)){
-                    e->type = Event::EventType::Location;
-                }else{
-                    e->type = Event::EventType::Output;
-                }
-            }
-            e->lineNum = id; 
-        }else{
-            //something is wrong
-            std::cout << "ID not found" << std::endl;
-        }
+        std::cout << "HERE " << e->lineNum << std::endl;
     }
+    // is ID=
+    temp_id = line.find("ID="); // std::cout << "ID! " << std::endl;
+    if(temp_id != std::string::npos){
+        line = line.substr(temp_id+3);
+        temp_id = line.find(",");
+        int id = std::stoi(line.substr(0, temp_id)); // between ID and ,
+        if(e!=nullptr) {
+            e->lineNum = id;
+        }else{
+            e = new Event(id);
+        }
+        
+        if(temp_id != std::string::npos){ // after ,
+            e->value = line.substr(temp_id+1);
+            if(e->value=="true" || e->value=="false"){
+            e->type = Event::EventType::Condition;
+            }else if(is_number(e->value)){
+                e->type = Event::EventType::Location;
+            }else{
+                e->type = Event::EventType::Output;
+            }
+        }
+
+    }
+    
     to_parse.pop_front();
+    if(e==nullptr){
+        std::cout << "parse fail: " << line << std::endl;
+        return nullptr;
+    }
     // if(e!=nullptr && e->lineNum==6 && e->value=="true"){
     //     fail = true;
     // }
-    if(e!=nullptr){
-        e->idx = parsed.size();
+    
+    e->idx = parsed.size();
 
-        auto range = loopEndLines.equal_range(e->lineNum);
-        for(auto it = range.first; it!=range.second; it++){
-            contextStack.pop();
-//            if(contextStack.top() != nullptr && e->lineNum > contextStack.top()->lineNum){
-//                std::cout << "pop " << e->lineNum << " " << contextStack.top()->lineNum << std::endl;
-//                contextStack.pop();
-//            }
-
-            std::cout << "pop " <<std::endl;
-        }
-        e->context = contextStack.top(); 
-        
-        if(loopStartLines.find(e->lineNum) != loopStartLines.end()){
-            
-                contextStack.push(e);
-//                std::cout << "push " << e->idx << ":L" << e->lineNum << std::endl;
-//                
-//                std::cout << "size: " << firstLoop.size() << std::endl;
-
-        }
-//        std::cout << e->idx << ":L" << e->lineNum << " top: ";
-//        if(e->context!=nullptr){std::cout << e->context->idx << ":L" << e->context->lineNum;} else{std::cout << "null" ;} std::cout << std::endl;
-        
-        if(e->context != nullptr){
-            contextMap[e->context->idx].insert(e);
-            int idx = parsed.size()-1;
-            if(idx >= 0){
-               contextMap[idx].insert(e);
-            }
-        }
-    }
     parsed.push_back(e); // std::cout << "parsed " << e->lineNum << std::endl;
     return e;
 }

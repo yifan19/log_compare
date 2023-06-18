@@ -67,144 +67,141 @@ std::pair<int, Log*> logCompare(Log* failed, std::vector<Log*> succeeds){
 } 
 
 int main (){
-    std::ifstream file1("logs/step9.log");
+    std::ifstream file1("logs/step2.log");
     if (!file1.is_open()) {
         std::cout << "Failed to open logs." << std::endl;
     }
 
-    std::string line; Log* log = nullptr; 
-    std::vector<Log*> logs;
-    std::unordered_map<int, int> loopStarts; //= {{4, 0}, {1, 0}};
-    std::unordered_map<int, int> threads;
-    int num_threads = 0; int num_fails = 0;
+    std::string newLogIndicator = "Method Entry";
+    std::string failureIndicator = "BlockManager$ReplicationMonitor";
+    
+    
+    std::string line; 
+    // std::unordered_map<int, int> loopStarts; //= {{4, 0}, {1, 0}};
+    std::unordered_map <int, int> loopIds;
+    
     std::vector<Log*> logs; // 
-    std::vector<Log*> succeeds; std::vector<Log*> fails; 
     
-    log = new Log();
-    log->init_contexts(loopStarts);
-    fails.push_back(log);            
+    std::unordered_map<int, Log*> threads;
+    int num_fails = 0;
+    int num_threads = 0; bool fail_encountered = false;
     while(std::getline(file1, line)){
+        bool newLog = false; int thread = -1; bool fail = false;
+        
         std::string::size_type temp_id = line.find("IPC Server handler ");
-        if(temp_id != std::string::npos){
+        if(temp_id != std::string::npos){ // deal with thread
             std::stringstream ss (line.substr(temp_id+19));
-            int thread = -1; ss >> thread;
-            std::cout << line.substr(temp_id+19) << " thread # " << thread << std::endl;
-            if(threads.find(thread) != threads.end()){
-                int idx = threads.find(thread)->second;
-                succeeds[idx]->to_parse.push_back(line);
-            }else{
-                log = new Log();
-                log->init_contexts(loopStarts);
-                log->to_parse.push_back(line);
-                succeeds.push_back(log);
-                threads[thread] = num_threads;
-                num_threads++;
+            ss >> thread; // thread number
+        }
+        else if(line.find(failureIndicator) != std::string::npos){ // failed run
+            if(!fail_encountered){ // fail log did not appear before
+                newLog = true; fail_encountered = true;
             }
+            fail = true;
+            thread = -2;
         }
-        else if(line.find("BlockManager$ReplicationMonitor") != std::string::npos){
-            fails[0]->to_parse.push_back(line);
+        if(threads.find(thread) == threads.end()){ // new thread
+            // threads[thread] = num_threads; num_threads++;
+            newLog = true;
         }
-        std::cout << "new log: " << line << std::endl;
+        temp_id = line.find(newLogIndicator);
+        if(temp_id != std::string::npos){ // new Log
+            newLog = true;
+            if(thread==-2) {num_fails++;}
+        }
+        
+        Log* log = nullptr; 
+        if(newLog){
+            // std::cout << "new log! " << "fail: " << fail << std::endl;
+            log = new Log();
+            log->loopIds = loopIds;
+            // log->init_contexts(loopStarts);
+            logs.push_back(log);
+            threads[thread] = log; // new current log for that thread
+            num_threads++;
+        }else{
+            log = threads[thread];
+        }
+        log->to_parse.push_back(line);
+        log->fail = fail;
+        // std::cout << line << ": thread # " << thread << " fail: " << fail << std::endl;
+    }
+    std::cout << "size " << logs.size() << std::endl;
+
+    std::vector<Log*> succeeds; std::vector<Log*> fails; 
+    for(Log* l : logs){
+        if(l==nullptr){
+            std::cout << "null" << std::endl;
+        }
+        else if(l->fail){
+            fails.push_back(l);
+        }else{
+            succeeds.push_back(l);
+        }
     }
     
-    std::vector<std::vector<int>> c_succeeds;
-    std::vector<int> c1 = {0, 0, 0}; c_succeeds.push_back(c1);
-    std::vector<int> c2 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; c_succeeds.push_back(c2);
-    std::vector<int> c3 = {0, 0, 0}; c_succeeds.push_back(c3);
-    std::vector<int> c4 = {0, 0, 0, 0, 0, 0, 0, 0}; c_succeeds.push_back(c4);
-    for(int i=0; i<succeeds.size(); i++){
-        std::cout << "succeed " << i << std::endl;
-        succeeds[i]->set_contexts(c_succeeds[i], c_succeeds[i].size());
-        succeeds[i]->printContexts();
-    }
-    std::vector<std::vector<int>> c_fails;
-    std::vector<int> c = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; 
-    c_fails.push_back(c);
-    std::vector<int> c3 = {0, 0, 0}; c_succeeds.push_back(c3);
-    std::vector<int> c4 = {0, 0, 0, 0, 0, 0, 0, 0}; c_succeeds.push_back(c4);
-    for(int i=0; i<succeeds.size(); i++){
-        std::cout << "failed " << i << std::endl;
-        fails[i]->set_contexts(c_succeeds[i], c_succeeds[i].size());
-        fails[i]->printContexts();
-    }
     int k = 0;
-
-
-    
-    // for(int i=0; i<succeeds.size(); i++){
-    //     // int idx = compare_one_log(fails[2], succeeds[i]);
-    //     std::cout << "i=" << i << ", ";
-    //     for(auto iter : succeeds[i]->loopEndLines){
-    //         std::cout << iter.first << ", " << iter.second << " ";
-    //     }
-    //     std::cout << std::endl;
-    // }
-
-    // for(int i=0; i<succeeds.size(); i++){succeeds[
-    //      succeeds[i]->printAll(); 
-    //      std::cout << "fail = " << succeeds[i]->fail << ", ";
-    //      int idx = compare_one_log(fails[k], succeeds[i]);
-    //      std::cout << "length = " << idx << ".   ";
-    //      std::cout << "div at: " ; fails[k]->getEvent(idx-1)->print();
-    //      std::cout << std::endl;
-    // }
-
-     std::cout << "//// "; 
-     std::cout << "failed: " << std::endl;
-     for(Log* f : fails){
-         f->printAll();
-     }
-     std::cout << "succeed: " << std::endl;
-     for(Log* s : succeeds){
-         s->printAll();
-     }
-     auto result = logCompare(fails[k], succeeds);
-      //std::cout << max_idx ; // << " L" << fails[2]->getEvent(max_idx)->lineNum << std::endl;
-     int length = result.first;
-      std::cout << "length: " << (length) << ". ";
-      // result.second->printAll();
-      if( (length)==fails[k]->parsed.size() && length==(result.second->parsed.size()) ){
-          std::cout << "no divergence" << std::endl;
-      }else{
-          std::cout << "div at: " ; 
-          if(length==0){
-              if(fails[k]->parsed.size()>1 && fails[k]->getEvent(0)->lineNum==-1){
-                std::cout << "HERE" << std::endl;
-                fails[k]->getEvent(1)->print();
-              }else{
-                  fails[k]->getEvent(0)->print();
-              }
-          }else if(length==1){
-              if(fails[k]->parsed.size()>1 && fails[k]->getEvent(0)->lineNum==-1){
-                  fails[k]->getEvent(1)->print();
-              }else{
-                  fails[k]->getEvent(0)->print();
-              }
-          }else {
-              fails[k]->getEvent(length-1)->print();
-          }
-          std::cout << std::endl;
-      }
-      
-    if(false){
-        std::cout << "failed contexts: " << std::endl;
-         fails[k]->printContexts();
-        std::cout << "succeeds[0] contexts: " << std::endl;
-         succeeds[2]->printContexts();
-        std::cout << "/////////// " << std::endl;
-       for(int i=0; i<fails[k]->parsed.size(); i++){
-           std::cout << fails[k]->getEvent(i)->idx << ": " << fails[k]->getEvent(i)->lineNum << " ";
-       } std::cout << std::endl;
-       for(Event* c : fails[k]->parsed){
-           std::cout << c->idx << ": L" << c->lineNum ;
-           if(c->context != nullptr){std::cout << ": " << c->context->idx << ":L" << c->context->lineNum;}
-           std::cout << std::endl;
-           for(Event* e : fails[k]->contextMap[c->idx]){
-               std::cout << e->idx<< " ";
-           }std::cout << std::endl;
-       } std::cout << std::endl;
+    for(auto s : fails[k]->to_parse){
+        std::cout << s << std::endl;
     }
-    return 0;
+    fails[k]->parseNextLine();
+    
+//     std::cout << "//// "; 
+//     std::cout << "failed: " << std::endl;
+//     for(Log* f : fails){
+//         f->printAll();
+//     }
+//     std::cout << "succeed: " << std::endl;
+//     for(Log* s : succeeds){
+//         s->printAll();
+//     }
+//     auto result = logCompare(fails[k], succeeds);
+//      //std::cout << max_idx ; // << " L" << fails[2]->getEvent(max_idx)->lineNum << std::endl;
+//     int length = result.first;
+//      std::cout << "length: " << (length) << ". ";
+//      // result.second->printAll();
+//      if( (length)==fails[k]->parsed.size() && length==(result.second->parsed.size()) ){
+//          std::cout << "no divergence" << std::endl;
+//      }else{
+//          std::cout << "div at: " ; 
+//          if(length==0){
+//              if(fails[k]->parsed.size()>1 && fails[k]->getEvent(0)->lineNum==-1){
+//                std::cout << "HERE" << std::endl;
+//                fails[k]->getEvent(1)->print();
+//              }else{
+//                  fails[k]->getEvent(0)->print();
+//              }
+//          }else if(length==1){
+//              if(fails[k]->parsed.size()>1 && fails[k]->getEvent(0)->lineNum==-1){
+//                  fails[k]->getEvent(1)->print();
+//              }else{
+//                  fails[k]->getEvent(0)->print();
+//              }
+//          }else {
+//              fails[k]->getEvent(length-1)->print();
+//          }
+//          std::cout << std::endl;
+//      }
+//      
+//    if(false){
+//        std::cout << "failed contexts: " << std::endl;
+//         fails[k]->printContexts();
+//        std::cout << "succeeds[0] contexts: " << std::endl;
+//         succeeds[2]->printContexts();
+//        std::cout << "/////////// " << std::endl;
+//       for(int i=0; i<fails[k]->parsed.size(); i++){
+//           std::cout << fails[k]->getEvent(i)->idx << ": " << fails[k]->getEvent(i)->lineNum << " ";
+//       } std::cout << std::endl;
+//       for(Event* c : fails[k]->parsed){
+//           std::cout << c->idx << ": L" << c->lineNum ;
+//           if(c->context != nullptr){std::cout << ": " << c->context->idx << ":L" << c->context->lineNum;}
+//           std::cout << std::endl;
+//           for(Event* e : fails[k]->contextMap[c->idx]){
+//               std::cout << e->idx<< " ";
+//           }std::cout << std::endl;
+//       } std::cout << std::endl;
+//    }
+//    return 0;
 }
 
 /* // current output:
