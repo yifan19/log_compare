@@ -52,13 +52,16 @@ Event* Log::parseNextLine() {
         temp_id = line.find("(");
         e = new Event();
         e->type = Event::EventType::Invocation;
-        e->value = line.substr(0, temp_id);
-        line = line.substr(temp_id+1);
-
+        if(temp_id != std::string::npos){
+            e->value = line.substr(0, temp_id);
+            line = line.substr(temp_id+1);
+        }
         temp_id = line.find(":");
-        std::stringstream ss(line.substr(temp_id+1));
-        int id=-1; ss >> id;
-        e->lineNum = id; 
+        if(temp_id != std::string::npos){
+            std::stringstream ss(line.substr(temp_id+1));
+            int id=-1; ss >> id;
+            e->lineNum = id; 
+        }
         // std::cout << "HERE " << e->lineNum << std::endl;
     }
     // is ID=

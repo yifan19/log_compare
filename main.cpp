@@ -33,14 +33,14 @@ std::string chooseRandom(int init, const std::vector<bool> &cond){ // L1
 }
 
 
-std::pair<int, std::vector<Event>> logCompare(Log* failed, std::vector<Log*> succeeds){
+std::pair<Log*, std::vector<Event>> logCompare(Log* failed, std::vector<Log*> succeeds){
     std::vector<Event> prefix; // longest common prefix
-    if(succeeds.size()==0) {return std::make_pair(0, prefix);}
+    if(succeeds.size()==0) {return std::make_pair(nullptr, prefix);}
     int max_length = 0; // longest prefix length
     int max_total = 0;
     int max_idx = 0;
 
-    std::pair<int, std::vector<Event>> out;
+    std::pair<Log*, std::vector<Event>> out;
     
     for(int i=0; i<succeeds.size(); i++){
         // int length = compare_one_log(failed, succeeds[i]);
@@ -49,7 +49,8 @@ std::pair<int, std::vector<Event>> logCompare(Log* failed, std::vector<Log*> suc
         auto result = compare_log_maploops(failed, succeeds[i]);
         int length = result.first;
         if(length > max_length || (length == max_length && succeeds[i]->parsed.size() > max_total) ){
-            out = result;
+            out.first = succeeds[i];
+            out.second = result.second;
             max_length = length; // update max length
             max_idx = i; // the run index in vector woth longest common prefix
             max_total = succeeds[i]->parsed.size();
@@ -69,8 +70,9 @@ std::pair<int, std::vector<Event>> logCompare(Log* failed, std::vector<Log*> suc
     return out; //std::make_pair(max_length, succeeds[max_idx]);
 } 
 
-int main (){
-    std::ifstream file1("logs/step2.log");
+int main (int argc, char *argv[]){
+    std::string filename = "step2.log";
+    std::ifstream file1("logs/"+filename);
     if (!file1.is_open()) {
         std::cout << "Failed to open logs." << std::endl;
     }
@@ -83,7 +85,6 @@ int main (){
     // std::unordered_map<int, int> loopStarts; //= {{4, 0}, {1, 0}};
     std::unordered_map <int, int> loopIds = {{4, 1},{3, 1},{2, 1},{1, 2}, {0, 2}};
     std::unordered_map <int, int> loopStartIds = {{4, 1},{1, 2}};
-    std::unordered_map <int, int> loopEndIds = {{2, 1},{0, 2}};
     
     std::vector<Log*> logs; // 
     
@@ -121,7 +122,6 @@ int main (){
             log = new Log();
             log->loopIds = loopIds; 
             log->loopStartIds = loopStartIds; log->loopIds_count = loopStartIds.size() + 1;
-            log->loopEndIds = loopEndIds;
             // log->init_contexts(loopStarts);
             logs.push_back(log);
             threads[thread] = log; // new current log for that thread
@@ -149,23 +149,28 @@ int main (){
         }
     }
     
-    int k = 0;
-    for(auto s : fails[k]->to_parse){
-        std::cout << s << std::endl;
+    if(fails.size()==0){
+        std::cout << "no failed log found " << std::endl;
+        return 1;
     }
+    int k = 0;
+    std::cout << "failed run: " << std::endl;
+    fails[k]->printAll();
     // fails[k]->printLoops();
-    auto result = compare_log_maploops(fails[k], succeeds[3]);
-    std::cout << "length: " << result.first << std::endl;
+    auto result = logCompare(fails[k], succeeds);
     for(int i=0; i<result.second.size(); i++){
         std::cout << result.second[i].idx << ":ID=" << result.second[i].lineNum << " ";
     }std::cout << std::endl;
     
 //     auto result = logCompare(fails[k], succeeds);
 //      //std::cout << max_idx ; // << " L" << fails[2]->getEvent(max_idx)->lineNum << std::endl;
-    int length = result.first;
+    int length = result.second.size();
     std::cout << "length: " << (length) << ". ";
       // result.second->printAll();
-    if( (length)==fails[k]->parsed.size()){ // && length==(result.second->parsed.size()) ){
+    result.first->printAll();
+    std::cout << std::endl;
+    fails[k]->printAll();
+    if( length==fails[k]->parsed.size() && length==result.first->parsed.size() ){
           std::cout << "no divergence" << std::endl;
     }else{
         
