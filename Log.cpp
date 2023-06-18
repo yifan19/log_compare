@@ -140,6 +140,14 @@ bool Log::init_contexts(std::unordered_map<int, int>& start, std::unordered_mult
 //    std::cout << "find -1" << std::endl;
     return (loopStartLines.size() == loopEndLines.size());
 }
+bool Log::set_contexts(std::vector<int>& contexts, int n){
+    parseAll();
+    int size = parsed.size();
+    for(int i=0; i<n&&i<size; i++){
+        parsed[i]->context = parsed[contexts[i]];
+    }
+    return true;
+}
 
 Event* Log::getEvent(int idx){
     if(idx < 0 || idx >= (parsed.size()+to_parse.size())) {return nullptr;}

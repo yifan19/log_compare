@@ -49,6 +49,7 @@ public:
     bool failed();
     bool init_contexts(std::unordered_map<int, int>& start);
     bool init_contexts(std::unordered_map<int, int>& start, std::unordered_multimap<int, int> end);
+    bool set_contexts(std::vector<int>& contexts, int n);
 };
 int compare_one_log(Log* A, Log* B);
 std::pair<int, std::vector<Event*>> bfs_start(Log* A, Log* B);

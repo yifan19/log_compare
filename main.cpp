@@ -77,7 +77,8 @@ int main (){
     std::unordered_map<int, int> loopStarts; //= {{4, 0}, {1, 0}};
     std::unordered_map<int, int> threads;
     int num_threads = 0; int num_fails = 0;
-    std::vector<Log*> logs; // std::vector<Log*> succeeds; 
+    std::vector<Log*> logs; // 
+    std::vector<Log*> succeeds; std::vector<Log*> fails; 
     
     log = new Log();
     log->init_contexts(loopStarts);
@@ -105,14 +106,26 @@ int main (){
         }
         std::cout << "new log: " << line << std::endl;
     }
-
+    
+    std::vector<std::vector<int>> c_succeeds;
+    std::vector<int> c1 = {0, 0, 0}; c_succeeds.push_back(c1);
+    std::vector<int> c2 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; c_succeeds.push_back(c2);
+    std::vector<int> c3 = {0, 0, 0}; c_succeeds.push_back(c3);
+    std::vector<int> c4 = {0, 0, 0, 0, 0, 0, 0, 0}; c_succeeds.push_back(c4);
     for(int i=0; i<succeeds.size(); i++){
         std::cout << "succeed " << i << std::endl;
-        succeeds[i]->printAll();
+        succeeds[i]->set_contexts(c_succeeds[i], c_succeeds[i].size());
+        succeeds[i]->printContexts();
     }
-    for(int i=0; i<fails.size(); i++){
-        std::cout << "fail " << std::endl;
-        fails[i]->printAll(); // std::cout << "fail = " << fails[i]->fail << std::endl;
+    std::vector<std::vector<int>> c_fails;
+    std::vector<int> c = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; 
+    c_fails.push_back(c);
+    std::vector<int> c3 = {0, 0, 0}; c_succeeds.push_back(c3);
+    std::vector<int> c4 = {0, 0, 0, 0, 0, 0, 0, 0}; c_succeeds.push_back(c4);
+    for(int i=0; i<succeeds.size(); i++){
+        std::cout << "failed " << i << std::endl;
+        fails[i]->set_contexts(c_succeeds[i], c_succeeds[i].size());
+        fails[i]->printContexts();
     }
     int k = 0;
 
