@@ -4,16 +4,16 @@ Event::Event() {
     lineNum = -1; idx = -1;
     type = EventType::undefined; 
     context = nullptr; 
-    loopId = -1;
+    loopId = -1; startLoopId = -2;
 }
 Event::Event(const int num) : lineNum(num) {
     type = EventType::undefined; idx = -1;
     context = nullptr; 
-    loopId = -1;
+    loopId = -1; startLoopId = -2;
 }
 Event::Event(const int num, const Event::EventType t) : lineNum(num), type(t) {
     context = nullptr; idx = -1;
-    loopId = -1;
+    loopId = -1; startLoopId = -2;
 }
 bool Event::operator== (const Event& rhs) const{
     if(lineNum != rhs.lineNum || type != rhs.type ){ // not same line number

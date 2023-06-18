@@ -33,20 +33,23 @@ std::string chooseRandom(int init, const std::vector<bool> &cond){ // L1
 }
 
 
-std::pair<int, Log*> logCompare(Log* failed, std::vector<Log*> succeeds){
+std::pair<int, std::vector<Event>> logCompare(Log* failed, std::vector<Log*> succeeds){
     std::vector<Event> prefix; // longest common prefix
-    if(succeeds.size()==0) {return std::make_pair(0, nullptr);}
+    if(succeeds.size()==0) {return std::make_pair(0, prefix);}
     int max_length = 0; // longest prefix length
     int max_total = 0;
     int max_idx = 0;
 
+    std::pair<int, std::vector<Event>> out;
+    
     for(int i=0; i<succeeds.size(); i++){
         // int length = compare_one_log(failed, succeeds[i]);
         // std::cout << "comapring " << i << std::endl;
         // auto result = compare_log_contexts(failed, succeeds[i]);
-        auto result = compare_one_log(failed, succeeds[i]);
-        int length = result; //.first;
+        auto result = compare_log_maploops(failed, succeeds[i]);
+        int length = result.first;
         if(length > max_length || (length == max_length && succeeds[i]->parsed.size() > max_total) ){
+            out = result;
             max_length = length; // update max length
             max_idx = i; // the run index in vector woth longest common prefix
             max_total = succeeds[i]->parsed.size();
@@ -63,7 +66,7 @@ std::pair<int, Log*> logCompare(Log* failed, std::vector<Log*> succeeds){
     //     }
     //     i++;
     // }
-    return std::make_pair(max_length, succeeds[max_idx]);
+    return out; //std::make_pair(max_length, succeeds[max_idx]);
 } 
 
 int main (){
@@ -79,6 +82,8 @@ int main (){
     std::string line; 
     // std::unordered_map<int, int> loopStarts; //= {{4, 0}, {1, 0}};
     std::unordered_map <int, int> loopIds = {{4, 1},{3, 1},{2, 1},{1, 2}, {0, 2}};
+    std::unordered_map <int, int> loopStartIds = {{4, 1},{1, 2}};
+    std::unordered_map <int, int> loopEndIds = {{2, 1},{0, 2}};
     
     std::vector<Log*> logs; // 
     
@@ -114,7 +119,9 @@ int main (){
         if(newLog){
             // std::cout << "new log! " << "fail: " << fail << std::endl;
             log = new Log();
-            log->loopIds = loopIds;
+            log->loopIds = loopIds; 
+            log->loopStartIds = loopStartIds; log->loopIds_count = loopStartIds.size() + 1;
+            log->loopEndIds = loopEndIds;
             // log->init_contexts(loopStarts);
             logs.push_back(log);
             threads[thread] = log; // new current log for that thread
@@ -126,7 +133,7 @@ int main (){
         log->fail = fail;
         // std::cout << line << ": thread # " << thread << " fail: " << fail << std::endl;
     }
-    std::cout << "size " << logs.size() << std::endl;
+    std::cout << "# logs " << logs.size() << std::endl;
 
     std::vector<Log*> succeeds; std::vector<Log*> fails; 
     for(Log* l : logs){
@@ -134,8 +141,10 @@ int main (){
             std::cout << "null" << std::endl;
         }
         else if(l->fail){
+            l->parseAll();
             fails.push_back(l);
         }else{
+            l->parseAll();
             succeeds.push_back(l);
         }
     }
@@ -144,45 +153,41 @@ int main (){
     for(auto s : fails[k]->to_parse){
         std::cout << s << std::endl;
     }
-    fails[k]->parseAll(); 
-    fails[k]->printLoops();
+    // fails[k]->printLoops();
+    auto result = compare_log_maploops(fails[k], succeeds[3]);
+    std::cout << "length: " << result.first << std::endl;
+    for(int i=0; i<result.second.size(); i++){
+        std::cout << result.second[i].idx << ":ID=" << result.second[i].lineNum << " ";
+    }std::cout << std::endl;
     
-//     std::cout << "//// "; 
-//     std::cout << "failed: " << std::endl;
-//     for(Log* f : fails){
-//         f->printAll();
-//     }
-//     std::cout << "succeed: " << std::endl;
-//     for(Log* s : succeeds){
-//         s->printAll();
-//     }
 //     auto result = logCompare(fails[k], succeeds);
 //      //std::cout << max_idx ; // << " L" << fails[2]->getEvent(max_idx)->lineNum << std::endl;
-//     int length = result.first;
-//      std::cout << "length: " << (length) << ". ";
-//      // result.second->printAll();
-//      if( (length)==fails[k]->parsed.size() && length==(result.second->parsed.size()) ){
-//          std::cout << "no divergence" << std::endl;
-//      }else{
-//          std::cout << "div at: " ; 
-//          if(length==0){
-//              if(fails[k]->parsed.size()>1 && fails[k]->getEvent(0)->lineNum==-1){
-//                std::cout << "HERE" << std::endl;
-//                fails[k]->getEvent(1)->print();
-//              }else{
-//                  fails[k]->getEvent(0)->print();
-//              }
-//          }else if(length==1){
-//              if(fails[k]->parsed.size()>1 && fails[k]->getEvent(0)->lineNum==-1){
-//                  fails[k]->getEvent(1)->print();
-//              }else{
-//                  fails[k]->getEvent(0)->print();
-//              }
-//          }else {
-//              fails[k]->getEvent(length-1)->print();
-//          }
-//          std::cout << std::endl;
-//      }
+    int length = result.first;
+    std::cout << "length: " << (length) << ". ";
+      // result.second->printAll();
+    if( (length)==fails[k]->parsed.size()){ // && length==(result.second->parsed.size()) ){
+          std::cout << "no divergence" << std::endl;
+    }else{
+        
+        std::cout << "div at: " ; 
+        if(length==0){ // div at the beginning
+            if(fails[k]->parsed.size()>1 && fails[k]->getEvent(0)->lineNum==-1){
+              std::cout << "HERE" << std::endl;
+              fails[k]->getEvent(1)->print();
+            }else{
+                fails[k]->getEvent(0)->print();
+            }
+        }else if(length==1){
+            if(fails[k]->parsed.size()>1 && result.second.back().lineNum==-1){ // the first one is entry
+                fails[k]->getEvent(1)->print(); // print the first one after the entry
+            }else{
+                result.second.back().print();
+            }
+        }else {
+            result.second.back().print();
+        }
+        std::cout << std::endl;
+    }
 //      
 //    if(false){
 //        std::cout << "failed contexts: " << std::endl;

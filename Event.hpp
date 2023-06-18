@@ -28,7 +28,7 @@ public:
     EventType type;
     Event* context;   
     std::string value;
-    int loopId;
+    int loopId; int startLoopId;
 
     // Constructors
     Event();

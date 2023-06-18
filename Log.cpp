@@ -6,6 +6,7 @@ Log::Log(const Log& other) {
     to_parse = other.to_parse;
     parsed = other.parsed;
     entry = other.entry;
+    loopIds_count = 0;
 }
 
 Log& Log::operator=(const Log& rhs) {
@@ -13,6 +14,10 @@ Log& Log::operator=(const Log& rhs) {
         to_parse = rhs.to_parse;
         parsed = rhs.parsed;
         entry = rhs.entry;
+        loopIds = rhs.loopIds;
+        loopStartIds = rhs.loopStartIds;
+        loopEndIds = rhs.loopEndIds;
+        loopIds_count = rhs.loopIds_count;
     }
     return *this;
 }
@@ -94,6 +99,16 @@ Event* Log::parseNextLine() {
     auto it = loopIds.find(e->lineNum);
     if(it!=loopIds.end()){
         e->loopId = it->second;
+    }
+//    
+//    it = loopEndIds.find(e->lineNum);
+//    if(it!=loopEndIds.end()){
+//        e->startLoopId = it->second + loopIds_count; // if it's loop id 1, two loops, then the event after loop1 ends is 3
+//    }
+    
+    it = loopStartIds.find(e->lineNum);
+    if(it!=loopStartIds.end()){
+        e->startLoopId = it->second;
     }
 
     parsed.push_back(e); // std::cout << "parsed " << e->lineNum << std::endl;
@@ -369,10 +384,94 @@ std::pair<int, std::vector<Event>> compare_log_contexts(Log* A, Log* B){
         return std::make_pair(length, prefix);
     }
         
-        for(int i=0; i<length; i++){
-            prefix.push_back(*A->getEvent(i));
-        }
-        return std::make_pair(length, prefix);
+    for(int i=0; i<length; i++){ 
+        prefix.push_back(*A->getEvent(i));
+    }
+    return std::make_pair(length, prefix);
 
 }
 
+
+std::pair<int, std::vector<Event>> compare_log_maploops(Log* A, Log* B){
+//    int length = compare_one_log(A, B);
+    std::vector<Event> prefix;
+   
+    auto result = loop_dfs(A, B);
+    int length = result.first;
+    
+    // if(result.first > length){
+        for(Event* e : result.second){
+            prefix.push_back(*e);
+        }
+        return std::make_pair(length, prefix);
+
+        
+//    for(int i=0; i<length; i++){
+//        prefix.push_back(*A->getEvent(i));
+//    }
+//    return std::make_pair(length, prefix);
+
+}
+
+std::pair<int, std::vector<Event*>> loop_dfs(Log* A, Log* B){
+    // std::vector<Event> prefix;
+    A->parseAll(); B->parseAll();
+    int sizeA = A->parsed.size(); int sizeB = B->parsed.size();
+    std::vector<Event*> current;
+    if(sizeA==0 || sizeB==0) {return std::make_pair(0, current);}
+
+    std::queue<Node> q;
+    q.push({A->getEvent(0), B->getEvent(0), 1});
+    
+    int length = 0;
+
+    while (!q.empty()) {
+        Node node = q.front(); 
+        q.pop();
+        if(node.eventA==nullptr || node.eventB==nullptr){
+            continue;
+        }
+        if (*(node.eventA) == *(node.eventB)) {
+            if (node.depth > length) {
+                length = node.depth;
+                current.push_back(node.eventA);
+            }
+            // Enqueue 
+            int idxA = node.eventA->idx; int idxB = node.eventB->idx; 
+            std::vector<Event*> childrenA; 
+            Event* nextA = A->getEvent(idxA+1);
+            if(nextA!=nullptr){
+                childrenA.push_back(nextA); // next event
+                if(nextA->startLoopId != -2){ // starting or immediately after ending a loop
+                    for(int i=idxA+2; i<A->parsed.size(); i++){
+                        if(A->parsed[i]->startLoopId == nextA->startLoopId){
+                            childrenA.push_back(A->parsed[i]); 
+                        }
+                    }
+                }
+            }
+                    
+            std::vector<Event*> childrenB; Event* nextB = B->getEvent(idxB+1);
+            if(nextB!=nullptr){
+                childrenB.push_back(nextB); // next event
+                if(nextB->startLoopId != -2){ // starting or immediately after ending a loop
+                    for(int i=idxB+2; i<B->parsed.size(); i++){
+                        if(B->parsed[i]->startLoopId == nextB->startLoopId){
+                            childrenB.push_back(B->parsed[i]); 
+                        }
+                    }
+                }
+            }
+            
+            for (auto& childA : childrenA) {
+                // For each child in A, if it also exists in B, enqueue them
+                for (auto& childB : childrenB) {
+                    if (*childA == *childB) {
+                        q.push({childA, childB, node.depth+1});
+                    }
+                }
+            }
+        }
+    }
+    return std::make_pair(length, current);
+}

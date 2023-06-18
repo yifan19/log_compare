@@ -23,6 +23,9 @@ public:
     std::vector<Event*> parsed;
     std::string entry; // Method entry
     std::unordered_map<int, int> loopIds;
+    std::unordered_map<int, int> loopStartIds;
+    std::unordered_map <int, int> loopEndIds;
+    int loopIds_count;
     
     std::stack<Event*> contextStack;
     std::unordered_map<int, int> loopStartLines;
@@ -57,6 +60,8 @@ public:
 int compare_one_log(Log* A, Log* B);
 std::pair<int, std::vector<Event*>> bfs_start(Log* A, Log* B);
 std::pair<int, std::vector<Event>> compare_log_contexts(Log* A, Log* B);
+std::pair<int, std::vector<Event*>> loop_dfs(Log* A, Log* B);
+std::pair<int, std::vector<Event>> compare_log_maploops(Log* A, Log* B);
 typedef struct node {
     Event* eventA;
     Event* eventB;
