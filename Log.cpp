@@ -7,6 +7,7 @@ Log::Log(const Log& other) {
     parsed = other.parsed;
     entry = other.entry;
     loopIds_count = 0;
+    contexts[-1] = nullptr;
 }
 
 Log& Log::operator=(const Log& rhs) {
@@ -16,7 +17,7 @@ Log& Log::operator=(const Log& rhs) {
         entry = rhs.entry;
         loopIds = rhs.loopIds;
         loopStartIds = rhs.loopStartIds;
-        loopEndIds = rhs.loopEndIds;
+        // loopEndIds = rhs.loopEndIds;
         loopIds_count = rhs.loopIds_count;
     }
     return *this;
@@ -99,47 +100,32 @@ Event* Log::parseNextLine() {
     // }
     
     e->idx = parsed.size();
-    auto it = loopIds.find(e->lineNum);
-    if(it!=loopIds.end()){
-        e->loopId = it->second;
+    if(e->idx ==0){
+        contexts[-1] = e;
     }
-//    
-//    it = loopEndIds.find(e->lineNum);
-//    if(it!=loopEndIds.end()){
-//        e->startLoopId = it->second + loopIds_count; // if it's loop id 1, two loops, then the event after loop1 ends is 3
-//    }
-    
+    auto it = loopIds.find(e->lineNum);
+    if(it!=loopIds.end()){ // is in a loop
+        e->loopId = it->second;
+        if(contexts.find(e->loopId)!=contexts.end()){ 
+            e->context = contexts[e->loopId];
+        }
+    }
+
     it = loopStartIds.find(e->lineNum);
-    if(it!=loopStartIds.end()){
+    if(it!=loopStartIds.end()){ // is the start of a loop
         e->startLoopId = it->second;
+        if(contexts.find(e->loopId)!=contexts.end()){
+            e->context = contexts[e->loopId]; // context is last loop
+        }else{
+            e->context = contexts[-1]; // contexts of those in start of loops
+        }
+        contexts[e->startLoopId] = e; // update the context of a loopId
     }
 
     parsed.push_back(e); // std::cout << "parsed " << e->lineNum << std::endl;
     return e;
 }
-bool Log::init_contexts(std::unordered_map<int, int>& start){
-    loopStartLines = start; // loopEndLines = end;
-    for(auto i : loopStartLines){
-        loopEndLines.insert({i.second, i.first});
-    }
-    Event* root = new Event(0); 
-    contextStack.push(root);
-    // std::unordered_map<int, Event*> firstLoop;
-    
-//    firstLoop.insert({-1, 0});
-//    firstLoop.find(-1);
-//    std::cout << "find -1" << std::endl;
-    
-    return (loopStartLines.size() == loopEndLines.size());
-}
-bool Log::init_contexts(std::unordered_map<int, int>& start, std::unordered_multimap<int, int> end){
-    loopStartLines = start; loopEndLines = end;
-    contextStack.push(nullptr);
-//    firstLoop.insert({-1, 0});
-//    firstLoop.find(-1);
-//    std::cout << "find -1" << std::endl;
-    return (loopStartLines.size() == loopEndLines.size());
-}
+
 bool Log::set_contexts(std::vector<int>& contexts, int n){
     parseAll();
     int size = parsed.size();
@@ -187,9 +173,10 @@ void Log::printContexts(){
        if(parsed[i]->context == nullptr){
             std::cout << " ctx: -1";
         }else{
-            std::cout << " ctx: " << parsed[i]->context->lineNum;
+            std::cout << " ctx: ";
+            parsed[i]->context->print();
         }
-       std::cout << ", " ;
+       std::cout << " | " ;
     }
     std::cout << std::endl;
 }
@@ -222,113 +209,11 @@ int compare_one_log(Log* A, Log* B){
     //std::cout << "return " << idx << std::endl;
     return idx; // length of common prefix
 }
-// int compare_log_contexts(Log* A, Log* B){
-//     // int match_length = 0; int max_length = 0;
-//     A->parseAll(); B->parseAll();
-//     std::cout << "HERE" << std::endl;
-//     int nA = A->parsed.size(); int nB = B->parsed.size();
-//     std::vector<std::vector<int>> DP(nA, std::vector<int>(nB, 0)); 
-//     Event* eA = nullptr; Event* eB = nullptr;
-//     for(int idxA = 1; idxA < nA; idxA++){
-//         for(int idxB = 1; idxB < nB; idxB++){
-//             eA = A->parsed[idxA-1]; eB = B->parsed[idxB-1];
-//             if(eA==nullptr || eB==nullptr){
-//                 std::cout << "Null event detected at A[" << idxA-1 << "] or B[" << idxB-1 << "].\n";
-//                 continue;
-//             }
-//             if(eA->lineNum == eB->lineNum){
-//                 if(eA->context==nullptr && eB->context==nullptr){
-//                     DP[idxA][idxB] = DP[idxA-1][idxB-1] + 1;
-//                 }else if(eA->context!=nullptr && eB->context!=nullptr 
-//                     && eA->context->lineNum == eB->context->lineNum){
-//                     DP[idxA][idxB] = DP[idxA-1][idxB-1] + 1;
-//                 }
-//             }else if(DP[idxA-1][idxB] < DP[idxA][idxB-1]){
-//                 DP[idxA][idxB] = DP[idxA][idxB-1];
-//             } else {
-//                 DP[idxA][idxB] = DP[idxA-1][idxB];
-//             }
-//         }
-//     }
-//     // std::cout << ":: " << DP[nA-1][nB-1] << std::endl;
-//     int max = 0;
-//     for(int i=0; i<nA; i++){
-//         for(int j=0; j<nB; j++){
-//             //std::cout << DP[i][j] << " ";
-//             if(DP[i][j] > max){
-//                 max = DP[i][j];
-//             }
-//         }
-//         // std::cout << std::endl;
-//     }
-//     return max;
-// }
 
-// int compare_log_contexts(Log* A, Log* B){
-//     A->parseAll(); B->parseAll();
-//     int nA = A->parsed.size(); int nB = B->parsed.size();
-//     std::vector<std::vector<int>> DP(nA, std::vector<int>(nB, 0)); 
-
-//     for(int idxA = 0; idxA < nA; idxA++){
-//         for(int idxB = 0; idxB < nB; idxB++){
-//             Event* eA = A->parsed[idxA]; 
-//             Event* eB = B->parsed[idxB]; 
-//             if(eA->lineNum == eB->lineNum){
-//                 if((eA->context == nullptr && eB->context == nullptr)
-//                     || (eA->context != nullptr && eB->context != nullptr && eA->context->lineNum == eB->context->lineNum)){
-//                     DP[idxA][idxB] = (idxA > 0 && idxB > 0 ? DP[idxA-1][idxB-1] : 0) + 1;
-//                 } else if (idxA > 0 && idxB > 0){
-//                     DP[idxA][idxB] = std::max(DP[idxA-1][idxB], DP[idxA][idxB-1]);
-//                 }
-//             } else {
-//                 if(idxA > 0) DP[idxA][idxB] = DP[idxA-1][idxB];
-//                 if(idxB > 0 && DP[idxA][idxB] < DP[idxA][idxB-1]) DP[idxA][idxB] = DP[idxA][idxB-1];
-//             }
-//         }
-//     }
-//     std::cout << ":: " << DP[nA-1][nB-1] << std::endl;
-//     for(int i=0; i<nA; i++){
-//         for(int j=0; j<nB; j++){
-//             std::cout << DP[i][j] << " ";
-//         }
-//         std::cout << std::endl;
-//     }
-//     return nA > 0 && nB > 0 ? DP[nA-1][nB-1] : 0; 
-// }
 
 bool Log::failed(){
     parseAll();
     return fail;
-}
-
-void dfs(Log* A, Log* B, int idxA, int idxB, int commonLength, int &maxCommonLength, std::unordered_map<int, 
-std::vector<Event*>> &contextMap, std::vector<std::vector<bool>> &visited);
-
-int dfs(Event* rootA, Event* rootB, std::unordered_map<int, std::vector<Event*>>& mapA, std::unordered_map<int, std::vector<Event*>>& mapB){
-    std::vector<Event*> childrenA = mapA[rootA->lineNum];
-    std::vector<Event*> childrenB = mapB[rootB->lineNum];
-    for(auto i : childrenA){
-       //  std::cout << "ii " << i->lineNum << std::endl;
-    }
-    int max_length = 0;
-    rootA->print(); std::cout << "!" << std::endl;
-    for(Event* eA : childrenA){
-        for(Event*eB : childrenB){
-            // eA->print(); std::cout << "-" << std::endl;
-            // eB->print(); std::cout << "-" << std::endl;
-            if(eA!=nullptr && eB!=nullptr && eA->lineNum==eB->lineNum){
-                if((eA->context==nullptr && eB->context==nullptr) ||
-                    (eA->context!=nullptr && eB->context!=nullptr && eA->context->lineNum==eB->context->lineNum)){
-                    std::cout << "HERE!" << std::endl;    
-                    int curr_length = 1 + dfs(eA, eB, mapA, mapB);
-                    std::cout << "curr " << curr_length << std::endl;
-                    max_length = std::max(max_length, curr_length);
-                }
-            }
-        }
-    }
-    std::cout << "max " << max_length << " ";
-    return max_length; 
 }
 
 std::pair<int, std::vector<Event*>> bfs_start(Log* A, Log* B){

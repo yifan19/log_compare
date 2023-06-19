@@ -155,7 +155,7 @@ int main (int argc, char *argv[]){
     }
     int k = 0;
     std::cout << "failed run: " << std::endl;
-    fails[k]->printAll();
+    fails[k]->printContexts();
     // fails[k]->printLoops();
     auto result = logCompare(fails[k], succeeds);
     for(int i=0; i<result.second.size(); i++){
@@ -215,7 +215,7 @@ int main (int argc, char *argv[]){
 //    return 0;
 }
 
-/* // current output:
+/* 
 Failed Run: 
 L2 val=3 L3 true L4 false L3 true L4 false L3 true L4 false L6 true L7 fail 
 Successful Runs: 

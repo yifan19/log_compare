@@ -24,13 +24,10 @@ public:
     std::string entry; // Method entry
     std::unordered_map<int, int> loopIds;
     std::unordered_map<int, int> loopStartIds;
-    std::unordered_map <int, int> loopEndIds;
+    // std::unordered_map <int, int> loopEndIds;
     int loopIds_count;
     
-    std::stack<Event*> contextStack;
-    std::unordered_map<int, int> loopStartLines;
-    std::unordered_map<int, Event*> firstLoop;
-    std::unordered_multimap<int, int> loopEndLines;
+    std::unordered_map<int, Event*> contexts;
     std::unordered_map<int, std::unordered_set<Event*>> contextMap; // idx in the Log, not lineNum
 
     bool fail;

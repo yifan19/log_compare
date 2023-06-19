@@ -33,5 +33,5 @@ bool Event::operator!= (const Event& rhs) const{
     return !(this->operator==(rhs));
 }
 void Event::print(){
-    std::cout << "L" << lineNum << "=" << value ;
+    std::cout << idx << ":ID=" << lineNum << "," << value ;
 }
