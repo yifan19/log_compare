@@ -1,0 +1,20 @@
+RULE ID 0
+CLASS org.apache.hadoop.hdfs.DFSInputStream
+METHOD readBlockLength(org.apache.hadoop.hdfs.protocol.LocatedBlock)
+COMPILE
+AT LINE 324
+IF true
+DO traceStack("[BM][" + Thread.currentThread().getName() + "][Method Entry]");
+   traceln("[BM][" + Thread.currentThread().getName() + "]ID=0," + $n)
+ENDRULE
+
+RULE ID 1
+CLASS org.apache.hadoop.hdfs.DFSInputStream
+METHOD readBlockLength(org.apache.hadoop.hdfs.protocol.LocatedBlock)
+COMPILE
+AT LINE 351
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=1," + "0")
+ENDRULE
+
+

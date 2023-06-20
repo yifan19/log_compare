@@ -1,0 +1,37 @@
+RULE entering method addNewBlock
+CLASS org.apache.hadoop.hdfs.server.namenode.FSEditLogLoader
+METHOD addNewBlock(org.apache.hadoop.hdfs.server.namenode.FSDirectory,org.apache.hadoop.hdfs.server.namenode.FSEditLogOp$org.apache.hadoop.hdfs.server.namenode.INodeFile)
+COMPILE
+AT LINE 854
+IF true
+DO traceStack("[BM][" + Thread.currentThread().getName() + "][Method Entry]");
+   traceln("[BM][" + Thread.currentThread().getName() + "]ID=0,")
+ENDRULE
+
+RULE updateBlocks
+CLASS org.apache.hadoop.hdfs.server.namenode.FSEditLogLoader
+METHOD updateBlocks(org.apache.hadoop.hdfs.server.namenode.FSDirectory,oorg.apache.hadoop.hdfs.server.namenode.FSEditLogOp$BlockListUpdatingOp,org.apache.hadoop.hdfs.server.namenode.INodeFile)
+COMPILE
+AT LINE 903
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=1,")
+ENDRULE
+
+RULE updateBlocks
+CLASS org.apache.hadoop.hdfs.server.namenode.FSEditLogLoader
+METHOD updateBlocks(org.apache.hadoop.hdfs.server.namenode.FSDirectory,oorg.apache.hadoop.hdfs.server.namenode.FSEditLogOp$BlockListUpdatingOp,org.apache.hadoop.hdfs.server.namenode.INodeFile)
+COMPILE
+AT LINE 904
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=2,")
+ENDRULE
+
+RULE entering method setNumBytes
+CLASS org.apache.hadoop.hdfs.protocol.Block
+METHOD setNumBytes(long)
+COMPILE
+AT ENTRY
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=3," + $len)
+ENDRULE
+

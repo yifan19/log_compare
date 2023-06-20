@@ -1,0 +1,19 @@
+RULE entering method set
+CLASS org.apache.hadoop.hdfs.protocol.Block
+METHOD set(long,long,long)
+COMPILE
+AT ENTRY
+IF true
+DO traceStack("[BM][" + Thread.currentThread().getName() + "][Method Entry]");
+   traceln("[BM][" + Thread.currentThread().getName() + "]ID=0," + $len)
+ENDRULE
+
+RULE entering method setNumBytes
+CLASS org.apache.hadoop.hdfs.protocol.Block
+METHOD setNumBytes(long)
+COMPILE
+AT ENTRY
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=1," + $len)
+ENDRULE
+

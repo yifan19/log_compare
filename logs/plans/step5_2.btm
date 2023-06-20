@@ -1,0 +1,63 @@
+RULE B25
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 642
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=0," )
+ENDRULE
+
+RULE  B18
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 633
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=1," + ($avoidStaleNodes))
+ENDRULE
+
+RULE B21
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 634
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=2," )
+ENDRULE
+
+RULE B17
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 628
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=3," )
+ENDRULE
+
+RULE B15
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 628
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=4," )
+ENDRULE
+
+RULE B6
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 622
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=5," )
+ENDRULE
+
+RULE B4
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 616
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=6," )
+ENDRULE
+

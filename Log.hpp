@@ -24,6 +24,7 @@ public:
     std::string entry; // Method entry
     std::unordered_map<int, int> loopIds;
     std::unordered_map<int, int> loopStartIds;
+    std::unordered_map <int, int> parentLoop;
     // std::unordered_map <int, int> loopEndIds;
     int loopIds_count;
     
@@ -48,6 +49,7 @@ public:
     void printParsed();
     void printAll();
     void printContexts();
+    void printContexMaps();
     void printLoops();
     bool failed();
     bool init_contexts(std::unordered_map<int, int>& start);

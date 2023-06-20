@@ -1,0 +1,74 @@
+RULE chooseRemoteRack try
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseRemoteRack(int,org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT LINE 461
+IF true
+DO trace("[BM][chooseRemoteRack try] blocksize: " + ($blocksize) + "\n")
+ENDRULE
+
+RULE chooseRemoteRack catch
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseRemoteRack(int,org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT LINE 465
+IF true
+DO trace("[BM][chooseRemoteRack catch] blocksize: " + ($blocksize) + "\n")
+ENDRULE
+
+RULE entering method chooseRandom
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT ENTRY
+IF true
+DO trace("[BM][chooseRandom invoked] blocksize: " + ($blocksize) + "\n");
+   traceStack("[BM][" + Thread.currentThread().getStackTrace()[5] + "][Method Entry]\n");
+   traceStack("[BM][" + Thread.currentThread().getStackTrace()[6] + "][Method Entry]\n");
+   traceStack("[BM][" + Thread.currentThread().getStackTrace()[7] + "][Method Entry]\n");
+ENDRULE
+
+RULE entering function setReplication
+CLASS org.apache.hadoop.hdfs.DistributedFileSystem
+METHOD setReplication(org.apache.hadoop.fs.Path,final short) 
+COMPILE
+AT ENTRY
+IF true
+DO throw new RuntimeException("[BM][setReplication invoked !!]\n")
+ENDRULE
+
+RULE entering method isGoodTarget
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT ENTRY
+IF true
+DO trace("[BM][isGoodTarget invoked!]\n");
+ENDRULE
+
+RULE isGoodTarget return true
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 668
+IF true
+DO trace("[BM][isGoodTarget]ID=11,\n")
+ENDRULE
+
+RULE if (requiredSize > node.getRemaining() - scheduledSize)
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 639
+IF true
+DO trace("[BM][isGoodTarget]ID=5, " + ($requiredSize) + " " + ($node.getRemaining()) + " " + ($scheduledSize) + "\n")
+ENDRULE
+
+RULE  if (considerLoad)
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 645
+IF true
+DO trace("[BM][isGoodTarget]ID=6,\n")
+ENDRULE

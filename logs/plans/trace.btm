@@ -1,0 +1,20 @@
+RULE entering method chooseRandom
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT ENTRY
+IF true
+DO traceStack("[BM][" + Thread.currentThread().getName() + "][Method Entry]", 10);
+   traceln("[BM][" + Thread.currentThread().getStacktrace()[5] + "]" + $numOfReplicas)
+ENDRULE
+
+
+RULE entering method setNumBytes
+CLASS org.apache.hadoop.hdfs.protocol.Block
+METHOD setNumBytes(long)
+COMPILE
+AT ENTRY
+IF true
+DO traceStack("[BM][" + Thread.currentThread().getName() + "][Method Entry]", 10);
+   traceln("[BM][" + Thread.currentThread().getName() + "]ID=1," + $len)
+ENDRULE

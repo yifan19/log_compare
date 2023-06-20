@@ -1,0 +1,57 @@
+RULE entering method chooseStorage4Block
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor
+METHOD chooseStorage4Block
+COMPILE
+AT ENTRY
+IF true
+DO traceStack("[BM][" + Thread.currentThread().getName() + "][Method Entry]",1)
+ENDRULE
+
+RULE map loop
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor
+METHOD chooseStorage4Block
+COMPILE
+AFTER WRITE $s
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]['for s:storage()']s=" + $s);
+traceln("[BM][" + Thread.currentThread().getName() + "]['s.getState() == State.NORMAL && s.getStorageType() == t']s.getState()=" + ($s).getState() + " s.getStorageType()=" + ($s).getStorageType() + " t=" + $t);
+traceln("[BM][" + Thread.currentThread().getName() + "]['storage == null']storage=" + $storage)
+
+ENDRULE
+
+RULE storage assignment
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor
+METHOD chooseStorage4Block
+COMPILE
+AT LINE 655
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]['storage = s']storage=" + $storage)
+ENDRULE
+
+RULE return null
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor
+METHOD chooseStorage4Block
+COMPILE
+AT LINE 663
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]['return null']")
+ENDRULE
+
+RULE condition to return null
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor
+METHOD chooseStorage4Block
+COMPILE
+AT LINE 661
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]['requiredSize > remaining - scheduledSize']" +"requiredSize=" + $requiredSize + ", remaining=" + $remaining + ", scheduledSize="+ $scheduledSize)
+ENDRULE
+
+RULE return storage
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor
+METHOD chooseStorage4Block
+COMPILE
+AT LINE 665
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]['return storage']" +"storage=" + $storage)
+ENDRULE
+

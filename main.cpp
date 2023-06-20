@@ -84,7 +84,7 @@ int main (int argc, char *argv[]){
     std::string line; 
     // std::unordered_map<int, int> loopStarts; //= {{4, 0}, {1, 0}};
     std::unordered_map <int, int> loopIds = {{4, 1},{3, 1},{2, 1},{1, 2}, {0, 2}};
-    std::unordered_map <int, int> loopStartIds = {{4, 1},{1, 2}};
+    std::unordered_map <int, int> loopStartIds = {{4, 1},{1, 2}}; std::unordered_map <int, int> parentLoop = {{1,-1}, {2,1}};
     
     std::vector<Log*> logs; // 
     
@@ -121,7 +121,7 @@ int main (int argc, char *argv[]){
             // std::cout << "new log! " << "fail: " << fail << std::endl;
             log = new Log();
             log->loopIds = loopIds; 
-            log->loopStartIds = loopStartIds; log->loopIds_count = loopStartIds.size() + 1;
+            log->loopStartIds = loopStartIds; log->loopIds_count = loopStartIds.size() + 1; log->parentLoop = parentLoop;
             // log->init_contexts(loopStarts);
             logs.push_back(log);
             threads[thread] = log; // new current log for that thread
@@ -156,6 +156,9 @@ int main (int argc, char *argv[]){
     int k = 0;
     std::cout << "failed run: " << std::endl;
     fails[k]->printContexts();
+    fails[k]->printContexMaps();
+    std::cout << "good run: " << std::endl;
+    succeeds[1]->printContexts();
     // fails[k]->printLoops();
     auto result = logCompare(fails[k], succeeds);
     for(int i=0; i<result.second.size(); i++){
@@ -170,6 +173,10 @@ int main (int argc, char *argv[]){
     result.first->printAll();
     std::cout << std::endl;
     fails[k]->printAll();
+    std::cout << "prefix " << std::endl;
+    for(int i=0; i<length; i++){
+        result.second[i].print();
+    } std::cout << std::endl;
     if( length==fails[k]->parsed.size() && length==result.first->parsed.size() ){
           std::cout << "no divergence" << std::endl;
     }else{
@@ -193,26 +200,7 @@ int main (int argc, char *argv[]){
         }
         std::cout << std::endl;
     }
-//      
-//    if(false){
-//        std::cout << "failed contexts: " << std::endl;
-//         fails[k]->printContexts();
-//        std::cout << "succeeds[0] contexts: " << std::endl;
-//         succeeds[2]->printContexts();
-//        std::cout << "/////////// " << std::endl;
-//       for(int i=0; i<fails[k]->parsed.size(); i++){
-//           std::cout << fails[k]->getEvent(i)->idx << ": " << fails[k]->getEvent(i)->lineNum << " ";
-//       } std::cout << std::endl;
-//       for(Event* c : fails[k]->parsed){
-//           std::cout << c->idx << ": L" << c->lineNum ;
-//           if(c->context != nullptr){std::cout << ": " << c->context->idx << ":L" << c->context->lineNum;}
-//           std::cout << std::endl;
-//           for(Event* e : fails[k]->contextMap[c->idx]){
-//               std::cout << e->idx<< " ";
-//           }std::cout << std::endl;
-//       } std::cout << std::endl;
-//    }
-//    return 0;
+    return 0;
 }
 
 /* 

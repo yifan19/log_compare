@@ -1,0 +1,35 @@
+RULE shuffle
+CLASS org.apache.hadoop.hdfs.DFSUtil
+METHOD shuffle
+COMPILE
+AT ENTRY
+IF true
+DO traceStack("[BM][" + Thread.currentThread().getName() + "][Method Entry]");
+ENDRULE
+
+RULE  ID=0
+CLASS org.apache.hadoop.hdfs.DFSUtil
+METHOD shuffle
+COMPILE
+AT LINE 163
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=0," + (&array[0]))
+ENDRULE
+
+RULE  ID=1
+CLASS org.apache.hadoop.hdfs.DFSUtil
+METHOD shuffle
+COMPILE
+AT LINE 163
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=1," + (&array[1]))
+ENDRULE
+
+RULE  ID=2
+CLASS org.apache.hadoop.hdfs.DFSUtil
+METHOD shuffle
+COMPILE
+AT LINE 163
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=2," + (&array[2]))
+ENDRULE

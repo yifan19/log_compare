@@ -1,0 +1,47 @@
+RULE requiredSize
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor
+METHOD chooseStorage4Block
+COMPILE
+AT LINE 646
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "][L646]['requiredSize=...']" +"blockSize=" + $blockSize + ", MIN_BLOCKS_FOR_WRITE=" + org.apache.hadoop.hdfs.server.common.HdfsServerConstants.MIN_BLOCKS_FOR_WRITE)
+ENDRULE
+
+
+RULE scheduledSize
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor
+METHOD chooseStorage4Block
+COMPILE
+AFTER INVOKE getBlocksScheduled
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "][L648]['scheduledSize=...']" +"blockSize=" + $blockSize + ", getBlocksScheduled()=" + $!)
+ENDRULE
+
+
+RULE remaining
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor
+METHOD chooseStorage4Block
+COMPILE
+AT LINE 658
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "][L646]['remaining=...']" +"blockSize=" + $blockSize + ", getBlocksScheduled()=" + $!)
+ENDRULE
+
+RULE remaining condition
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor
+METHOD chooseStorage4Block
+COMPILE
+AT LINE 657
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "][L657]['r >= requiredSize'=" + ($r >= $requiredSize) + "]" +"r=" + $r + ", requiredSize" + $requiredSize)
+ENDRULE
+
+RULE remaining
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor
+METHOD chooseStorage4Block
+COMPILE
+AT LINE 659
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "][L658]['remaining += r' =" + $remaining + "]")
+ENDRULE
+

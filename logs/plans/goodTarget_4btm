@@ -1,0 +1,116 @@
+RULE entering method addIfIsGoodTarget
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD addIfIsGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,java.util.Set,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT ENTRY
+IF true
+DO trace("[BM][addIfIsGoodTarget invoked]\n")
+ENDRULE
+
+RULE addIfIsGoodTarget return good
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD addIfIsGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,java.util.Set,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 571
+IF true
+DO trace("[BM][addIfIsGoodTarget returned addToExcludedNodes]\n")
+ENDRULE
+
+RULE addIfIsGoodTarget return -1
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD addIfIsGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,java.util.Set,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 573
+IF true
+DO trace("[BM][addIfIsGoodTarget returned -1]\n")
+ENDRULE
+
+RULE entering method isGoodTarget
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT ENTRY
+IF true
+DO trace("[BM][isGoodTarget invoked!]\n")
+ENDRULE
+
+RULE if (storage.getStorageType() != storageType)
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 613
+IF true
+DO trace("[BM][isGoodTarget]ID=1,\n")
+ENDRULE
+
+RULE if (storage.getState() == State.READ_ONLY_SHARED)
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 619
+IF true
+DO trace("[BM][isGoodTarget]ID=2,\n")
+ENDRULE
+
+RULE if (node.isDecommissionInProgress() || node.isDecommissioned())
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 625
+IF true
+DO trace("[BM][isGoodTarget]ID=3,\n")
+ENDRULE
+
+RULE if (avoidStaleNodes)
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 630
+IF true
+DO trace("[BM][isGoodTarget]ID=4,\n")
+ENDRULE
+
+RULE if (requiredSize > node.getRemaining() - scheduledSize)
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 639
+IF true
+DO trace("[BM][isGoodTarget]ID=5,\n")
+ENDRULE
+
+RULE  if (considerLoad)
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 645
+IF true
+DO trace("[BM][isGoodTarget]ID=6,\n")
+ENDRULE
+
+RULE  if (counter>maxTargetPerRack)
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 664
+IF true
+DO trace("[BM][isGoodTarget]ID=10,\n")
+ENDRULE
+
+RULE isGoodTarget return true
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD isGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType) 
+COMPILE
+AT LINE 668
+IF true
+DO trace("[BM][isGoodTarget]ID=11,\n")
+ENDRULE
+
+RULE  if (newExcludedNodes >= 0)
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT LINE 523
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=4," + ($newExcludedNodes >= 0))
+ENDRULE

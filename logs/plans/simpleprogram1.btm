@@ -1,0 +1,78 @@
+RULE entering method chooseRandom
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT ENTRY
+IF true
+DO traceStack("[BM][" + Thread.currentThread().getName() + "][Method Entry]");
+   traceln("[BM][" + Thread.currentThread().getName() + "]ID=0," + $numOfReplicas)
+ENDRULE
+
+
+
+RULE dominating condition numOfReplicas larger than 0
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT LINE 511
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=1," + ($numOfReplicas > 0 && $numOfAvailableNodes > 0)) 
+ENDRULE
+
+
+RULE if excludedNodes.add(chosenNode)
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AFTER INVOKE java.util.Set.add
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=2," + $!) 
+ENDRULE
+
+
+
+RULE  for(i = 0; i < storages.length; i++)#2
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT LINE 532
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=3," + ($i < $storages.length))
+ENDRULE
+
+RULE  for(i = 0; i < storages.length; i++)
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT LINE 521
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=3," + ($i < $storages.length))
+ENDRULE
+
+RULE  if (newExcludedNodes >= 0)
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT LINE 523
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=4," + ($newExcludedNodes >= 0))
+ENDRULE
+
+RULE  numOfReplicas--
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT LINE 526
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=5," + ($numOfReplicas))
+ENDRULE
+
+
+RULE  if (numReplicas > 0)
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT LINE 539
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=6," + ($numOfReplicas > 0))
+ENDRULE

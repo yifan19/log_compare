@@ -1,0 +1,44 @@
+RULE chooseTarget 295
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseTarget(int,org.apache.hadoop.net.Node,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT LINE 295
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=0," + $blocksize)
+ENDRULE
+
+RULE chooseTarget 298
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseTarget(int,org.apache.hadoop.net.Node,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT LINE 298
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=1," + $blocksize)
+ENDRULE
+
+RULE chooseTarget 330
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseTarget(int,org.apache.hadoop.net.Node,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT LINE 330
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=2," + $blocksize)
+ENDRULE
+
+RULE entering method chooseLocalRack
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseLocalRack(org.apache.hadoop.net.Node,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT ENTRY
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=4," + $blocksize)
+ENDRULE
+
+RULE entering method chooseLocalStorage
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseLocalStorage(org.apache.hadoop.net.Node,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType,boolean)
+COMPILE
+AT ENTRY
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=5," + $blocksize)
+ENDRULE

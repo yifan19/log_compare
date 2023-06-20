@@ -1,0 +1,8 @@
+RULE where blockSize
+CLASS org.apache.hadoop.hdfs.protocol.Block
+METHOD setNumBytes
+COMPILE
+AT ENTRY
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "][" + $CLASS + "][" + $0  +"]['setNumBytes()']size=" + $1)
+ENDRULE

@@ -1,0 +1,36 @@
+RULE entering method chooseTargets
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationWork
+METHOD chooseTargets(org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicy,java.util.Set)
+COMPILE
+AT ENTRY
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=0,")
+ENDRULE
+
+RULE entering method chooseTarget 137
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseTarget(int,org.apache.hadoop.net.Node,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT LINE 137
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=1," + $blocksize)
+ENDRULE
+
+RULE entering method chooseTarget 168
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseTarget(int,org.apache.hadoop.net.Node,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT LINE 168
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=2," + $blocksize)
+ENDRULE
+
+RULE entering method chooseTarget
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseTarget(int,org.apache.hadoop.net.Node,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT LINE 179
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=3," + $blocksize)
+ENDRULE
+
