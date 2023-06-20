@@ -83,8 +83,8 @@ int main (int argc, char *argv[]){
     
     std::string line; 
     // std::unordered_map<int, int> loopStarts; //= {{4, 0}, {1, 0}};
-    std::unordered_map <int, int> loopIds = {{4, 1},{3, 1},{2, 1},{1, 2}, {0, 2}};
-    std::unordered_map <int, int> loopStartIds = {{4, 1},{1, 2}}; std::unordered_map <int, int> parentLoop = {{1,-1}, {2,1}};
+    // std::unordered_map <int, int> loopIds = {{4, 1},{3, 1},{2, 1},{1, 2}, {0, 2}};
+    // std::unordered_map <int, int> loopStartIds = {{4, 1},{1, 2}}; std::unordered_map <int, int> parentLoop = {{1,-1}, {2,1}};
     
     std::vector<Log*> logs; // 
     
@@ -120,8 +120,8 @@ int main (int argc, char *argv[]){
         if(newLog){
             // std::cout << "new log! " << "fail: " << fail << std::endl;
             log = new Log();
-            log->loopIds = loopIds; 
-            log->loopStartIds = loopStartIds; log->loopIds_count = loopStartIds.size() + 1; log->parentLoop = parentLoop;
+            // log->loopIds = loopIds; 
+            // log->loopStartIds = loopStartIds; log->loopIds_count = loopStartIds.size() + 1; log->parentLoop = parentLoop;
             // log->init_contexts(loopStarts);
             logs.push_back(log);
             threads[thread] = log; // new current log for that thread
@@ -133,7 +133,7 @@ int main (int argc, char *argv[]){
         log->fail = fail;
         // std::cout << line << ": thread # " << thread << " fail: " << fail << std::endl;
     }
-    std::cout << "# logs " << logs.size() << std::endl;
+    // std::cout << "# logs " << logs.size() << std::endl;
 
     std::vector<Log*> succeeds; std::vector<Log*> fails; 
     for(Log* l : logs){
@@ -154,26 +154,24 @@ int main (int argc, char *argv[]){
         return 1;
     }
     int k = 0;
-    std::cout << "failed run: " << std::endl;
-    fails[k]->printContexts();
-    fails[k]->printContexMaps();
-    std::cout << "good run: " << std::endl;
-    succeeds[1]->printContexts();
+//    std::cout << "failed run: " << std::endl;
+//    fails[k]->printContexts();
+//    fails[k]->printContexMaps();
+//    std::cout << "good run: " << std::endl;
+//    succeeds[1]->printContexts();
     // fails[k]->printLoops();
     auto result = logCompare(fails[k], succeeds);
+    int length = result.second.size();
+    std::cout << "length: " << (length) << ". ";
     for(int i=0; i<result.second.size(); i++){
         std::cout << result.second[i].idx << ":ID=" << result.second[i].lineNum << " ";
     }std::cout << std::endl;
     
 //     auto result = logCompare(fails[k], succeeds);
 //      //std::cout << max_idx ; // << " L" << fails[2]->getEvent(max_idx)->lineNum << std::endl;
-    int length = result.second.size();
-    std::cout << "length: " << (length) << ". ";
-      // result.second->printAll();
-    result.first->printAll();
-    std::cout << std::endl;
-    fails[k]->printAll();
-    std::cout << "prefix " << std::endl;
+    
+    // fails[k]->printAll();
+    std::cout << "prefix: " << std::endl;
     for(int i=0; i<length; i++){
         result.second[i].print();
     } std::cout << std::endl;
@@ -200,15 +198,20 @@ int main (int argc, char *argv[]){
         }
         std::cout << std::endl;
     }
+
+//    fails[k]->printLoops();
+//    for(auto it : fails[k]->loopStartIds){
+//        std::cout << "{" << it.first << ", " << it.second << "} ";
+//    } std::cout << std::endl;
     return 0;
 }
 
-/* 
+/* seenIds
 Failed Run: 
 L2 val=3 L3 true L4 false L3 true L4 false L3 true L4 false L6 true L7 fail 
 Successful Runs: 
 Run 0: L2 val=3 L3 true L4 true L5 val=2 L3 true L4 true L5 val=1 L3 true L4 true L5 val=0 L6 false 
-Run 1: L2 val=3 L3 true L4 true L5 val=2 L3 true L4 false L3 true L4 false L3 true L4 true L5 val=1 L3 true L4 true L5 val=0 L6 false 
+Run 1: L2 val=3 L3 true L4 trueseenIds L5 val=2 L3 true L4 false L3 true L4 false L3 true L4 true L5 val=1 L3 true L4 true L5 val=0 L6 false 
 Run 2: L2 val=4 L3 true L4 false L3 true L4 true L5 val=3 L3 true L4 true L5 val=2 L3 true L4 true L5 val=1 L3 true L4 true L5 val=0 L6 false 
 
 //// if we consider CE with different value (True / False) as different log:

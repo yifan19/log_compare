@@ -6,7 +6,7 @@ Log::Log(const Log& other) {
     to_parse = other.to_parse;
     parsed = other.parsed;
     entry = other.entry;
-    loopIds_count = 0;
+    // loopIds_count = 0;
     contexts[-1] = nullptr;
 }
 
@@ -15,10 +15,10 @@ Log& Log::operator=(const Log& rhs) {
         to_parse = rhs.to_parse;
         parsed = rhs.parsed;
         entry = rhs.entry;
-        loopIds = rhs.loopIds;
+        // loopIds = rhs.loopIds;
         loopStartIds = rhs.loopStartIds;
         // loopEndIds = rhs.loopEndIds;
-        loopIds_count = rhs.loopIds_count;
+        // loopIds_count = rhs.loopIds_count;
     }
     return *this;
 }
@@ -78,7 +78,20 @@ Event* Log::parseNextLine() {
         }
         
         if(temp_id != std::string::npos){ // after ,
-            e->value = line.substr(temp_id+1);
+            // std::cout << "LINE " << line << std::endl;
+            line = line.substr(temp_id+1);
+            temp_id = line.find("loop="); 
+            if(temp_id != std::string::npos){
+                line = line.substr(temp_id+5); // after loop=
+                
+                temp_id = line.find(",");
+                int loopId = std::stoi(line.substr(0, temp_id)); // between loop and ,
+                e->loopId = loopId;
+                line = line.substr(temp_id+1); // after ,
+                
+            }
+            e->value = line;
+            
             if(e->value=="true" || e->value=="false"){
             e->type = Event::EventType::Condition;
             }else if(is_number(e->value)){
@@ -98,39 +111,45 @@ Event* Log::parseNextLine() {
     // if(e!=nullptr && e->lineNum==6 && e->value=="true"){
     //     fail = true;
     // }
+//    
+      e->idx = parsed.size();
+//    if(e->idx ==0){
+//        contexts.insert({-1, e});
+//    }
+//    if(e->loopId > -1){ // is in a loop
+//        if(contexts.find(e->loopId)!=contexts.end()){ 
+//            e->context = contexts[e->loopId];
+//        }
+//    }
+//    
+    if(e->loopId>-1 && ids_seen.find(e->loopId)==ids_seen.end()){ // is new loop
+        loopStartIds.insert({e->lineNum, e->loopId});
+        ids_seen.insert(e->loopId);
+    }
     
-    e->idx = parsed.size();
-    if(e->idx ==0){
-        contexts[-1] = e;
-    }
-    auto it = loopIds.find(e->lineNum);
-    if(it!=loopIds.end()){ // is in a loop
-        e->loopId = it->second;
-        if(contexts.find(e->loopId)!=contexts.end()){ 
-            e->context = contexts[e->loopId];
-        }
-    }
-
-    it = loopStartIds.find(e->lineNum);
-    if(it!=loopStartIds.end()){ // is the start of a loop
+    auto it = loopStartIds.find(e->lineNum);
+    if(it!=loopStartIds.end()){ // is the condition of a known loop
         e->startLoopId = it->second;
-        if(contexts.find(e->loopId)!=contexts.end()){
-            e->context = contexts[e->loopId]; // context is last loop
-        }else{
-            if(parentLoop.find(e->loopId)!=parentLoop.end())
-                {e->context = contexts[parentLoop[e->loopId]];} // contexts of those in start of loops
-            else
-                {e->context = contexts[-1];}
-        }
-        contexts[e->startLoopId] = e; // update the context of a loopId
+//        if(contexts.find(e->loopId)!=contexts.end()){
+//            e->context = contexts[e->loopId]; // context is last loop
+//        }else{
+//            if(parentLoop.find(e->loopId)!=parentLoop.end())
+//                {e->context = contexts[parentLoop[e->loopId]];} // contexts of those in start of loops
+//            else
+//                {e->context = contexts[-1];}
+//        }
+//        contexts[e->startLoopId] = e; // update the context of a loopId
+//        // TODO find parent loop
     }
-    
-    if(e->context != nullptr){
-        contextMap[e->context->idx].insert(e);
-    }
-    if(e->idx>0){
-        contextMap[e->idx-1].insert(e);
-    }
+//    
+//    
+//    
+//    if(e->context != nullptr){
+//        contextMap[e->context->idx].insert(e);
+//    }
+//    if(e->idx>0){
+//        contextMap[e->idx-1].insert(e);
+//    }
     parsed.push_back(e); // std::cout << "parsed " << e->lineNum << std::endl;
     return e;
 }

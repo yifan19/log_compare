@@ -22,11 +22,11 @@ public:
     std::deque<std::string> to_parse;
     std::vector<Event*> parsed;
     std::string entry; // Method entry
-    std::unordered_map<int, int> loopIds;
+    // std::unordered_map<int, int> loopIds;
     std::unordered_map<int, int> loopStartIds;
     std::unordered_map <int, int> parentLoop;
     // std::unordered_map <int, int> loopEndIds;
-    int loopIds_count;
+    std::unordered_set<int> ids_seen;
     
     std::unordered_map<int, Event*> contexts;
     std::unordered_map<int, std::unordered_set<Event*>> contextMap; // idx in the Log, not lineNum
