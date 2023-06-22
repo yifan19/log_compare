@@ -1,0 +1,18 @@
+RULE ID 0
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.java
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT ENTRY
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=0," + ($numOfReplicas))
+ENDRULE
+
+RULE ID 1
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.java
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT LINE 533
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=1," + "loop=1,")
+ENDRULE
+

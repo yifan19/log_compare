@@ -72,6 +72,9 @@ std::pair<Log*, std::vector<Event>> logCompare(Log* failed, std::vector<Log*> su
 
 int main (int argc, char *argv[]){
     std::string filename = "step1a2.log";
+    if(argc>=2){
+        filename = argv[1];
+    } //"";
     std::ifstream file1("logs/"+filename);
     if (!file1.is_open()) {
         std::cout << "Failed to open logs." << std::endl;
