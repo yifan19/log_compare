@@ -229,6 +229,12 @@ while True:
             result = subprocess.run([compare, os.path.relpath(log)], capture_output=True, text=True)
             print("Output:", result.stdout)
             print( result.stderr)
+            os.remove(log)
+        btm_files = glob.glob(os.path.join(btm_path, "current_b*"))
+        for btm in btm_files:
+            print("remove", btm)
+            os.remove(btm)
+        os.chdir("/home/ubuntu/log/log_compare/logs/code")
         print('\nWaiting for instructions\n')
         # break
     time.sleep(2)  
