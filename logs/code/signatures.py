@@ -24,6 +24,9 @@ function_classes[func] = 'org.apache.hadoop.hdfs.server.blockmanagement.Datanode
 func = '<init>(java.lang.String,java.lang.String,java.lang.String,int,int,int,int,long,long,long,long,long,long,long,int,java.lang.String,org.apache.hadoop.hdfs.protocol.DatanodeInfo$AdminStates)'
 function_signatures['DatanodeInfo'] = func
 function_classes[func] = 'org.apache.hadoop.hdfs.protocol.DatanodeInfo'
+func = 'setRemaining(long)'
+function_signatures['setRemaining'] = func
+function_classes[func] = 'org.apache.hadoop.hdfs.protocol.DatanodeInfo'
 
 with open('function_signatures.json', 'w') as f:
     json.dump(function_signatures, f)

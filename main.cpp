@@ -69,13 +69,14 @@ std::pair<Log*, std::vector<Event>> logCompare(Log* failed, std::vector<Log*> su
     // }
     return out; //std::make_pair(max_length, succeeds[max_idx]);
 } 
-
+                                                                                                                        
 int main (int argc, char *argv[]){
-    std::string filename = "step1a2.log";
+    std::string file_path = "logs/step1a2.log";
     if(argc>=2){
-        filename = argv[1];
+        file_path = argv[1];
     } //"";
-    std::ifstream file1("logs/"+filename);
+    std::ifstream file1(file_path);
+    std::cout << "file path: " << file_path << std::endl;
     if (!file1.is_open()) {
         std::cout << "Failed to open logs." << std::endl;
     }
@@ -90,13 +91,13 @@ int main (int argc, char *argv[]){
     // std::unordered_map <int, int> loopStartIds = {{4, 1},{1, 2}}; std::unordered_map <int, int> parentLoop = {{1,-1}, {2,1}};
     
     std::vector<Log*> logs; // 
-    
+    std::cout << "HERE" << std::endl;
     std::unordered_map<int, Log*> threads;
     int num_fails = 0;
     int num_threads = 0; bool fail_encountered = false;
     while(std::getline(file1, line)){
         bool newLog = false; int thread = -1; bool fail = false;
-        
+        std::cout << "line: " << line << std::endl; 
         std::string::size_type temp_id = line.find("IPC Server handler ");
         if(temp_id != std::string::npos){ // deal with thread
             std::stringstream ss (line.substr(temp_id+19));

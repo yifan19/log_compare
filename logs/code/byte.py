@@ -7,9 +7,12 @@ import subprocess
 import os
 import glob
 
-input_path = 'instructions.txt'
+input_path = '/home/ubuntu/instructions.txt'
 bash_path = '/home/ubuntu/hadoop/run_c.sh'
-log_path = '/home/ubuntu/instrument_py'
+log_path = '/home/ubuntu/log/log_compare/logs'
+py_path = '/home/ubuntu/log/log_compare/logs/code'
+btm_path = '/home/ubuntu/log/log_compare/logs/plans'
+compare = '/home/ubuntu/log/log_compare/compare'
 
 function_signatures = {}
 with open('function_signatures.json', 'r') as f:
@@ -187,7 +190,7 @@ ENDRULE
             rule = to_byteman_rule(p)
             rules.append(rule)
             print(rule)
-        file_name = './plans/current_b' + branch_id + '.btm'
+        file_name = btm_path + '/current_b' + branch_id + '.btm'
         with open(file_name, 'w') as f:
             for rule in rules:
                 f.write(rule)
@@ -216,11 +219,16 @@ while True:
         process_command(content)
         os.chdir("/home/ubuntu/hadoop/")
         subprocess.run(['bash', bash_path])
-        os.chdir("/home/ubuntu/instrument_py/")
-        log_files = glob.glob(os.path.join(log_path, "*.log"))
+        os.chdir('/home/ubuntu/log/log_compare/')
+        log_files = glob.glob(os.path.join(log_path, "current_b*"))
         for log in log_files:
             print(log)
-        # result = subprocess.run([cpp_program, log_file], capture_output=True, text=True)
+            with open(log, 'r') as f:
+                lines = f.read()
+                print(lines)
+            result = subprocess.run([compare, os.path.relpath(log)], capture_output=True, text=True)
+            print("Output:", result.stdout)
+            print( result.stderr)
         print('\nWaiting for instructions\n')
         # break
     time.sleep(2)  
