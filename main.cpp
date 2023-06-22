@@ -11,6 +11,10 @@
 #include "Event.hpp"
 #include "Log.hpp"
 #include "globals.hpp"
+#define DIV 0
+#define TRACE 1
+#define ARG 2
+
 std::string chooseRandom(int init, const std::vector<bool> &cond){ // L1
     std::stringstream log; log << std::boolalpha;
     int val = init; // L2
@@ -70,34 +74,78 @@ std::pair<Log*, std::vector<Event>> logCompare(Log* failed, std::vector<Log*> su
     return out; //std::make_pair(max_length, succeeds[max_idx]);
 } 
                                                                                                                         
-int main (int argc, char *argv[]){
+int main (int argc, char *argv[]){    ////////////////////////////////////////////////////////////////////
     std::string file_path = "logs/step1a2.log";
+    int what_to_do = DIV;
     if(argc>=2){
         file_path = argv[1];
     } //"";
+    if(argc>=3){
+        std::stringstream ss (argv[2]);
+        ss >> what_to_do;
+        std::cout << "to do: " << what_to_do << std::endl;
+    }
     std::ifstream file1(file_path);
     std::cout << "file path: " << file_path << std::endl;
     if (!file1.is_open()) {
         std::cout << "Failed to open logs." << std::endl;
     }
 
-    std::string newLogIndicator = "Method Entry";
-    std::string failureIndicator = "BlockManager$ReplicationMonitor";
     
+    std::string failureIndicator = "BlockManager$ReplicationMonitor";
+    std::string newLogIndicator = "Method Entry";
+    std::string arg_value = "-1";
+    if(argc>=4){
+        if(what_to_do == ARG){
+            arg_value = (argv[3]);
+            std::cout << "Arg value: " << arg_value << std::endl;
+        }
+        else{
+            failureIndicator = argv[3];
+        }
+    } //"";
+    if(argc>=5){
+        newLogIndicator = argv[4];
+    }
     
     std::string line; 
     // std::unordered_map<int, int> loopStarts; //= {{4, 0}, {1, 0}};
     // std::unordered_map <int, int> loopIds = {{4, 1},{3, 1},{2, 1},{1, 2}, {0, 2}};
     // std::unordered_map <int, int> loopStartIds = {{4, 1},{1, 2}}; std::unordered_map <int, int> parentLoop = {{1,-1}, {2,1}};
+    if(what_to_do == TRACE){
+        std::cout << "finding caller of function " << failureIndicator << ": " << std::endl;
+        bool next = false; bool found = false;
+        std::string::size_type temp_id;
+        while(std::getline(file1, line)){
+            if(next){
+                line = line.substr(5 );
+                temp_id = line.find("]");
+                if(temp_id != std::string::npos){
+                    line = line.substr(0, temp_id);
+                }
+                std::cout << "caller of " << failureIndicator << ": " << std::endl;
+                std::cout << line << std::endl;
+                next = false; found = true;
+            }
+            temp_id = line.find(failureIndicator);
+            if(temp_id != std::string::npos){
+                next = true;
+            }
+        }
+        if(!found){
+            std::cout << "Did not find caller of " << failureIndicator << std::endl;
+        }
+        return 0;
+    }
     
     std::vector<Log*> logs; // 
-    std::cout << "HERE" << std::endl;
+    // std::cout << "HERE" << std::endl;
     std::unordered_map<int, Log*> threads;
     int num_fails = 0;
     int num_threads = 0; bool fail_encountered = false;
     while(std::getline(file1, line)){
         bool newLog = false; int thread = -1; bool fail = false;
-        std::cout << "line: " << line << std::endl; 
+        std::cout << line << std::endl; 
         std::string::size_type temp_id = line.find("IPC Server handler ");
         if(temp_id != std::string::npos){ // deal with thread
             std::stringstream ss (line.substr(temp_id+19));
@@ -154,7 +202,7 @@ int main (int argc, char *argv[]){
     }
     
     if(fails.size()==0){
-        std::cout << "no failed log found " << std::endl;
+        std::cout << "did not find log for failure runs" << std::endl;
         return 1;
     }
     int k = 0;
@@ -164,45 +212,65 @@ int main (int argc, char *argv[]){
 //    std::cout << "good run: " << std::endl;
 //    succeeds[1]->printContexts();
     // fails[k]->printLoops();
-    auto result = logCompare(fails[k], succeeds);
-    int length = result.second.size();
-    std::cout << "length: " << (length) << ". ";
-    for(int i=0; i<result.second.size(); i++){
-        std::cout << result.second[i].idx << ":ID=" << result.second[i].lineNum << " ";
-    }std::cout << std::endl;
-    
-//     auto result = logCompare(fails[k], succeeds);
-//      //std::cout << max_idx ; // << " L" << fails[2]->getEvent(max_idx)->lineNum << std::endl;
-    
-    // fails[k]->printAll();
-    std::cout << "prefix: " << std::endl;
-    for(int i=0; i<length; i++){
-        result.second[i].print();
-    } std::cout << std::endl;
-    if( length==fails[k]->parsed.size() && length==result.first->parsed.size() ){
-          std::cout << "no divergence" << std::endl;
-    }else{
+    std::cout << std::endl;
+    if(what_to_do == DIV){
+        std::cout << "comparing logs" << std::endl;
+        auto result = logCompare(fails[k], succeeds);
+        int length = result.second.size();
+        std::cout << "length: " << (length) << ". ";
+        std::cout << "prefix: " << std::endl;
+        for(int i=0; i<result.second.size(); i++){
+            std::cout << result.second[i].idx << ":ID=" << result.second[i].lineNum << " ";
+        }std::cout << std::endl << std::endl;
         
-        std::cout << "div at: " ; 
-        if(length==0){ // div at the beginning
-            if(fails[k]->parsed.size()>1 && fails[k]->getEvent(0)->lineNum==-1){
-              std::cout << "HERE" << std::endl;
-              fails[k]->getEvent(1)->print();
-            }else{
-                fails[k]->getEvent(0)->print();
-            }
-        }else if(length==1){
-            if(fails[k]->parsed.size()>1 && result.second.back().lineNum==-1){ // the first one is entry
-                fails[k]->getEvent(1)->print(); // print the first one after the entry
-            }else{
+        if( length==fails[k]->parsed.size() && length==result.first->parsed.size() ){
+              std::cout << "No divergence" << std::endl;
+        }else{
+
+            std::cout << "Diverge at: " ; 
+            if(length==0){ // div at the beginning
+                if(fails[k]->parsed.size()>1 && fails[k]->getEvent(0)->lineNum==-1){
+                  std::cout << "HERE" << std::endl;
+                  fails[k]->getEvent(1)->print();
+                }else{
+                    fails[k]->getEvent(0)->print();
+                }
+            }else if(length==1){
+                if(fails[k]->parsed.size()>1 && result.second.back().lineNum==-1){ // the first one is entry
+                    fails[k]->getEvent(1)->print(); // print the first one after the entry
+                }else{
+                    result.second.back().print();
+                }
+            }else {
                 result.second.back().print();
             }
-        }else {
-            result.second.back().print();
+            std::cout << std::endl;
         }
-        std::cout << std::endl;
+    }else if(what_to_do == ARG){
+        std::cout << "searching for argument value " << arg_value << std::endl;
+        bool found = false;
+        for(Log* l : logs){
+            if(l==nullptr){
+                std::cout << "null" << std::endl;
+                continue;
+            }
+            for(Event* e : l->parsed){
+                if(e != nullptr && e->value==arg_value){
+                    std::cout << "first log with value " << arg_value << ": " << std::endl;
+                    e->print(); 
+                    std::cout << std::endl;
+                    found = true;
+                    break;
+                }
+            }
+            if(found){
+                break;
+            }
+        }
+        if(!found){
+            std::cout << "Did not find logs with argument value " << arg_value << std::endl;
+        }
     }
-
 //    fails[k]->printLoops();
 //    for(auto it : fails[k]->loopStartIds){
 //        std::cout << "{" << it.first << ", " << it.second << "} ";
