@@ -130,7 +130,7 @@ def to_byteman_rule(instruction):
     print_statement += ')'
 
     if rule_type == "stack_trace":
-        print_statement = 'traceln("[BM][" + Thread.currentThread().getStackTrace()[5] + "]");\n   traceln("[BM][" + Thread.currentThread().getStackTrace()[6] + "]")'
+        print_statement = 'traceln("[BM][" + Thread.currentThread().getStackTrace()[5] + "][Stack Trace]");\n   traceln("[BM][" + Thread.currentThread().getStackTrace()[6] + "][Stack Trace]")'
 
     rule = f'''RULE ID {rule_id}
 CLASS {class_name}
@@ -151,7 +151,7 @@ def process_command(content):
     branches = content.replace("Branch ID", "[!!]Branch ID").split("[!!]")
     print("\n\n////////////////////////\n\n")
     i = 0
-    branch_type = 
+    branch_type = 0 # DIV
     for b in branches:
         print("THERE")
         instructions = b.split("\n\n")
@@ -176,6 +176,9 @@ def process_command(content):
             p = parse_instruction(instruction)
             if p is None: continue
             parsed.append(p)
+            if p["type"] == "stack_trace":
+                branch_type = 1
+            
             # print(p)
             methods.add(p["function"])
 

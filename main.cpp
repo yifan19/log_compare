@@ -116,7 +116,14 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
         std::cout << "finding caller of function " << failureIndicator << ": " << std::endl;
         bool next = false; bool found = false;
         std::string::size_type temp_id;
+        std::cout << "Indicator " << failureIndicator << std::endl;
         while(std::getline(file1, line)){
+            temp_id = line.find("Stack Trace");
+            if(temp_id == std::string::npos){
+                next = false;
+                continue;
+            }
+            std::cout << "line: " << line << std::endl;
             if(next){
                 line = line.substr(5 );
                 temp_id = line.find("]");
@@ -130,6 +137,8 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
             temp_id = line.find(failureIndicator);
             if(temp_id != std::string::npos){
                 next = true;
+            }else{
+                next = false;
             }
         }
         if(!found){
@@ -146,7 +155,11 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
     while(std::getline(file1, line)){
         bool newLog = false; int thread = -1; bool fail = false;
         std::cout << line << std::endl; 
-        std::string::size_type temp_id = line.find("IPC Server handler ");
+        std::string::size_type temp_id = line.find("Stack Trace");
+        if(temp_id != std::string::npos){
+            continue;
+        }
+        temp_id = line.find("IPC Server handler ");
         if(temp_id != std::string::npos){ // deal with thread
             std::stringstream ss (line.substr(temp_id+19));
             ss >> thread; // thread number
