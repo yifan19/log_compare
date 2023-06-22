@@ -1,15 +1,15 @@
-RULE entering DatanodeInfo
+RULE entering setRemaining
 CLASS org.apache.hadoop.hdfs.protocol.DatanodeInfo
-METHOD <init>(java.lang.String,java.lang.String,java.lang.String,int,int,int,int,long,long,long,long,long,long,long,int,java.lang.String,org.apache.hadoop.hdfs.protocol.DatanodeInfo$AdminStates)
+METHOD setRemaining(long)
 COMPILE
 AT ENTRY
 IF true
 DO traceStack("[BM][" + Thread.currentThread().getName() + "][Method Entry]");
 ENDRULE
 
-RULE entering setRemaining
+RULE entering DatanodeInfo
 CLASS org.apache.hadoop.hdfs.protocol.DatanodeInfo
-METHOD setRemaining(long)
+METHOD <init>(java.lang.String,java.lang.String,java.lang.String,int,int,int,int,long,long,long,long,long,long,long,int,java.lang.String,org.apache.hadoop.hdfs.protocol.DatanodeInfo$AdminStates)
 COMPILE
 AT ENTRY
 IF true

@@ -150,12 +150,22 @@ def process_command(content):
     print(content)
     branches = content.replace("Branch ID", "[!!]Branch ID").split("[!!]")
     print("\n\n////////////////////////\n\n")
+    i = 0
+    branch_type = 
     for b in branches:
+        print("THERE")
         instructions = b.split("\n\n")
         branch_match = re.search(r"Branch ID: (\d+)", instructions[0])
+        print(b)
+        print("!!!!!!!")
         if not branch_match:
-            continue
-        branch_id = branch_match.group(1)
+            if i != 0:
+                continue
+            else:
+                branch_id = "0"
+        else:
+            branch_id = branch_match.group(1)
+        i += 1
         print("Branch ID is", branch_id, "///////")
         parsed = []
         methods = set()
@@ -191,10 +201,13 @@ ENDRULE
             rules.append(rule)
             print(rule)
         file_name = btm_path + '/current_b' + branch_id + '.btm'
+        print("write to:", file_name)
         with open(file_name, 'w') as f:
             for rule in rules:
+                print(rule)
                 f.write(rule)
                 f.write('\n')
+        
 
 
 def find_between(file_path, start_pos):
@@ -210,35 +223,40 @@ def find_between(file_path, start_pos):
                 break
     return None, start_pos
 
-start_pos = 0
-while True:
-    result, start_pos = find_between(input_path, start_pos)
-    if result is not None:
-        content = ''.join(result)
-        print(content)
-        process_command(content)
-        os.chdir("/home/ubuntu/hadoop/")
-        subprocess.run(['bash', bash_path])
-        os.chdir('/home/ubuntu/log/log_compare/')
-        log_files = glob.glob(os.path.join(log_path, "current_b*"))
-        for log in log_files:
-            print(log)
-            with open(log, 'r') as f:
-                lines = f.read()
-                print(lines)
-            result = subprocess.run([compare, os.path.relpath(log)], capture_output=True, text=True)
-            print("Output:", result.stdout)
-            print( result.stderr)
-            os.remove(log)
-        btm_files = glob.glob(os.path.join(btm_path, "current_b*"))
-        for btm in btm_files:
-            print("remove", btm)
-            os.remove(btm)
-        os.chdir("/home/ubuntu/log/log_compare/logs/code")
-        print('\nWaiting for instructions\n')
-        # break
-    time.sleep(2)  
+def run():
+    start_pos = 0
+    while True:
+        result, start_pos = find_between(input_path, start_pos)
+        if result is not None:
+            content = ''.join(result)
+            print(content)
+            process_command(content)
+            os.chdir("/home/ubuntu/hadoop/")
+            subprocess.run(['bash', bash_path])
+            print("bash done")
+            os.chdir('/home/ubuntu/log/log_compare/')
+            log_files = glob.glob(os.path.join(log_path, "current_b*"))
+            for (root, dirs, files) in os.walk(log_path):
+                print(files)
+            for log in log_files:
+                print(log)
+                # with open(log, 'r') as f:
+                #    lines = f.read()
+                #    print(lines)
+                result = subprocess.run([compare, log], capture_output=True, text=True)
+                print("Output:", result.stdout)
+                print( result.stderr)
+                # os.remove(log)
+            btm_files = glob.glob(os.path.join(btm_path, "current_b*"))
+            for btm in btm_files:
+                print("remove", btm)
+                # os.remove(btm)
+            os.chdir("/home/ubuntu/log/log_compare/logs/code")
+            print('\nWaiting for instructions\n')
+            # break
+        time.sleep(2)  
 
+run()
 
 #process_command('instructions.txt')
 

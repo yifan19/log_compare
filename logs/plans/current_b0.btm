@@ -1,15 +1,15 @@
-RULE entering chooseLocalStorage
+RULE entering chooseRandom
 CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
-METHOD chooseLocalStorage(org.apache.hadoop.net.Node,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType,boolean)
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
 COMPILE
 AT ENTRY
 IF true
 DO traceStack("[BM][" + Thread.currentThread().getName() + "][Method Entry]");
 ENDRULE
 
-RULE entering chooseRandom
+RULE entering chooseLocalStorage
 CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
-METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+METHOD chooseLocalStorage(org.apache.hadoop.net.Node,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType,boolean)
 COMPILE
 AT ENTRY
 IF true
