@@ -232,10 +232,10 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
         int length = result.second.size();
         std::cout << "length: " << (length) << ". ";
         std::cout << "______" << std::endl;
-        std::cout << "prefix: " << std::endl;
-        for(int i=0; i<result.second.size(); i++){
-            std::cout << result.second[i].idx << ":ID=" << result.second[i].lineNum << " ";
-        }std::cout << std::endl << std::endl;
+        // std::cout << "prefix: " << std::endl;
+        // for(int i=0; i<result.second.size(); i++){
+        //     std::cout << result.second[i].idx << ":ID=" << result.second[i].lineNum << " ";
+        // }std::cout << std::endl;
         
         if( length==fails[k]->parsed.size() && length==result.first->parsed.size() ){
               std::cout << "No divergence" << std::endl;

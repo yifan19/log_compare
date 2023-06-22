@@ -1,38 +1,11 @@
-RULE entering chooseRandom
-CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
-METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
-COMPILE
-AT ENTRY
-IF true
-DO traceStack("[BM][" + Thread.currentThread().getName() + "][Method Entry]");
-ENDRULE
-
-RULE entering chooseLocalStorage
-CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
-METHOD chooseLocalStorage(org.apache.hadoop.net.Node,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType,boolean)
-COMPILE
-AT ENTRY
-IF true
-DO traceStack("[BM][" + Thread.currentThread().getName() + "][Method Entry]");
-ENDRULE
-
-RULE entering addIfIsGoodTarget
-CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
-METHOD addIfIsGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,java.util.Set,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
-COMPILE
-AT ENTRY
-IF true
-DO traceStack("[BM][" + Thread.currentThread().getName() + "][Method Entry]");
-ENDRULE
-
 RULE ID stack trace
 CLASS BlockPlacementPolicyDefault
 METHOD addIfIsGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,java.util.Set,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
 COMPILE
 AT ENTRY
 IF true
-DO traceln("[BM][" + Thread.currentThread().getStackTrace()[5] + "]");
-   traceln("[BM][" + Thread.currentThread().getStackTrace()[6] + "]")
+DO traceln("[BM][" + Thread.currentThread().getStackTrace()[5] + "][Stack Trace]");
+   traceln("[BM][" + Thread.currentThread().getStackTrace()[6] + "][Stack Trace]")
 ENDRULE
 
 RULE ID 0

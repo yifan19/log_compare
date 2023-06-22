@@ -151,11 +151,9 @@ def process_command(content):
     branches = content.replace("Branch ID", "[!!]Branch ID").split("[!!]")
     print("\n\n////////////////////////\n\n")
     i = 0
-    
+    branch_type = 0 # DIV
     b_types = {}
-    b_rules = {}
     for b in branches:
-        branch_type = 0 # DIV
         print("THERE")
         instructions = b.split("\n\n")
         branch_match = re.search(r"Branch ID: (\d+)", instructions[0])
@@ -215,8 +213,8 @@ ENDRULE
                 f.write(rule)
                 f.write('\n')
         b_types[branch_id] = branch_type
-        b_rules[branch_id] = parsed
-    return b_rules, b_types
+    print("branch types:", b_types)
+    return b_types
 
 
 def find_between(file_path, start_pos):
@@ -232,58 +230,30 @@ def find_between(file_path, start_pos):
                 break
     return None, start_pos
 
-def parse_results(results):
-    for id in results.keys():
-        print("Branch ID =", id)
-        # print(results[id].stdout)
-        out = results[id].stdout.partition("______")[2]
-        print(out, '\n')
-
 def run():
     start_pos = 0
-    print('\nWaiting for instructions\n')
     while True:
         result, start_pos = find_between(input_path, start_pos)
         if result is not None:
             content = ''.join(result)
             print(content)
-            b_rules, b_types = process_command(content)
+            b_types = process_command(content)
             os.chdir("/home/ubuntu/hadoop/")
             subprocess.run(['bash', bash_path])
             print("bash done")
             os.chdir('/home/ubuntu/log/log_compare/')
             log_files = glob.glob(os.path.join(log_path, "current_b*"))
-            results = {}
+            for (root, dirs, files) in os.walk(log_path):
+                print(files)
             for log in log_files:
                 print(log)
                 # with open(log, 'r') as f:
                 #    lines = f.read()
                 #    print(lines)
-                branch_id = re.search(r"current_b(\d+).log", log).group(1)
-                print("///////////////////////////////////////////////////")
+                match = re.search(r"current_b(\d+).log", log)
+                branch_id = match.group(1)
                 print("B id:", branch_id)
-                branch_type = b_types[branch_id]
-                parsed = b_rules[branch_id]
-
-                # print("branch types:", b_types)
-                # print("rules ", b_rules)
-                # print("parsed", parsed)
-                
-                if branch_type == 0:
-                    result = subprocess.run([compare, log, '0'], capture_output=True, text=True)
-                    results[branch_id] = result
-                elif branch_type == 1:
-                    function = ''
-                    for p in parsed:
-                        print("p: " , p)
-                        print(p["type"])
-                        if p["type"] == 'stack_trace':
-                            function = p["function"]
-                            result = subprocess.run([compare, log, '1', function], capture_output=True, text=True)
-                            results[branch_id] = result
-                            break
-                    if function == '':
-                        print("panick")
+                result = subprocess.run([compare, log], capture_output=True, text=True)
                 print("Output:", result.stdout)
                 print( result.stderr)
                 # os.remove(log)
@@ -292,8 +262,6 @@ def run():
                 print("remove", btm)
                 # os.remove(btm)
             os.chdir("/home/ubuntu/log/log_compare/logs/code")
-            print("------")
-            parse_results(results)
             print('\nWaiting for instructions\n')
             # break
         time.sleep(2)  
