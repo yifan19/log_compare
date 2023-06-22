@@ -113,24 +113,24 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
     // std::unordered_map <int, int> loopIds = {{4, 1},{3, 1},{2, 1},{1, 2}, {0, 2}};
     // std::unordered_map <int, int> loopStartIds = {{4, 1},{1, 2}}; std::unordered_map <int, int> parentLoop = {{1,-1}, {2,1}};
     if(what_to_do == TRACE){
-        std::cout << "finding caller of function " << failureIndicator << ": " << std::endl;
+        std::cout << "finding callers of function " << failureIndicator << ": " << std::endl;
         bool next = false; bool found = false;
         std::string::size_type temp_id;
-        std::cout << "Indicator " << failureIndicator << std::endl;
+        std::cout << "______" << std::endl;
         while(std::getline(file1, line)){
             temp_id = line.find("Stack Trace");
             if(temp_id == std::string::npos){
                 next = false;
                 continue;
             }
-            std::cout << "line: " << line << std::endl;
+            // std::cout << "line: " << line << std::endl;
             if(next){
                 line = line.substr(5 );
                 temp_id = line.find("]");
                 if(temp_id != std::string::npos){
                     line = line.substr(0, temp_id);
                 }
-                std::cout << "caller of " << failureIndicator << ": " << std::endl;
+                // std::cout << "caller of " << failureIndicator << ": " << std::endl;
                 std::cout << line << std::endl;
                 next = false; found = true;
             }
@@ -231,6 +231,7 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
         auto result = logCompare(fails[k], succeeds);
         int length = result.second.size();
         std::cout << "length: " << (length) << ". ";
+        std::cout << "______" << std::endl;
         std::cout << "prefix: " << std::endl;
         for(int i=0; i<result.second.size(); i++){
             std::cout << result.second[i].idx << ":ID=" << result.second[i].lineNum << " ";
@@ -262,6 +263,7 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
     }else if(what_to_do == ARG){
         std::cout << "searching for argument value " << arg_value << std::endl;
         bool found = false;
+        std::cout << "______" << std::endl;
         for(Log* l : logs){
             if(l==nullptr){
                 std::cout << "null" << std::endl;
