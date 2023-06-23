@@ -97,6 +97,15 @@ def parse_instruction(instruction):
             "loop": False
         }
         return result
+    elif "Accessing field member" in instruction:
+        class_match = re.search(r"Accessing field member of a class(.+). So print variable", instruction)
+        result = {
+            "id": "access field",
+            "type": "print_var",
+            "class": function_match.group(1),
+            "loop": False
+        }
+        return result
 
     return None
 
@@ -142,7 +151,31 @@ DO {print_statement}
 ENDRULE
 '''
     return rule
-
+def print_var(instructions, p0):
+    parsed = []
+    instructions = instructions[1:]
+    for instruction in instructions:
+        instruction = instruction.strip("\n")
+        p = parse_instruction(instruction)
+        if p is None:
+            continue
+        parsed.append(p) 
+    rules  = []
+    for p in parsed:
+        rule = to_byteman_rule(p)
+        rules.append(rule)
+        print(rule)
+    '''file_name = btm_path + '/current_b' + branch_id + '.btm'
+    print("write to:", file_name)
+    with open(file_name, 'w') as f:
+        for rule in rules:
+            print(rule)
+            f.write(rule)
+            f.write('\n')
+    b_types[branch_id] = branch_type
+    b_rules[branch_id] = parsed
+    '''
+    
 def process_command(content):
     match = re.search(r'(Branch ID: )?(.*?)(?=What is the ID to continue|$)', content, re.DOTALL)
     if match:
@@ -179,11 +212,16 @@ def process_command(content):
             p = parse_instruction(instruction)
             if p is None:
                 continue
-            parsed.append(p)
+            if p["type"] == "print_var":
+                branch_type = 1
+                print_var(instructions, p)
+                break
+            parsed.append(p) # do not append if is print_var
             methods.add(p["function"])
             if p["type"] == "stack_trace":
                 branch_type = 1
                 break
+            
             # print(p)
 
         rules = []
