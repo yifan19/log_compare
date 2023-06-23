@@ -1,30 +1,17 @@
-[BM][IPC Server handler 2 on 42293]ID=0,134217728
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java)][Stack Trace]
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseLocalStorage(BlockPlacementPolicyDefault.java:363)][Stack Trace]
-[BM][IPC Server handler 2 on 42293]ID=1,134217728
-[BM][IPC Server handler 2 on 42293]ID=1,134217728
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java)][Stack Trace]
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:525)][Stack Trace]
-[BM][IPC Server handler 2 on 42293]ID=1,134217728
-[BM][IPC Server handler 2 on 42293]ID=1,134217728
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java)][Stack Trace]
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:525)][Stack Trace]
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@3f6f6701]ID=1,9223372036854775807
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java)][Stack Trace]
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:525)][Stack Trace]
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java)][Stack Trace]
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:525)][Stack Trace]
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java)][Stack Trace]
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:525)][Stack Trace]
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java)][Stack Trace]
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:525)][Stack Trace]
-[BM][IPC Server handler 6 on 42293][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor.rollBlocksScheduled(DatanodeDescriptor.java:-1)
-[BM][IPC Server handler 5 on 42293][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor.rollBlocksScheduled(DatanodeDescriptor.java:-1)
-[BM][IPC Server handler 7 on 42293][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor.rollBlocksScheduled(DatanodeDescriptor.java:-1)
-[BM][IPC Server handler 8 on 42293][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor.rollBlocksScheduled(DatanodeDescriptor.java:-1)
-[BM][IPC Server handler 9 on 42293][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor.rollBlocksScheduled(DatanodeDescriptor.java:-1)
-[BM][IPC Server handler 2 on 42293][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor.rollBlocksScheduled(DatanodeDescriptor.java:-1)
-[BM][IPC Server handler 6 on 42293][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor.rollBlocksScheduled(DatanodeDescriptor.java:-1)
-[BM][IPC Server handler 5 on 42293][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor.rollBlocksScheduled(DatanodeDescriptor.java:-1)
-[BM][IPC Server handler 7 on 42293][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor.rollBlocksScheduled(DatanodeDescriptor.java:-1)
-[BM][IPC Server handler 8 on 42293][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor.rollBlocksScheduled(DatanodeDescriptor.java:-1)
+[BM][IPC Server handler 0 on 46341][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 0 on 46341]ID=0,1
+[BM][IPC Server handler 0 on 46341][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 0 on 46341]ID=0,1
+[BM][IPC Server handler 0 on 46341]ID=1,loop=1,
+[BM][IPC Server handler 0 on 46341][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 0 on 46341]ID=0,1
+[BM][IPC Server handler 0 on 46341][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][IPC Server handler 0 on 46341]ID=0,1
+[BM][IPC Server handler 0 on 46341]ID=1,loop=1,
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@742ff096][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:-1)
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@742ff096]ID=0,2
+[BM][IPC Server handler 0 on 46341][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor.rollBlocksScheduled(DatanodeDescriptor.java:-1)
+[BM][IPC Server handler 5 on 46341][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor.rollBlocksScheduled(DatanodeDescriptor.java:-1)
+[BM][IPC Server handler 6 on 46341][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor.rollBlocksScheduled(DatanodeDescriptor.java:-1)
+[BM][IPC Server handler 7 on 46341][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor.rollBlocksScheduled(DatanodeDescriptor.java:-1)
+[BM][IPC Server handler 9 on 46341][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor.rollBlocksScheduled(DatanodeDescriptor.java:-1)

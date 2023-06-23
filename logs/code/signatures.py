@@ -28,6 +28,23 @@ func = 'setRemaining(long)'
 function_signatures['setRemaining'] = func
 function_classes[func] = 'org.apache.hadoop.hdfs.protocol.DatanodeInfo'
 
+func = 'chooseLocalStorage(org.apache.hadoop.net.Node,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType,boolean)'
+function_signatures['chooseLocalStorage'] = func
+function_classes[func] = 'org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault'
+func = 'chooseTarget(int,org.apache.hadoop.net.Node,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)'
+function_signatures['chooseTarget'] = func
+function_classes[func] = 'org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault'
+func = 'chooseTargets(org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicy,java.util.Set)'
+function_signatures['chooseTargets'] = func
+function_classes[func] = 'org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationWork'
+
+func = 'set(long,long,long)'
+function_signatures['set'] = func
+function_classes[func] = 'org.apache.hadoop.hdfs.protocol.Block'
+func = 'setNumBytes(long)'
+function_signatures['setNumBytes'] = func
+function_classes[func] = 'org.apache.hadoop.hdfs.protocol.Block'
+
 with open('function_signatures.json', 'w') as f:
     json.dump(function_signatures, f)
 

@@ -9,9 +9,9 @@ import glob
 
 input_path = '/home/ubuntu/instructions.txt'
 bash_path = '/home/ubuntu/hadoop/run_c.sh'
-log_path = '/home/ubuntu/log/log_compare/logs'
+log_path = '/home/ubuntu/log/log_compare/python/logs'
 py_path = '/home/ubuntu/log/log_compare/logs/code'
-btm_path = '/home/ubuntu/log/log_compare/logs/plans'
+btm_path = '/home/ubuntu/log/log_compare/python/plans'
 compare = '/home/ubuntu/log/log_compare/compare'
 
 function_signatures = {}
@@ -177,13 +177,14 @@ def process_command(content):
             # if not instruction.startswith("ID: "):
                 #
             p = parse_instruction(instruction)
-            if p is None: continue
+            if p is None:
+                continue
             parsed.append(p)
+            methods.add(p["function"])
             if p["type"] == "stack_trace":
                 branch_type = 1
-            
+                break
             # print(p)
-            methods.add(p["function"])
 
         rules = []
         if branch_type == 0:
@@ -247,8 +248,16 @@ def run():
         if result is not None:
             content = ''.join(result)
             print(content)
-            b_rules, b_types = process_command(content)
+            for root, dirs, files in os.walk(btm_path, topdown=False):
+                for file in files:
+                    print("removing", file)
+                    os.remove(os.path.join(root, file))
+            b_rules, b_types = process_command(content) # generate btm
             os.chdir("/home/ubuntu/hadoop/")
+            for root, dirs, files in os.walk(log_path, topdown=False):
+                for file in files:
+                    print("removing", file)
+                    os.remove(os.path.join(root, file))
             subprocess.run(['bash', bash_path])
             print("bash done")
             os.chdir('/home/ubuntu/log/log_compare/')

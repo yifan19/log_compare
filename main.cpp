@@ -7,6 +7,7 @@
 #include <vector>
 #include <map>
 #include <unordered_map>
+#include <regex>
 
 #include "Event.hpp"
 #include "Log.hpp"
@@ -76,6 +77,7 @@ std::pair<Log*, std::vector<Event>> logCompare(Log* failed, std::vector<Log*> su
                                                                                                                         
 int main (int argc, char *argv[]){    ////////////////////////////////////////////////////////////////////
     std::string file_path = "logs/step1a2.log";
+    std::string base_path = "/home/ubuntu/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/java/";
     int what_to_do = DIV;
     if(argc>=2){
         file_path = argv[1];
@@ -131,7 +133,37 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
                     line = line.substr(0, temp_id);
                 }
                 // std::cout << "caller of " << failureIndicator << ": " << std::endl;
-                std::cout << line << std::endl;
+                std::regex pattern(R"((.*)\.(.*)\((.*):(\d+)\))");
+                std::smatch match;
+                if (std::regex_search(line, match, pattern) && match.size() > 1) {
+                    std::string src_path = match.str(1);  // Get the class name
+                    std::string method_name = match.str(2);  // Get the method name
+                    std::string file_name = match.str(3);  // Get the file name
+                    int lineNum = std::stoi(match.str(4));  // Get the line number
+                    std::replace(src_path.begin(), src_path.end(), '.', '/');
+                    src_path = base_path + src_path + ".java";
+                    std::cout << "file path: " << src_path << std::endl;
+                    std::cout << "line: " << lineNum << std::endl;
+                    
+                    std::ifstream file(src_path);
+                    std::string src_line;
+                    int numRead = 0;
+                    if (file.is_open()) {
+                        while (std::getline(file, src_line)) {
+                            numRead++;
+                            if (numRead == lineNum) {
+                                std::cout << src_line << std::endl;
+                                break;
+                            }
+                        }
+                        file.close();
+                    } else {
+                        std::cout << "Unable to open file";
+                    }
+                } else {
+                    std::cerr << "No match\n";
+                }
+                 std::cout << line << std::endl;
                 next = false; found = true;
             }
             temp_id = line.find(failureIndicator);
@@ -232,10 +264,10 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
         int length = result.second.size();
         std::cout << "length: " << (length) << ". ";
         std::cout << "______" << std::endl;
-        // std::cout << "prefix: " << std::endl;
-        // for(int i=0; i<result.second.size(); i++){
-        //     std::cout << result.second[i].idx << ":ID=" << result.second[i].lineNum << " ";
-        // }std::cout << std::endl;
+        std::cout << "prefix: " << std::endl;
+        for(int i=0; i<result.second.size(); i++){
+            std::cout << result.second[i].idx << ":ID=" << result.second[i].lineNum << " ";
+        }std::cout << std::endl << std::endl;
         
         if( length==fails[k]->parsed.size() && length==result.first->parsed.size() ){
               std::cout << "No divergence" << std::endl;

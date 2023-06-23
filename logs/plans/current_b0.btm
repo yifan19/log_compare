@@ -1,28 +1,27 @@
-RULE ID stack trace
-CLASS BlockPlacementPolicyDefault
-METHOD addIfIsGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,java.util.Set,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+RULE entering chooseRandom
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
 COMPILE
 AT ENTRY
 IF true
-DO traceln("[BM][" + Thread.currentThread().getStackTrace()[5] + "][Stack Trace]");
-   traceln("[BM][" + Thread.currentThread().getStackTrace()[6] + "][Stack Trace]")
+DO traceStack("[BM][" + Thread.currentThread().getName() + "][Method Entry]");
 ENDRULE
 
 RULE ID 0
 CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
-METHOD chooseLocalStorage(org.apache.hadoop.net.Node,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType,boolean)
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
 COMPILE
 AT ENTRY
 IF true
-DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=0," + ($blocksize))
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=0," + ($numOfReplicas))
 ENDRULE
 
 RULE ID 1
 CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
 METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
 COMPILE
-AT ENTRY
+AT LINE 533
 IF true
-DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=1," + ($blocksize))
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=1," + "loop=1,")
 ENDRULE
 
