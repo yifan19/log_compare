@@ -1,0 +1,18 @@
+RULE entering rollBlocksScheduled
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor
+METHOD rollBlocksScheduled(long)
+COMPILE
+AT ENTRY
+IF true
+DO traceStack("[BM][" + Thread.currentThread().getName() + "][Method Entry]");
+ENDRULE
+
+RULE ID 1
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor
+METHOD rollBlocksScheduled(long)
+COMPILE
+AT LINE 529
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=1,")
+ENDRULE
+

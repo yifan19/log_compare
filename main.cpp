@@ -115,10 +115,11 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
     // std::unordered_map <int, int> loopIds = {{4, 1},{3, 1},{2, 1},{1, 2}, {0, 2}};
     // std::unordered_map <int, int> loopStartIds = {{4, 1},{1, 2}}; std::unordered_map <int, int> parentLoop = {{1,-1}, {2,1}};
     if(what_to_do == TRACE){
+        std::cout << "______" << std::endl;
         std::cout << "finding callers of function " << failureIndicator << ": " << std::endl;
         bool next = false; bool found = false;
         std::string::size_type temp_id;
-        std::cout << "______" << std::endl;
+
         while(std::getline(file1, line)){
             temp_id = line.find("Stack Trace");
             if(temp_id == std::string::npos){
@@ -132,7 +133,7 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
                 if(temp_id != std::string::npos){
                     line = line.substr(0, temp_id);
                 }
-                // std::cout << "caller of " << failureIndicator << ": " << std::endl;
+                std::cout << line << std::endl;
                 std::regex pattern(R"((.*)\.(.*)\((.*):(\d+)\))");
                 std::smatch match;
                 if (std::regex_search(line, match, pattern) && match.size() > 1) {
@@ -142,30 +143,31 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
                     int lineNum = std::stoi(match.str(4));  // Get the line number
                     std::replace(src_path.begin(), src_path.end(), '.', '/');
                     src_path = base_path + src_path + ".java";
-                    std::cout << "file path: " << src_path << std::endl;
-                    std::cout << "line: " << lineNum << std::endl;
+                    // std::cout << "file path: " << src_path << std::endl;
+                    // std::cout << "line: " << lineNum << std::endl;
                     
-                    std::ifstream file(src_path);
-                    std::string src_line;
-                    int numRead = 0;
-                    if (file.is_open()) {
-                        while (std::getline(file, src_line)) {
-                            numRead++;
-                            if (numRead == lineNum) {
-                                std::cout << src_line << std::endl;
-                                break;
-                            }
-                        }
-                        file.close();
-                    } else {
-                        std::cout << "Unable to open file";
-                    }
+                    // std::ifstream file(src_path);
+                    // std::string src_line;
+                    // int numRead = 0;
+                    // if (file.is_open()) {
+                    //     while (std::getline(file, src_line)) {
+                    //         numRead++;
+                    //         if (numRead == lineNum) {
+                    //             std::cout << src_line << std::endl;
+                    //             break;
+                    //         }
+                    //     }
+                    //     file.close();
+                    // } else {
+                    //     std::cout << "Unable to open file";
+                    // }
                 } else {
                     std::cerr << "No match\n";
                 }
-                 std::cout << line << std::endl;
+
                 next = false; found = true;
             }
+
             temp_id = line.find(failureIndicator);
             if(temp_id != std::string::npos){
                 next = true;
@@ -179,7 +181,7 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
         return 0;
     }
     
-    std::vector<Log*> logs; // 
+    std::vector<Log*> logs; //
     // std::cout << "HERE" << std::endl;
     std::unordered_map<int, Log*> threads;
     int num_fails = 0;

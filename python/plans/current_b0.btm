@@ -1,0 +1,10 @@
+RULE ID stack trace
+CLASS BlockPlacementPolicyDefault
+METHOD addIfIsGoodTarget(org.apache.hadoop.hdfs.server.blockmanagement.DatanodeStorageInfo,java.util.Set,long,int,boolean,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT ENTRY
+IF true
+DO traceln("[BM][" + Thread.currentThread().getStackTrace()[5] + "][Stack Trace]");
+   traceln("[BM][" + Thread.currentThread().getStackTrace()[6] + "][Stack Trace]")
+ENDRULE
+
