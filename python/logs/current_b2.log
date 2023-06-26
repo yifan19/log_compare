@@ -1,0 +1,39 @@
+[BM][IPC Server handler 5 on 35635]ID=2,0
+[BM][IPC Server handler 6 on 35635]ID=2,0
+[BM][IPC Server handler 7 on 35635]ID=2,0
+[BM][IPC Server handler 8 on 35635]ID=2,0
+[BM][IPC Server handler 9 on 35635]ID=2,0
+[BM][IPC Server handler 1 on 35635]ID=2,12257820672
+[BM][IPC Server handler 2 on 35635]ID=2,12257820672
+[BM][IPC Server handler 3 on 35635]ID=2,12257820672
+[BM][IPC Server handler 0 on 35635]ID=2,12257820672
+[BM][IPC Server handler 4 on 35635]ID=2,12257816576
+[BM][main]ID=1,12257816576
+[BM][main]ID=1,12257820672
+[BM][main]ID=1,12257820672
+[BM][main]ID=1,12257820672
+[BM][main]ID=1,12257820672
+[BM][main]ID=1,12257816576
+[BM][main]ID=1,12257820672
+[BM][main]ID=1,12257820672
+[BM][main]ID=1,12257820672
+[BM][main]ID=1,12257820672
+[BM][IPC Server handler 4 on 35635][Field Member],134217728
+[BM][IPC Server handler 4 on 35635][Field Member],134217728
+[BM][IPC Server handler 4 on 35635][Field Member],134217728
+[BM][IPC Server handler 4 on 35635][Field Member],134217728
+[BM][Thread-209]ID=1,12257820672
+[BM][Thread-209]ID=1,12257820672
+[BM][Thread-209]ID=1,12257820672
+[BM][DataXceiver for client /127.0.0.1:57898 [Waiting for operation #1]]ID=1,12257820672
+[BM][DataXceiver for client /127.0.0.1:57898 [Waiting for operation #1]]ID=1,12257820672
+[BM][DataXceiver for client /127.0.0.1:57898 [Waiting for operation #1]]ID=1,0
+[BM][DataXceiver for client /127.0.0.1:47516 [Waiting for operation #1]]ID=1,12257820672
+[BM][DataXceiver for client /127.0.0.1:47516 [Waiting for operation #1]]ID=1,0
+[BM][DataXceiver for client /127.0.0.1:45822 [Waiting for operation #1]]ID=1,0
+[BM][IPC Server handler 4 on 35635]ID=2,12257714176
+[BM][IPC Server handler 6 on 35635]ID=2,12257714176
+[BM][IPC Server handler 5 on 35635]ID=2,12257714176
+[BM][IPC Server handler 7 on 35635]ID=2,12257714176
+[BM][IPC Server handler 8 on 35635]ID=2,12257714176
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@1b11171f][Field Member],9223372036854775807

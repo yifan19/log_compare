@@ -1,0 +1,18 @@
+RULE print var chooseRandom: blocksize
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault
+METHOD chooseRandom(int,java.lang.String,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)
+COMPILE
+AT ENTRY
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "][Field Member]," + ($blocksize) )
+ENDRULE
+
+RULE ID 1
+CLASS org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor
+METHOD rollBlocksScheduled(long)
+COMPILE
+AT LINE 529
+IF true
+DO traceln("[BM][" + Thread.currentThread().getName() + "]ID=1,")
+ENDRULE
+

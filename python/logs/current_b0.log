@@ -1,14 +1,20 @@
-[BM][IPC Server handler 2 on 40361][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java:-1)
-[BM][IPC Server handler 2 on 40361]ID=1,
-[BM][IPC Server handler 2 on 40361][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java:-1)
-[BM][IPC Server handler 2 on 40361]ID=1,
-[BM][IPC Server handler 2 on 40361][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java:-1)
-[BM][IPC Server handler 2 on 40361]ID=1,
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4803b726][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java:-1)
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4803b726]ID=0,
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4803b726][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java:-1)
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4803b726]ID=0,
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4803b726][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java:-1)
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4803b726]ID=0,
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4803b726][Method Entry]org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java:-1)
-[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@4803b726]ID=0,
+[BM][IPC Server handler 5 on 42031]ID=0,134217728
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java)][Stack Trace]
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseLocalStorage(BlockPlacementPolicyDefault.java:363)][Stack Trace]
+[BM][IPC Server handler 5 on 42031]ID=1,134217728
+[BM][IPC Server handler 5 on 42031]ID=1,134217728
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java)][Stack Trace]
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:525)][Stack Trace]
+[BM][IPC Server handler 5 on 42031]ID=1,134217728
+[BM][IPC Server handler 5 on 42031]ID=1,134217728
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java)][Stack Trace]
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:525)][Stack Trace]
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationMonitor@3f6f6701]ID=1,9223372036854775807
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java)][Stack Trace]
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:525)][Stack Trace]
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java)][Stack Trace]
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:525)][Stack Trace]
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java)][Stack Trace]
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:525)][Stack Trace]
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.addIfIsGoodTarget(BlockPlacementPolicyDefault.java)][Stack Trace]
+[BM][org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault.chooseRandom(BlockPlacementPolicyDefault.java:525)][Stack Trace]
