@@ -10,7 +10,7 @@ import glob
 input_path = '/home/ubuntu/instructions.txt'
 bash_path = '/home/ubuntu/log/log_compare/python/run.sh'
 log_path = '/home/ubuntu/log/log_compare/python/logs'
-py_path = '/home/ubuntu/log/log_compare/logs/code'
+py_path = '/home/ubuntu/log/log_compare/python'
 btm_path = '/home/ubuntu/log/log_compare/python/plans'
 compare = '/home/ubuntu/log/log_compare/compare'
 
@@ -102,7 +102,7 @@ def parse_instruction(instruction):
         result = {
             "id": "access field",
             "type": "print_var",
-            "class": function_match.group(1),
+            "class": class_match.group(1),
             "loop": False
         }
         return result
@@ -152,29 +152,7 @@ ENDRULE
 '''
     return rule
 def print_var(instructions, p0):
-    parsed = []
-    instructions = instructions[1:]
-    for instruction in instructions:
-        instruction = instruction.strip("\n")
-        p = parse_instruction(instruction)
-        if p is None:
-            continue
-        parsed.append(p) 
-    rules  = []
-    for p in parsed:
-        rule = to_byteman_rule(p)
-        rules.append(rule)
-        print(rule)
-    '''file_name = btm_path + '/current_b' + branch_id + '.btm'
-    print("write to:", file_name)
-    with open(file_name, 'w') as f:
-        for rule in rules:
-            print(rule)
-            f.write(rule)
-            f.write('\n')
-    b_types[branch_id] = branch_type
-    b_rules[branch_id] = parsed
-    '''
+    print("HERE")
     
 def process_command(content):
     match = re.search(r'(Branch ID: )?(.*?)(?=What is the ID to continue|$)', content, re.DOTALL)
@@ -213,9 +191,9 @@ def process_command(content):
             if p is None:
                 continue
             if p["type"] == "print_var":
-                branch_type = 1
+                branch_type = 0
                 print_var(instructions, p)
-                break
+                continue
             parsed.append(p) # do not append if is print_var
             methods.add(p["function"])
             if p["type"] == "stack_trace":
@@ -282,9 +260,9 @@ def run():
     start_pos = 0
     print('\nWaiting for instructions\n')
     while True:
-        result, start_pos = find_between(input_path, start_pos)
-        if result is not None:
-            content = ''.join(result)
+        found, start_pos = find_between(input_path, start_pos)
+        if found is not None:
+            content = ''.join(found)
             print(content)
             for root, dirs, files in os.walk(btm_path, topdown=False):
                 for file in files:
@@ -339,7 +317,6 @@ def run():
             for btm in btm_files:
                 print("remove", btm)
                 # os.remove(btm)
-            os.chdir("/home/ubuntu/log/log_compare/logs/code")
             print("------")
             parse_results(results)
             print('\nWaiting for instructions\n')
