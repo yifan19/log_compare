@@ -7,13 +7,17 @@
       <df name="build">
       </df>
       <df name="logs">
-        <df name="code">
-        </df>
         <df name="plans">
           <df name="testwhole">
           </df>
         </df>
         <in>ID_to_continue</in>
+      </df>
+      <df name="python">
+        <df name="logs">
+        </df>
+        <df name="plans">
+        </df>
       </df>
       <df name="test">
       </df>

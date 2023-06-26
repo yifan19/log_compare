@@ -168,7 +168,7 @@ def get_byteman_field(branch, class_name):
     signature = function_signatures[function]
     class_name = function_classes[signature]
     var = "blocksize"
-    print_statement = f'traceln("[BM][" + Thread.currentThread().getName() + "][Field Member]," + (${var}) )'
+    print_statement = f'traceln("[BM][" + Thread.currentThread().getName() + "][Field Member],ID=-1," + (${var}) )'
     rule = f'''RULE print var {function}: {var}
 CLASS {class_name}
 METHOD {signature}

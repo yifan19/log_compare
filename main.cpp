@@ -16,28 +16,6 @@
 #define TRACE 1
 #define ARG 2
 
-std::string chooseRandom(int init, const std::vector<bool> &cond){ // L1
-    std::stringstream log; log << std::boolalpha;
-    int val = init; // L2
-    log << "L2 " << "val=" << val << " "; // L2 instrument: val
-    int loop = cond.size(); // number of loops
-    
-    for(int i=0; i<loop; i++){ // L3: loop condition
-        log << "L3 " << (i<loop) << " "; // L3 instrument: loop condition
-        log << "L4 " << cond[i] << " "; // L4 instrument: if condition
-        if(cond[i]){ // L4: if condition
-            val--; // L5 
-            log << "L5 " << "val=" << val << " "; // L5 instrument: val change
-        }
-    }
-    log << "L6 " << (val > 0) << " "; // L6 instrument: if condition
-    if(val > 0){ // L6: if condition
-        log << "L7 " << "fail "; // L7 instrument: throw Exception
-    }
-    return log.str();
-}
-
-
 std::pair<Log*, std::vector<Event>> logCompare(Log* failed, std::vector<Log*> succeeds){
     std::vector<Event> prefix; // longest common prefix
     if(succeeds.size()==0) {return std::make_pair(nullptr, prefix);}
@@ -91,6 +69,7 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
     std::cout << "file path: " << file_path << std::endl;
     if (!file1.is_open()) {
         std::cout << "Failed to open logs." << std::endl;
+        return 1;
     }
 
     
@@ -98,13 +77,7 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
     std::string newLogIndicator = "Method Entry";
     std::string arg_value = "-1";
     if(argc>=4){
-        if(what_to_do == ARG){
-            arg_value = (argv[3]);
-            std::cout << "Arg value: " << arg_value << std::endl;
-        }
-        else{
-            failureIndicator = argv[3];
-        }
+        std::cout << "Indicator: " << failureIndicator << std::endl;
     } //"";
     if(argc>=5){
         newLogIndicator = argv[4];
@@ -177,6 +150,51 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
         }
         if(!found){
             std::cout << "Did not find caller of " << failureIndicator << std::endl;
+        }
+        return 0;
+    }
+    else if(what_to_do == ARG){ ///////////////////// VARIABLE //////////////////////////////////
+        std::cout << "searching for argument value " << arg_value << std::endl;
+        bool found = false;
+        std::string arg_value = ""; 
+        std::string::size_type temp_id;
+        Log* log = new Log(); int idx = 0;
+        while(std::getline(file1, line)){
+            log->to_parse.push_back(line);
+            log->parseNextLine();
+            temp_id = line.find("Field Member");
+            if(temp_id != std::string::npos){
+                temp_id = line.find(failureIndicator);
+                if(temp_id != std::string::npos){
+                    Event* e = log->getEvent(idx);
+                    if(e != nullptr) {
+                        arg_value = e->value;
+                        e->loopId = 1;
+                        found = true;
+                    }
+                }
+                
+            }
+            idx++;
+        }
+        if(!found){
+            std::cout << "______" << std::endl;
+            std::cout << "did not find value as target" << std::endl;
+            return 0;
+        }
+        found = false;
+        std::cout << "______" << std::endl;
+        for(Event* e : log->parsed){
+            if(e != nullptr && e->value==arg_value && e->loopId!=1){
+                std::cout << "first log with value " << arg_value << ": " << std::endl;
+                e->print(); 
+                std::cout << std::endl;
+                found = true;
+                break;
+            }
+        }
+        if(!found){
+            std::cout << "Did not find logs with argument value " << arg_value << std::endl;
         }
         return 0;
     }
@@ -260,19 +278,20 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
 //    succeeds[1]->printContexts();
     // fails[k]->printLoops();
     std::cout << std::endl;
-    if(what_to_do == DIV){
+    if(what_to_do == DIV){  ////////////////// DIVERGENCE //////////////////////////////////////////
         std::cout << "comparing logs" << std::endl;
         auto result = logCompare(fails[k], succeeds);
         int length = result.second.size();
         std::cout << "length: " << (length) << ". ";
         std::cout << "______" << std::endl;
-        std::cout << "prefix: " << std::endl;
-        for(int i=0; i<result.second.size(); i++){
-            std::cout << result.second[i].idx << ":ID=" << result.second[i].lineNum << " ";
-        }std::cout << std::endl << std::endl;
-        
+            
         if( length==fails[k]->parsed.size() && length==result.first->parsed.size() ){
+            std::cout << "prefix: " << std::endl;
+            for(int i=0; i<result.second.size(); i++){
+                std::cout << result.second[i].idx << ":ID=" << result.second[i].lineNum << " ";
+            }std::cout << std::endl << std::endl;
               std::cout << "No divergence" << std::endl;
+              
         }else{
 
             std::cout << "Diverge at: " ; 
@@ -293,31 +312,6 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
                 result.second.back().print();
             }
             std::cout << std::endl;
-        }
-    }else if(what_to_do == ARG){
-        std::cout << "searching for argument value " << arg_value << std::endl;
-        bool found = false;
-        std::cout << "______" << std::endl;
-        for(Log* l : logs){
-            if(l==nullptr){
-                std::cout << "null" << std::endl;
-                continue;
-            }
-            for(Event* e : l->parsed){
-                if(e != nullptr && e->value==arg_value){
-                    std::cout << "first log with value " << arg_value << ": " << std::endl;
-                    e->print(); 
-                    std::cout << std::endl;
-                    found = true;
-                    break;
-                }
-            }
-            if(found){
-                break;
-            }
-        }
-        if(!found){
-            std::cout << "Did not find logs with argument value " << arg_value << std::endl;
         }
     }
 //    fails[k]->printLoops();
