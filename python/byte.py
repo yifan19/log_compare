@@ -168,7 +168,7 @@ def get_byteman_field(branch, class_name):
     signature = function_signatures[function]
     class_name = function_classes[signature]
     var = "blocksize"
-    print_statement = f'traceln("[BM][" + Thread.currentThread().getName() + "][Field Member],ID=-1," + (${var}) )'
+    print_statement = f'traceln("[BM][" + Thread.currentThread().getName() + "][Target],ID=-1," + (${var}) )'
     rule = f'''RULE print var {function}: {var}
 CLASS {class_name}
 METHOD {signature}
@@ -267,7 +267,7 @@ def find_between(file_path, start_pos):
         lines = f.readlines()
         new_start_pos = f.tell()
         for i in reversed(range(len(lines))):
-            if 'What is the ID to continue' in lines[i]:
+            if re.search(r"What is the (.+) to continue", lines[i]):
                 for j in reversed(range(i)):
                     if 'instrumentation required' in lines[j]:
                         return lines[j:i+1], new_start_pos

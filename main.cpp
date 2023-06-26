@@ -162,7 +162,7 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
         while(std::getline(file1, line)){
             log->to_parse.push_back(line);
             log->parseNextLine();
-            temp_id = line.find("Field Member");
+            temp_id = line.find("Target");
             if(temp_id != std::string::npos){
                 temp_id = line.find(failureIndicator);
                 if(temp_id != std::string::npos){
