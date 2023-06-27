@@ -29,5 +29,5 @@ public:
     void print();
 };
 
-
+std::string compare_trace(Trace* t1, Trace* t2);
 #endif // TRACE_HPP

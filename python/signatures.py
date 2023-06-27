@@ -49,6 +49,13 @@ func = 'setNumBytes(long)'
 function_signatures['setNumBytes'] = func
 function_classes[func] = 'org.apache.hadoop.hdfs.protocol.Block'
 
+func = 'updateBlocks(org.apache.hadoop.hdfs.server.namenode.FSDirectory,oorg.apache.hadoop.hdfs.server.namenode.FSEditLogOp$BlockListUpdatingOp,org.apache.hadoop.hdfs.server.namenode.INodeFile)'
+function_signatures['updateBlocks'] = func
+function_classes[func] = 'org.apache.hadoop.hdfs.server.namenode.FSEditLogLoader'
+func = 'addNewBlock(org.apache.hadoop.hdfs.server.namenode.FSDirectory,org.apache.hadoop.hdfs.server.namenode.FSEditLogOp$org.apache.hadoop.hdfs.server.namenode.INodeFile)'
+function_signatures['addNewBlock'] = func
+function_classes[func] = 'org.apache.hadoop.hdfs.server.namenode.FSEditLogLoader'
+
 with open('function_signatures.json', 'w') as f:
     json.dump(function_signatures, f)
 

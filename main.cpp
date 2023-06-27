@@ -127,9 +127,9 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
             std::cout << "Did not find stack trace of " << failureIndicator << std::endl;
         }else{
             failedtrace.print();
-            if(failedtrace.lines.size()>=2){
+            if(failedtrace.lines.size()>2){
                 std::cout << "caller: " << std::endl;
-                std::cout << failedtrace.lines[1] << std::endl;
+                std::cout << failedtrace.lines[2] << std::endl;
             }
         }
         

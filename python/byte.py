@@ -167,9 +167,11 @@ ENDRULE
     return rule
 def get_byteman_field(branch, class_name):
     function = "chooseRandom"
+    var = "blocksize"
+    function = input("the functon to compare: \n")
     signature = function_signatures[function]
     class_name = function_classes[signature]
-    var = "blocksize"
+    var = input("the argument to compare: \n")
     print_statement = f'traceln("[BM][" + Thread.currentThread().getName() + "][Target],ID=-1," + (${var}) )'
     rule = f'''RULE print var {function}: {var}
 CLASS {class_name}
