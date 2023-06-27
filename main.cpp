@@ -77,6 +77,7 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
     std::string newLogIndicator = "Method Entry";
     std::string arg_value = "-1";
     if(argc>=4){
+        failureIndicator = argv[3];
         std::cout << "Indicator: " << failureIndicator << std::endl;
     } //"";
     if(argc>=5){

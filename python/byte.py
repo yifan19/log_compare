@@ -299,8 +299,11 @@ def run():
                 for file in files:
                     print("removing", file)
                     os.remove(os.path.join(root, file)) # remove old logs
+                    
+            base_port = 9092  # Starting port number
             for b_id in branches.keys():
-                subprocess.run(['bash', bash_path], input=b_id, text=True)
+                port = base_port + int(b_id)
+                subprocess.run(['bash', bash_path, b_id, str(port)], text=True)
                 print("bash done:", b_id)
             os.chdir('/home/ubuntu/log/log_compare/')
             log_files = glob.glob(os.path.join(log_path, "current_b*"))
@@ -325,7 +328,7 @@ def run():
                     results[branch_id] = result
                 elif branch_type == 2:
                     function = branch["function"]
-                    result = subprocess.run([compare, log, '0'], capture_output=True, text=True)
+                    result = subprocess.run([compare, log, '2'], capture_output=True, text=True)
                     results[branch_id] = result
                 print("Output:", result.stdout)
                 print( result.stderr)

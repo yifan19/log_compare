@@ -7,11 +7,7 @@ reportdir=~/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/surefire-reports/
 logfile=$reportdir/org.apache.hadoop.hdfs.server.blockmanagement.TestPendingReplication-output.txt
 instrumentation_plan_dir=~/log/log_compare/python/plans
 rm $reportdir/*
-
-file=$instrumentation_plan_dir/current_b$id.btm
-echo $file
-
-mvn test -Dtest=TestPendingReplication -DargLine="-javaagent:~/byteman-download-4.0.21/lib/byteman.jar=listener:true,boot:~/byteman-download-4.0.21/lib/byteman.jar,script:$file,port:$port" > /dev/null &
+mvn test -Dtest=TestPendingReplication > /dev/null & 
 mvn_pid=$!
 
 while ! test -f "$logfile"
@@ -20,12 +16,14 @@ do
   echo "Still waiting"
 done
 
-sleep 5
+sleep 1
 
 testpid=$(jps | grep surefire | awk '{print $1}')
 bmsubmit.sh -u
 bminstall.sh $testpid
 
+file=$instrumentation_plan_dir/current_b$id.btm
+echo $file
 bmsubmit.sh $file
 bmsubmit.sh
 sleep 15

@@ -38,6 +38,10 @@ func = 'chooseTargets(org.apache.hadoop.hdfs.server.blockmanagement.BlockPlaceme
 function_signatures['chooseTargets'] = func
 function_classes[func] = 'org.apache.hadoop.hdfs.server.blockmanagement.BlockManager$ReplicationWork'
 
+func = 'chooseRemoteRack(int,org.apache.hadoop.hdfs.server.blockmanagement.DatanodeDescriptor,java.util.Set,long,int,java.util.List,boolean,org.apache.hadoop.hdfs.StorageType)'
+function_signatures['chooseRemoteRack'] = func
+function_classes[func] = 'org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyDefault'
+
 func = 'set(long,long,long)'
 function_signatures['set'] = func
 function_classes[func] = 'org.apache.hadoop.hdfs.protocol.Block'
