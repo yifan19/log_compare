@@ -1,18 +1,4 @@
 #include "Trace.hpp"
-class Trace {
-public:
-    std::vector<std::string> lines;
-    std::string thread;
-
-    bool fail;
-    
-    Trace() {}
-    Trace(std::string name);
-    ~Trace();
-
-    void print();
-};
-
      // Copy constructor
 Trace::Trace(std::string name) : thread(name) {
     fail = false;

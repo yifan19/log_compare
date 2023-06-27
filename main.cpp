@@ -96,7 +96,7 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
         bool next = false; bool found = false;
         std::string::size_type temp_id;
         
-        Trace failedtrace();
+        Trace failedtrace = Trace();
         while(std::getline(file1, line)){
             temp_id = line.find("Start Stack Trace");
             if(temp_id != std::string::npos){

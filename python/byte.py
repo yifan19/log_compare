@@ -326,7 +326,7 @@ def run():
                     results[branch_id] = result
                 elif branch_type == 1:
                     function = branch["function"]
-                    result = subprocess.run([compare, log, '1', function], capture_output=True, text=True)
+                    result = subprocess.run([compare, log, '1'], capture_output=True, text=True)
                     results[branch_id] = result
                 elif branch_type == 2:
                     function = branch["function"]
