@@ -12,6 +12,8 @@
 #include "Event.hpp"
 #include "Log.hpp"
 #include "globals.hpp"
+#include "Trace.hpp"
+
 #define DIV 0
 #define TRACE 1
 #define ARG 2
@@ -90,68 +92,47 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
     // std::unordered_map <int, int> loopStartIds = {{4, 1},{1, 2}}; std::unordered_map <int, int> parentLoop = {{1,-1}, {2,1}};
     if(what_to_do == TRACE){
         std::cout << "______" << std::endl;
-        std::cout << "finding callers of function " << failureIndicator << ": " << std::endl;
+        std::cout << "stack trace of thread " << failureIndicator << ": " << std::endl;
         bool next = false; bool found = false;
         std::string::size_type temp_id;
-
+        
+        Trace failedtrace();
         while(std::getline(file1, line)){
-            temp_id = line.find("Stack Trace");
-            if(temp_id == std::string::npos){
-                next = false;
-                continue;
-            }
-            // std::cout << "line: " << line << std::endl;
-            if(next){
-                line = line.substr(5 );
-                temp_id = line.find("]");
-                if(temp_id != std::string::npos){
-                    line = line.substr(0, temp_id);
-                }
-                std::cout << line << std::endl;
-                std::regex pattern(R"((.*)\.(.*)\((.*):(\d+)\))");
-                std::smatch match;
-                if (std::regex_search(line, match, pattern) && match.size() > 1) {
-                    std::string src_path = match.str(1);  // Get the class name
-                    std::string method_name = match.str(2);  // Get the method name
-                    std::string file_name = match.str(3);  // Get the file name
-                    int lineNum = std::stoi(match.str(4));  // Get the line number
-                    std::replace(src_path.begin(), src_path.end(), '.', '/');
-                    src_path = base_path + src_path + ".java";
-                    // std::cout << "file path: " << src_path << std::endl;
-                    // std::cout << "line: " << lineNum << std::endl;
-                    
-                    // std::ifstream file(src_path);
-                    // std::string src_line;
-                    // int numRead = 0;
-                    // if (file.is_open()) {
-                    //     while (std::getline(file, src_line)) {
-                    //         numRead++;
-                    //         if (numRead == lineNum) {
-                    //             std::cout << src_line << std::endl;
-                    //             break;
-                    //         }
-                    //     }
-                    //     file.close();
-                    // } else {
-                    //     std::cout << "Unable to open file";
-                    // }
-                } else {
-                    std::cerr << "No match\n";
-                }
-
-                next = false; found = true;
-            }
-
-            temp_id = line.find(failureIndicator);
+            temp_id = line.find("Start Stack Trace");
             if(temp_id != std::string::npos){
-                next = true;
-            }else{
-                next = false;
+                line = line.substr(20);
+                temp_id = line.find(failureIndicator);
+                if(temp_id != std::string::npos){
+                    found = true; failedtrace.fail = true;
+                    temp_id = line.find("]");
+                    if(temp_id != std::string::npos){
+                        line = line.substr(0, temp_id);
+                        failedtrace.thread = line;
+                    }
+                }
+            }
+            if(found){
+                temp_id = line.find("Stack trace for thread ");
+                if(temp_id != std::string::npos){
+                    continue;
+                }
+                temp_id = line.find("End Stack Trace");
+                if(temp_id != std::string::npos){
+                    break;
+                }
+                failedtrace.lines.push_back(line);
             }
         }
         if(!found){
-            std::cout << "Did not find caller of " << failureIndicator << std::endl;
+            std::cout << "Did not find stack trace of " << failureIndicator << std::endl;
+        }else{
+            failedtrace.print();
+            if(failedtrace.lines.size()>=2){
+                std::cout << "caller: " << std::endl;
+                std::cout << failedtrace.lines[1] << std::endl;
+            }
         }
+        
         return 0;
     }
     else if(what_to_do == ARG){ ///////////////////// VARIABLE //////////////////////////////////
@@ -161,6 +142,10 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
         std::string::size_type temp_id;
         Log* log = new Log(); int idx = 0;
         while(std::getline(file1, line)){
+            std::string::size_type temp_id = line.find("Stack Trace");
+            if(temp_id != std::string::npos){ continue; } // stack trace, ignore
+            temp_id = line.find("BM");
+            if(temp_id == std::string::npos){ continue; } // no BM, is stack trace, ignore
             log->to_parse.push_back(line);
             log->parseNextLine();
             temp_id = line.find("Target");
@@ -209,9 +194,9 @@ int main (int argc, char *argv[]){    //////////////////////////////////////////
         bool newLog = false; int thread = -1; bool fail = false;
         std::cout << line << std::endl; 
         std::string::size_type temp_id = line.find("Stack Trace");
-        if(temp_id != std::string::npos){
-            continue;
-        }
+        if(temp_id != std::string::npos){ continue; } // stack trace, ignore
+        temp_id = line.find("BM");
+        if(temp_id == std::string::npos){ continue; } // no BM, is stack trace, ignore
         temp_id = line.find("IPC Server handler ");
         if(temp_id != std::string::npos){ // deal with thread
             std::stringstream ss (line.substr(temp_id+19));

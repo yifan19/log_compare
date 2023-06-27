@@ -7,6 +7,7 @@
       </df>
       <in>Event.cpp</in>
       <in>Log.cpp</in>
+      <in>Trace.cpp</in>
       <in>main.cpp</in>
     </df>
     <logicalFolder name="ExternalFiles"
@@ -51,6 +52,10 @@
         </ccTool>
       </item>
       <item path="Log.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="Trace.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>

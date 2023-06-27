@@ -198,3 +198,33 @@ Longest:
 L2 L3 L4 L3 L4 L5 L3 L4 L5 L3 L4 L5 L3 L4 L5 L6 
 // diverge at L4
 */
+
+
+
+//std::regex pattern(R"((.*)\.(.*)\((.*):(\d+)\))");
+                //std::smatch match;
+                //if (std::regex_search(line, match, pattern) && match.size() > 1) {
+                //    std::string src_path = match.str(1);  // Get the class name
+//                    std::string method_name = match.str(2);  // Get the method name
+//                    std::string file_name = match.str(3);  // Get the file name
+//                    int lineNum = std::stoi(match.str(4));  // Get the line number
+//                    std::replace(src_path.begin(), src_path.end(), '.', '/');
+//                    src_path = base_path + src_path + ".java";
+                    // std::cout << "file path: " << src_path << std::endl;
+                    // std::cout << "line: " << lineNum << std::endl;
+                    
+                    // std::ifstream file(src_path);
+                    // std::string src_line;
+                    // int numRead = 0;
+                    // if (file.is_open()) {
+                    //     while (std::getline(file, src_line)) {
+                    //         numRead++;
+                    //         if (numRead == lineNum) {
+                    //             std::cout << src_line << std::endl;
+                    //             break;
+                    //         }
+                    //     }
+                    //     file.close();
+                    // } else {
+                    //     std::cout << "Unable to open file";
+                    // }

@@ -30,6 +30,7 @@ bmsubmit.sh $file
 bmsubmit.sh
 sleep 15
 grep 'BM' $logfile > ~/log/log_compare/python/logs/current_b$id.log
+awk '/Start Stack Trace/,/End Stack Trace/' $logfile >> ~/log/log_compare/python/logs/current_b$id.log
 echo $logfile
 
 cd -

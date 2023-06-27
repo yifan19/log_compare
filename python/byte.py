@@ -151,7 +151,6 @@ ENDRULE
     return rules 
 
 def get_byteman_stack(function, class_name, suffix):
-    print_statement = 'traceln("[BM][" + Thread.currentThread().getStackTrace()[5] + "][Stack Trace]");\n   traceln("[BM][" + Thread.currentThread().getStackTrace()[6] + "][Stack Trace]")'
     signature = function_signatures[function]
     rule = f'''RULE stack trace {function}_{suffix}
 CLASS {function_classes[signature]}
@@ -159,7 +158,10 @@ METHOD {signature}
 COMPILE
 AT ENTRY
 IF true
-DO {print_statement}
+DO traceln("[Start Stack Trace][" + Thread.currentThread().getName() + "]");
+   traceStack();
+   traceln("[End Stack Trace][" + Thread.currentThread().getName() + "]");
+
 ENDRULE
 '''
     return rule

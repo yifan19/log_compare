@@ -25,6 +25,8 @@
       <in>Event.hpp</in>
       <in>Log.cpp</in>
       <in>Log.hpp</in>
+      <in>Trace.cpp</in>
+      <in>Trace.hpp</in>
       <in>globals.hpp</in>
       <in>main copy.cpp</in>
       <in>main.cpp</in>
