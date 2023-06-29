@@ -1,11 +1,24 @@
 id=$1
 port=$2
-echo $id
+echo branchid=$id
+echo HADOOP_HOME=$HADOOP_HOME
+echo COMPARE_HOME$COMPARE_HOME
+echo INSTRUMENTATION_HOME$INSTRUMENTATION_HOME
+
 echo $port
-cd ~/hadoop/
-reportdir=~/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/surefire-reports/
+cd $HADOOP_HOME
+reportdir=$HADOOP_HOME/hadoop-hdfs-project/hadoop-hdfs/target/surefire-reports/
 logfile=$reportdir/org.apache.hadoop.hdfs.server.blockmanagement.TestPendingReplication-output.txt
-instrumentation_plan_dir=~/log/log_compare/python/plans
+instrumentation_plan_dir=$COMPARE_HOME/python/plans/
+myinstrumentation_jar=$INSTRUMENTATION_HOME/target/uber-blameMasterInstrument-1.0.jar
+
+instrumentation_plans=$(ls $instrumentation_plan_dir/*)
+result_dir=$COMPARE_HOME/python/logs/
+
+cd $INSTRUMENTATION_HOME
+mvn package -DskipTests
+cd -
+
 rm $reportdir/*
 
 file=$instrumentation_plan_dir/current_b$id.btm
@@ -23,17 +36,22 @@ done
 sleep 5
 
 testpid=$(jps | grep surefire | awk '{print $1}')
-bmsubmit.sh -u
-bminstall.sh $testpid
+java -cp $JAVA_HOME/lib/tools.jar:$myinstrumentation_jar \
+    ca.uoft.drsg.bminstrument.Launcher $myinstrumentation_jar $testpid
 
-bmsubmit.sh $file
-bmsubmit.sh
-sleep 15
-grep 'BM' $logfile > ~/log/log_compare/python/logs/current_b$id.log
-awk '/Start Stack Trace/,/End Stack Trace/' $logfile >> ~/log/log_compare/python/logs/current_b$id.log
+for plan in $instrumentation_plans
+do
+    java -cp $JAVA_HOME/lib/tools.jar:$myinstrumentation_jar \
+        ca.uoft.drsg.bminstrument.PseudoClient "add $plan"
+done
+
+wait $mvn_pid
+
+grep 'BM' $logfile > $result_dir/current_b$id.log
+awk '/Start Stack Trace/,/End Stack Trace/' $logfile >> $result_dir/current_b$id.log
 echo $logfile
 
-cd -
-echo current_b$id.log
+# cd -
+# echo current_b$id.log
 
 

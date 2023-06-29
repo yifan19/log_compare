@@ -5,14 +5,22 @@ import json
 import time
 import subprocess
 import os
+import sys
 import glob
 
-input_path = '/home/ubuntu/instructions.txt'
-bash_path = '/home/ubuntu/log/log_compare/python/run.sh'
-log_path = '/home/ubuntu/log/log_compare/python/logs'
-py_path = '/home/ubuntu/log/log_compare/python'
-btm_path = '/home/ubuntu/log/log_compare/python/plans'
-compare = '/home/ubuntu/log/log_compare/compare'
+# README
+HADOOP_HOME_DEFAULT = '/home/ubuntu/hadoop2'
+HOME_PATH_DEFAULT = '/home/ubuntu/demo/log_compare/'
+INSTRUMENTATION_HOME = '/home/ubuntu/bm_instrument'
+
+HOME_PATH = os.environ.get('BM_COMPARE_HOME', HOME_PATH_DEFAULT)
+HADOOP_HOME = os.environ.get('', HADOOP_HOME_DEFAULT)
+input_path = sys.argv[1]
+bash_path = HOME_PATH + 'python/run.sh'
+log_path = HOME_PATH + 'python/logs'
+py_path = HOME_PATH + 'python'
+btm_path = HOME_PATH + 'python/plans'
+compare = HOME_PATH + 'compare'
 
 function_signatures = {}
 with open('function_signatures.json', 'r') as f:
@@ -29,6 +37,11 @@ def parse_instruction(instruction):
     accessing_field_match = re.search(r"Class type is (.*)\nAccessing", instruction)
     loop = ("Instruction is in a loop" in instruction)
     argument_match = re.search(r"(\n)(.+)(\nPrint argument)", instruction)
+    bci = re.search(r"The bci for the source location is: (\d+)", instruction)
+    if bci is None:
+        bci = "0"
+    else:
+        bci = bci.group(1)
 
     if "At function entry" in instruction:
         function_match = re.search(r"At function entry (.*)\nIn file: (.+)", instruction)
@@ -43,7 +56,8 @@ def parse_instruction(instruction):
             "id": id_match.group(1),
             "function": function_name,
             "class": class_name,
-            "loop": loop
+            "loop": loop,
+            "bci": bci
         }
         if argument_match:
             result["argument"] = argument_match.group(2)
@@ -61,7 +75,8 @@ def parse_instruction(instruction):
 	    "function": after_print_match.group(2),
             "class": class_name,
             "line": after_print_match.group(3),
-            "loop": loop
+            "loop": loop,
+            "bci": bci
         }
         if argument_match:
             result["argument"] = argument_match.group(2)
@@ -80,7 +95,8 @@ def parse_instruction(instruction):
             "function": before_print_match.group(2),
             "class": class_name,
             "line": before_print_match.group(3),
-            "loop": loop
+            "loop": loop,
+            "bci": bci
         }
         if argument_match:
             result["argument"] = argument_match.group(2)
@@ -102,9 +118,9 @@ def to_byteman_rule(instruction):
     if rule_type == "function_entry":
         position = "ENTRY"
     elif rule_type == "before_print":
-        position = "LINE " + instruction["line"]
+        position = instruction["line"]
     elif rule_type == "after_print":
-        position = "LINE " + instruction["line"]
+        position = instruction["line"]
     elif rule_type == "stack_trace":
         position = "ENTRY"
     else:
@@ -117,15 +133,17 @@ def to_byteman_rule(instruction):
         print_statement += f' + (${instruction["argument"]})'
     print_statement += ')'
 
-
-    rule = f'''RULE ID {rule_id}
-CLASS {class_name}
-METHOD {function}
-COMPILE
-AT {position}
-IF {condition}
-DO {print_statement}
-ENDRULE
+    parameterTypes = re.search(r"\((.*)\)", function).group(1)
+    rule = f'''
+ID={rule_id}
+LoopID={"1" if loop else "0"}
+className={class_name}
+methodName={function_name}
+parameterTypes={parameterTypes}
+lineNumber={position}
+byteCodeIndex={instruction["bci"]}
+variableName={instruction.get("argument", "foo")}
+strategy={rule_type}
 '''
     return rule
 def print_var(instructions, p0):
@@ -133,36 +151,42 @@ def print_var(instructions, p0):
 
 def get_byteman_entries(methods):
     rules = []
+    # negative IDs mean they aren't core instrumentations
+    # their ID is useless
+    i = -1
     for method in methods:
         if method not in function_signatures:
             print("signature not found: ", method)
             continue
         signature = function_signatures[method]
-        rule = f'''RULE entering {method}
-CLASS {function_classes[signature]}
-METHOD {signature}
-COMPILE
-AT ENTRY
-IF true
-DO traceStack("[BM][" + Thread.currentThread().getName() + "][Method Entry]");
-ENDRULE
+        parameterTypes = re.search(r"\((.*)\)", signature).group(1);
+
+        rule = f'''
+ID={i}
+className={function_classes[signature]}
+methodName={method}
+parameterTypes={parameterTypes}
+lineNumber=ENTRY
+byteCodeIndex={-2}
+variableName={"foo"}
+strategy={"logCutting"}
 '''
         rules.append(rule)
+        i -= 1
     return rules 
 
 def get_byteman_stack(function, class_name, suffix):
     signature = function_signatures[function]
-    rule = f'''RULE stack trace {function}_{suffix}
-CLASS {function_classes[signature]}
-METHOD {signature}
-COMPILE
-AT ENTRY
-IF true
-DO traceln("[Start Stack Trace][" + Thread.currentThread().getName() + "]");
-   traceStack();
-   traceln("[End Stack Trace][" + Thread.currentThread().getName() + "]");
-
-ENDRULE
+    parameterTypes = re.search(r"\((.*)\)", signature).group(1)
+    rule = f'''
+ID={-1}
+className={function_classes[signature]}
+methodName={method}
+parameterTypes={parameterTypes}
+lineNumber=ENTRY
+byteCodeIndex={-1}
+variableName={"foo"}
+strategy={"stackTrace"}
 '''
     return rule
 def get_byteman_field(branch, class_name):
@@ -254,10 +278,10 @@ def process_command(content):
         print("Branch ID is", branch_id, "///////")
         p = process_branch(b, branch_id)
         rules = p["rules"]
-        file_name = btm_path + '/current_b' + branch_id + '.btm'
-        print("write to:", file_name)
-        with open(file_name, 'w') as f:
-            for rule in rules:
+        for j, rule in enumerate(rules):
+            file_name =f'{btm_path}/current_b{branch_id}_{str(j)}.properties'
+            print("write to:", file_name)
+            with open(file_name, 'w') as f:
                 print(rule)
                 f.write(rule)
                 f.write('\n')
@@ -298,18 +322,19 @@ def run():
                     print("removing", file)
                     os.remove(os.path.join(root, file)) # remove old btm
             branches = process_command(content) # generate btm
-            os.chdir("/home/ubuntu/hadoop/")
+            os.chdir(HADOOP_HOME)
             for root, dirs, files in os.walk(log_path, topdown=False):
                 for file in files:
                     print("removing", file)
                     os.remove(os.path.join(root, file)) # remove old logs
-                    
-            base_port = 9092  # Starting port number
+            local_env = os.environ.copy()
+            local_env['COMPARE_HOME'] = HOME_PATH
+            local_env['HADOOP_HOME'] = HADOOP_HOME
+            local_env['INSTRUMENTATION_HOME'] = INSTRUMENTATION_HOME
             for b_id in branches.keys():
-                port = base_port + int(b_id)
-                subprocess.run(['bash', bash_path, b_id, str(port)], text=True)
+                subprocess.run(['bash', bash_path, b_id, str(port)], text=True, env=local_env)
                 print("bash done:", b_id)
-            os.chdir('/home/ubuntu/log/log_compare/')
+            os.chdir(HOME_PATH)
             log_files = glob.glob(os.path.join(log_path, "current_b*"))
             results = {}
             for log in log_files:
