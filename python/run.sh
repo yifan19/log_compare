@@ -1,11 +1,11 @@
 id=$1
-port=$2
+# port=$2
 echo branchid=$id
 echo HADOOP_HOME=$HADOOP_HOME
 echo COMPARE_HOME$COMPARE_HOME
 echo INSTRUMENTATION_HOME$INSTRUMENTATION_HOME
 
-echo $port
+# echo $port
 cd $HADOOP_HOME
 reportdir=$HADOOP_HOME/hadoop-hdfs-project/hadoop-hdfs/target/surefire-reports/
 logfile=$reportdir/org.apache.hadoop.hdfs.server.blockmanagement.TestPendingReplication-output.txt

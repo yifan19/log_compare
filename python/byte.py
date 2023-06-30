@@ -181,7 +181,7 @@ def get_byteman_stack(function, class_name, suffix):
     rule = f'''
 ID={-1}
 className={function_classes[signature]}
-methodName={method}
+methodName={function}
 parameterTypes={parameterTypes}
 lineNumber=ENTRY
 byteCodeIndex={-1}
@@ -332,7 +332,7 @@ def run():
             local_env['HADOOP_HOME'] = HADOOP_HOME
             local_env['INSTRUMENTATION_HOME'] = INSTRUMENTATION_HOME
             for b_id in branches.keys():
-                subprocess.run(['bash', bash_path, b_id, str(port)], text=True, env=local_env)
+                subprocess.run(['bash', bash_path, b_id], text=True, env=local_env)
                 print("bash done:", b_id)
             os.chdir(HOME_PATH)
             log_files = glob.glob(os.path.join(log_path, "current_b*"))
