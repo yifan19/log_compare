@@ -192,19 +192,20 @@ strategy={"stackTrace"}
 def get_byteman_field(branch, class_name):
     function = "chooseRandom"
     var = "blocksize"
-    function = input("the functon to compare: \n")
+    # function = input("the function to compare: \n")
     signature = function_signatures[function]
+    parameterTypes = re.search(r"\((.*)\)", signature).group(1)
     class_name = function_classes[signature]
-    var = input("the argument to compare: \n")
+    # var = input("the argument to compare: \n")
     print_statement = f'traceln("[BM][" + Thread.currentThread().getName() + "][Target],ID=-1," + (${var}) )'
-    rule = f'''RULE print var {function}: {var}
-CLASS {class_name}
-METHOD {signature}
-COMPILE
-AT ENTRY
-IF true
-DO {print_statement}
-ENDRULE
+    rule = f'''ID={-1}
+className={function_classes[signature]}
+methodName={function}
+parameterTypes={parameterTypes}
+lineNumber=ENTRY
+byteCodeIndex={0}
+variableName={var}
+strategy={"print_var"}
 '''
     return rule, function
     
