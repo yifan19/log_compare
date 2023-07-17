@@ -12,7 +12,7 @@ logfile=$reportdir/org.apache.hadoop.hdfs.server.blockmanagement.TestPendingRepl
 instrumentation_plan_dir=$COMPARE_HOME/python/plans/
 myinstrumentation_jar=$INSTRUMENTATION_HOME/target/uber-blameMasterInstrument-1.0.jar
 
-instrumentation_plans=$(ls $instrumentation_plan_dir/*)
+instrumentation_plans=$(ls $instrumentation_plan_dir/current_b${id}_*)
 result_dir=$COMPARE_HOME/python/logs/
 
 cd $INSTRUMENTATION_HOME

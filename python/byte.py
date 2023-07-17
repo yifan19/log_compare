@@ -248,6 +248,9 @@ def process_branch(branch, branch_id):
         rules += get_byteman_entries(methods)
         
     for p in parsed:
+        # skip those who have no lineNumber
+        if p.get("line") == '0':
+            continue
         rule = to_byteman_rule(p)
         rules.append(rule)
         print(rule)
